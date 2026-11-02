@@ -317,6 +317,8 @@ p{margin:0}
   transform:rotateY(90deg) translateZ(calc(var(--w) / 2 - 3px));background:repeating-linear-gradient(90deg,var(--paper) 0 2px,var(--paper-2) 2px 3px)}
 .pb-top{left:0;top:calc((var(--h) - var(--t)) / 2);width:calc(100% - 3px);height:var(--t);
   transform:rotateX(90deg) translateZ(calc(var(--h) / 2));background:repeating-linear-gradient(180deg,var(--paper) 0 2px,var(--paper-2) 2px 3px)}
+.pf-note{justify-self:start;display:inline-flex;align-items:center;gap:9px;font:600 14px var(--display);color:var(--forest);background:var(--leaf-pale);border:1.5px solid var(--moss);border-radius:999px;padding:7px 14px}
+.pf-note::before{content:"";flex:none;width:12px;height:12px;border-radius:0 70% 0 70%;background:var(--leaf)}
 .pf-meta{display:grid;gap:4px}
 .pf-meta h3{font-size:21px;font-weight:800}
 .pf-meta p{font:italic 15px var(--body);color:var(--muted)}
@@ -765,7 +767,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
         <p class="eyebrow" data-reveal>Cover portfolio</p>
         <h2 class="h2" data-split data-mark="Covers">Covers from the studio.</h2>
       </div>
-      <p class="lede" data-reveal>Real covers we designed, front, spine and back. Turn a book over to read the back, or open the full print wrap.</p>
+      <div style="display:grid;gap:12px"><p class="lede" data-reveal>Real covers we designed, front, spine and back. Turn a book over to read the back, or open the full print wrap.</p>
+      <p class="pf-note" data-reveal>Client work and concept mockups. Whatever style you picture, we can design it.</p></div>
     </div>
 
     <div class="pf-grid">
@@ -819,6 +822,54 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
         </div></div>
         <div class="pf-meta"><span class="fmt">Fiction, full wrap</span><h3>Doubting Nikki</h3><p>Matthew Galgani</p></div>
         <div class="pf-actions"><button class="btn btn-turn" type="button" data-turn><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3"/></svg>Turn over</button><button class="btn btn-unfold" type="button" data-wrap="nikki">Full wrap</button></div>
+      </article>
+      <article class="pf-item">
+        <div class="pf-stage" style="--r:0.6445"><div class="pf-wrap">
+          <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over A Cloud in My Heart" style="--t:calc(var(--h) * 0.0536)">
+            <span class="pb-back"><img src="assets/covers/cloud-back.webp?v=2" alt="" loading="lazy" width="709" height="1100"></span>
+            <span class="pb-pages"></span><span class="pb-top"></span>
+            <span class="pb-spine"><img src="assets/covers/cloud-spine.webp?v=2" alt="" loading="lazy" width="59" height="1100"></span>
+            <span class="pb-front"><img src="assets/covers/cloud-front.webp?v=2" alt="A Cloud in My Heart cover: a boy hugging a teddy bear on a tree swing" loading="lazy" width="709" height="1100"></span>
+          </button>
+        </div></div>
+        <div class="pf-meta"><span class="fmt">Paperback, picture book</span><h3>A Cloud in My Heart</h3><p>Sehirsh K</p></div>
+        <div class="pf-actions"><button class="btn btn-turn" type="button" data-turn><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3"/></svg>Turn over</button><button class="btn btn-unfold" type="button" data-wrap="cloud">Full wrap</button></div>
+      </article>
+      <article class="pf-item">
+        <div class="pf-stage" style="--r:0.6663"><div class="pf-wrap">
+          <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over Milo the Shy Monster" style="--t:calc(var(--h) * 0.0556)">
+            <span class="pb-back"><img src="assets/covers/milo-back.webp?v=2" alt="" loading="lazy" width="1067" height="1600"></span>
+            <span class="pb-pages"></span><span class="pb-top"></span>
+            <span class="pb-spine"><img src="assets/covers/milo-spine.webp?v=2" alt="" loading="lazy" width="89" height="1600"></span>
+            <span class="pb-front"><img src="assets/covers/milo-front.webp?v=2" alt="Milo the Shy Monster cover: a smiling purple furry monster with red horns" loading="lazy" width="1066" height="1600"></span>
+          </button>
+        </div></div>
+        <div class="pf-meta"><span class="fmt">Paperback, picture book</span><h3>Milo the Shy Monster</h3><p>Sehirsh K</p></div>
+        <div class="pf-actions"><button class="btn btn-turn" type="button" data-turn><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3"/></svg>Turn over</button><button class="btn btn-unfold" type="button" data-wrap="milo">Full wrap</button></div>
+      </article>
+      <article class="pf-item">
+        <div class="pf-stage" style="--r:0.6663"><div class="pf-wrap">
+          <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over The Silent Alibi" style="--t:calc(var(--h) * 0.0556)">
+            <span class="pb-back"><img src="assets/covers/alibi-back.webp?v=2" alt="" loading="lazy" width="1067" height="1600"></span>
+            <span class="pb-pages"></span><span class="pb-top"></span>
+            <span class="pb-spine"><img src="assets/covers/alibi-spine.webp?v=2" alt="" loading="lazy" width="89" height="1600"></span>
+            <span class="pb-front"><img src="assets/covers/alibi-front.webp?v=2" alt="The Silent Alibi cover: a white fingerprint dripping red on black" loading="lazy" width="1066" height="1600"></span>
+          </button>
+        </div></div>
+        <div class="pf-meta"><span class="fmt">Paperback, murder mystery</span><h3>The Silent Alibi</h3><p>Sehirsh K</p></div>
+        <div class="pf-actions"><button class="btn btn-turn" type="button" data-turn><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3"/></svg>Turn over</button><button class="btn btn-unfold" type="button" data-wrap="alibi">Full wrap</button></div>
+      </article>
+      <article class="pf-item">
+        <div class="pf-stage" style="--r:0.6663"><div class="pf-wrap">
+          <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over Hollow Echoes" style="--t:calc(var(--h) * 0.0556)">
+            <span class="pb-back"><img src="assets/covers/hollow-back.webp?v=2" alt="" loading="lazy" width="1067" height="1600"></span>
+            <span class="pb-pages"></span><span class="pb-top"></span>
+            <span class="pb-spine"><img src="assets/covers/hollow-spine.webp?v=2" alt="" loading="lazy" width="89" height="1600"></span>
+            <span class="pb-front"><img src="assets/covers/hollow-front.webp?v=2" alt="Hollow Echoes cover: a woman looking up through teal haze beneath a moth" loading="lazy" width="1066" height="1600"></span>
+          </button>
+        </div></div>
+        <div class="pf-meta"><span class="fmt">Paperback, psychological mystery</span><h3>Hollow Echoes</h3><p>Sehirsh K</p></div>
+        <div class="pf-actions"><button class="btn btn-turn" type="button" data-turn><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3"/></svg>Turn over</button><button class="btn btn-unfold" type="button" data-wrap="hollow">Full wrap</button></div>
       </article>
     </div>
   </div>
@@ -1049,7 +1100,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   });
 
   // ---------- Cover portfolio: turn books over, open full wraps ----------
-  const titles = {whiskey:'Whiskey Venus Boston', terry:'Goodnight Ditties for Curious Kiddies', bn:'No Plan B', nikki:'Doubting Nikki'};
+  const titles = {whiskey:'Whiskey Venus Boston', terry:'Goodnight Ditties for Curious Kiddies', bn:'No Plan B', nikki:'Doubting Nikki',
+    cloud:'A Cloud in My Heart', milo:'Milo the Shy Monster', alibi:'The Silent Alibi', hollow:'Hollow Echoes'};
   $$('.pf-item').forEach(item => {
     const book = $('.pbook', item);
     const turn = () => book.setAttribute('aria-pressed', book.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
@@ -1227,10 +1279,14 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     scrollTrigger:{trigger:'.shelf', start:'top 70%', once:true}});
 
   // ---------- Portfolio: books turn from spine-out to face-out ----------
-  gsap.from('.pf-wrap', {rotationY:-62, y:70, autoAlpha:0, stagger:.12, ease:'power2.out',
-    scrollTrigger:{trigger:'.pf-grid', start:'top 92%', end:'top 40%', scrub:1}});
-  gsap.from('.pf-meta, .pf-actions', {y:24, autoAlpha:0, stagger:.06, duration:.6, ease:'power3.out',
-    scrollTrigger:{trigger:'.pf-grid', start:'top 70%', once:true}});
+  // Each book has its own trigger so the second row turns as it arrives; later columns start a touch later
+  $$('.pf-item').forEach((item, i) => {
+    const lag = (i % 4) * 4;
+    gsap.from($('.pf-wrap', item), {rotationY:-62, y:70, autoAlpha:0, ease:'power2.out',
+      scrollTrigger:{trigger:item, start:`top ${96 - lag}%`, end:`top ${52 - lag}%`, scrub:1}});
+    gsap.from($$('.pf-meta, .pf-actions', item), {y:24, autoAlpha:0, stagger:.08, duration:.6, ease:'power3.out',
+      scrollTrigger:{trigger:item, start:'top 70%', once:true}});
+  });
 
   // ---------- Process: horizontal page track ----------
   const track = $('.track');
