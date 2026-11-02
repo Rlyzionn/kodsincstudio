@@ -27,7 +27,11 @@
 }
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
-html{scroll-behavior:smooth}
+/* Native smooth scroll only when Lenis is not driving the page; the two fight and make scrolling jump */
+html:not(.lenis){scroll-behavior:smooth}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
 body{background:var(--cream);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--cream)}
 img{max-width:100%;display:block}
@@ -871,7 +875,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
 
   // Smooth scroll on desktop pointers only
   if (window.Lenis && matchMedia('(pointer: fine)').matches) {
-    const lenis = new Lenis({lerp:.1});
+    const lenis = new Lenis({lerp:.12});
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(t => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -912,7 +916,9 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
 
   const mm = gsap.matchMedia();
   mm.add('(min-width: 961px)', () => {
-    const tl = gsap.timeline({scrollTrigger:{trigger:'.hero', start:'top top', end:'+=110%', pin:true, scrub:1}});
+    // Pin just below the sticky header so the top of the hero never slides under it
+    const tl = gsap.timeline({scrollTrigger:{trigger:'.hero', start:() => 'top ' + head.offsetHeight, end:'+=110%',
+      pin:true, anticipatePin:1, scrub:.6, invalidateOnRefresh:true}});
     openBook(tl);
     tl.to('.scroll-cue', {autoAlpha:0, duration:.2}, 0);
   });
