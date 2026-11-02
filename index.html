@@ -249,14 +249,14 @@ p{margin:0}
 .svc-head{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:end}
 .shelf{margin-top:64px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:26px;perspective:2000px;padding-bottom:34px;position:relative}
 .shelf::after{content:"";position:absolute;left:-12px;right:-12px;bottom:0;height:20px;background:var(--gold);border:2px solid var(--forest-deep);border-radius:4px;box-shadow:0 8px 0 var(--forest-deep)}
-.svc{position:relative;z-index:1;min-width:0;display:grid;justify-items:center;transform-style:preserve-3d;transition:opacity .4s}
-.svc.open{z-index:6}
-.shelf.has-open .svc:not(.open){opacity:.3}
+.svc{position:relative;z-index:1;min-width:0;display:grid;justify-items:center;transform-style:preserve-3d}
+/* The shelf only shows covers; the page and inside cover are the source for the pop-up */
+.shelf .sb-page,.shelf .sb-back{display:none}
+.svc.lent .sbook{visibility:hidden}
 .sbook{--c:var(--forest);--t:var(--cream);--s:var(--forest-deep);
   position:relative;width:100%;max-width:230px;aspect-ratio:2/3;container-type:inline-size;transform-style:preserve-3d;
   transform:rotateY(-14deg);transform-origin:left center;transition:transform .8s cubic-bezier(.6,.05,.25,1)}
-.svc:not(.open) .sbook:hover{transform:rotateY(-3deg) translateY(-10px)}
-.svc.open .sbook{transform:translateX(var(--shift,50%)) rotateY(0)}
+.sbook:hover,.sbook:focus-within{transform:rotateY(-3deg) translateY(-10px)}
 /* Page block peeking out on the fore-edge, like a closed book */
 .sbook::before{content:"";position:absolute;top:2.5%;bottom:2.5%;right:-3.5cqw;width:4cqw;border:2px solid var(--forest);border-left:none;border-radius:0 4px 4px 0;
   background:repeating-linear-gradient(90deg,var(--paper) 0 2px,var(--line) 2px 3px)}
@@ -273,7 +273,6 @@ p{margin:0}
 .sb-add:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 .sb-cover{all:unset;position:absolute;inset:0;cursor:pointer;transform-style:preserve-3d;transform-origin:left center;
   transition:transform .9s cubic-bezier(.6,.05,.25,1)}
-.svc.open .sb-cover{transform:rotateY(-178deg)}
 .sb-cover:focus-visible{outline:3px solid var(--gold);outline-offset:6px;border-radius:8px}
 .sb-face{position:absolute;inset:0;backface-visibility:hidden;display:flex;flex-direction:column;gap:4cqw;padding:7cqw 7cqw 7cqw 9cqw}
 .sb-front{background:var(--c);color:var(--t);border-radius:2px 10px 10px 2px;border:2px solid var(--s);border-left:5cqw solid var(--s);box-shadow:6px 6px 0 var(--s)}
@@ -286,11 +285,26 @@ p{margin:0}
 .sb-hint::before{content:"";width:3.4cqw;height:3.4cqw;border-radius:0 70% 0 70%;background:currentColor}
 .svc-ill{display:block;background:var(--paper);border:2px solid var(--s);border-radius:8px;padding:3cqw 2cqw 1cqw;box-shadow:3px 3px 0 var(--s);margin-top:2cqw}
 .svc-ill svg{display:block;width:100%;height:auto;transition:transform .5s var(--spring)}
-.svc:not(.open) .sbook:hover .svc-ill svg{transform:scale(1.07) rotate(-2deg)}
-.sbook.b2{--c:var(--leaf);--t:var(--forest-deep);--s:var(--moss)}
-.sbook.b3{--c:var(--cream);--t:var(--forest);--s:var(--forest)}
-.sbook.b4{--c:var(--gold-2);--t:var(--forest-deep);--s:var(--gold)}
-.sbook.b5{--c:var(--leaf-pale);--t:var(--forest);--s:var(--moss)}
+.sbook:hover .svc-ill svg{transform:scale(1.07) rotate(-2deg)}
+.b2{--c:var(--leaf);--t:var(--forest-deep);--s:var(--moss)}
+.b3{--c:var(--cream);--t:var(--forest);--s:var(--forest)}
+.b4{--c:var(--gold-2);--t:var(--forest-deep);--s:var(--gold)}
+.b5{--c:var(--leaf-pale);--t:var(--forest);--s:var(--moss)}
+/* Book pop-up: the chosen book flies to the middle of the screen and opens into a spread */
+.book-dlg{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;overflow:hidden;color:var(--ink)}
+.book-dlg::backdrop{background:rgba(3,39,26,.82)}
+.book-dlg[open]::backdrop{animation:bdfade .45s ease-out}
+@keyframes bdfade{from{opacity:0}}
+.bd-stage{position:absolute;inset:0;perspective:2400px}
+.bd-book{--c:var(--forest);--t:var(--cream);--s:var(--forest-deep);--W:min(340px,44vw,calc((100vh - 140px) / 1.5));
+  position:absolute;left:calc(50% - var(--W) / 2);top:calc(50% - var(--W) * .75);width:var(--W);aspect-ratio:2/3;container-type:inline-size;transform-style:preserve-3d}
+.bd-book .sb-page{display:flex;box-shadow:8px 8px 0 var(--forest-deep)}
+.bd-cover{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:left center}
+.bd-book .sb-back{display:flex;box-shadow:-8px 8px 0 var(--forest-deep)}
+.bd-book .sb-hint{display:none}
+.bd-book .sb-back .svc-ill{margin-top:auto}
+.bd-close{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));right:max(18px,env(safe-area-inset-right,0px));--bg:var(--paper);--fg:var(--forest);--edge:var(--forest-deep);padding:10px 16px;font-size:14px}
+.bd-tip{position:absolute;left:0;right:0;padding-inline:max(16px,env(safe-area-inset-left,0px));text-wrap:balance;bottom:calc(20px + env(safe-area-inset-bottom,0px));text-align:center;font:500 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--leaf-pale)}
 @media (max-width:1100px){.shelf{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:46px}.shelf::after{display:none}.svc-head{grid-template-columns:1fr}}
 @media (max-width:760px){.shelf{grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 18px}.sbook{transform:rotateY(-8deg)}}
 
@@ -702,7 +716,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
           <ul><li>Print-on-demand setup</li><li>Ebook store setup</li><li>Metadata, categories, keywords</li><li>Launch checklist</li></ul>
           <button class="sb-add" type="button" data-check="sPub">Add to my brief &rarr;</button>
         </div>
-        <button class="sb-cover" type="button" aria-expanded="false" data-title="Book &amp; ebook publishing" aria-label="Book &amp; ebook publishing: open for details">
+        <button class="sb-cover" type="button" aria-haspopup="dialog" data-title="Book &amp; ebook publishing" aria-label="Book &amp; ebook publishing: open details">
           <span class="sb-face sb-front"><span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-publish"/></svg></span><span class="num">Vol. 1</span><span class="sb-title">Book &amp; ebook publishing</span><span class="sb-hint">Open</span></span>
           <span class="sb-face sb-back" aria-hidden="true"><span class="num">Vol. 1</span><span class="sb-title">Book &amp; ebook publishing</span><span class="sb-desc">We prepare and release your book in print and as an ebook, set up and ready to sell.</span><span class="sb-hint">Close</span></span>
         </button>
@@ -714,7 +728,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
           <ul><li>Developmental editing</li><li>Line editing</li><li>Copyediting</li><li>Proofreading</li></ul>
           <button class="sb-add" type="button" data-check="sEdit">Add to my brief &rarr;</button>
         </div>
-        <button class="sb-cover" type="button" aria-expanded="false" data-title="Editing" aria-label="Editing: open for details">
+        <button class="sb-cover" type="button" aria-haspopup="dialog" data-title="Editing" aria-label="Editing: open details">
           <span class="sb-face sb-front"><span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-edit"/></svg></span><span class="num">Vol. 2</span><span class="sb-title">Editing</span><span class="sb-hint">Open</span></span>
           <span class="sb-face sb-back" aria-hidden="true"><span class="num">Vol. 2</span><span class="sb-title">Editing</span><span class="sb-desc">Careful reading at the level your manuscript needs, from the shape of the story down to the commas.</span><span class="sb-hint">Close</span></span>
         </button>
@@ -726,7 +740,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
           <ul><li>Print interior and trim size</li><li>Margins, bleed, running heads</li><li>EPUB and Kindle files</li><li>Front and back matter</li></ul>
           <button class="sb-add" type="button" data-check="sFmt">Add to my brief &rarr;</button>
         </div>
-        <button class="sb-cover" type="button" aria-expanded="false" data-title="Formatting" aria-label="Formatting: open for details">
+        <button class="sb-cover" type="button" aria-haspopup="dialog" data-title="Formatting" aria-label="Formatting: open details">
           <span class="sb-face sb-front"><span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-format"/></svg></span><span class="num">Vol. 3</span><span class="sb-title">Formatting</span><span class="sb-hint">Open</span></span>
           <span class="sb-face sb-back" aria-hidden="true"><span class="num">Vol. 3</span><span class="sb-title">Formatting</span><span class="sb-desc">Interiors that read well on paper and reflow properly on every e-reader.</span><span class="sb-hint">Close</span></span>
         </button>
@@ -738,7 +752,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
           <ul><li>Front cover</li><li>Full wrap with spine and back</li><li>Ebook cover</li><li>Promo mockups</li></ul>
           <button class="sb-add" type="button" data-check="sCov">Add to my brief &rarr;</button>
         </div>
-        <button class="sb-cover" type="button" aria-expanded="false" data-title="Cover design" aria-label="Cover design: open for details">
+        <button class="sb-cover" type="button" aria-haspopup="dialog" data-title="Cover design" aria-label="Cover design: open details">
           <span class="sb-face sb-front"><span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-cover"/></svg></span><span class="num">Vol. 4</span><span class="sb-title">Cover design</span><span class="sb-hint">Open</span></span>
           <span class="sb-face sb-back" aria-hidden="true"><span class="num">Vol. 4</span><span class="sb-title">Cover design</span><span class="sb-desc">Covers made for your genre and readers, legible from a bookshop shelf to a phone screen.</span><span class="sb-hint">Close</span></span>
         </button>
@@ -750,12 +764,20 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
           <ul><li>Children's picture books</li><li>Chapter-book spot art</li><li>Maps and diagrams</li><li>Cover illustration</li></ul>
           <button class="sb-add" type="button" data-check="sIll">Add to my brief &rarr;</button>
         </div>
-        <button class="sb-cover" type="button" aria-expanded="false" data-title="Illustration" aria-label="Illustration: open for details">
+        <button class="sb-cover" type="button" aria-haspopup="dialog" data-title="Illustration" aria-label="Illustration: open details">
           <span class="sb-face sb-front"><span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-illustrate"/></svg></span><span class="num">Vol. 5</span><span class="sb-title">Illustration</span><span class="sb-hint">Open</span></span>
           <span class="sb-face sb-back" aria-hidden="true"><span class="num">Vol. 5</span><span class="sb-title">Illustration</span><span class="sb-desc">Pictures that carry the story, for children's books and any book that needs art inside.</span><span class="sb-hint">Close</span></span>
         </button>
       </article></div>
     </div>
+    <dialog class="book-dlg" id="bookDlg" aria-labelledby="bdTitle">
+      <div class="bd-stage"><div class="bd-book" id="bdBook">
+        <div class="sb-page" id="bdPage"></div>
+        <div class="bd-cover" id="bdCover"><span class="sb-face sb-front" id="bdFront"></span><span class="sb-face sb-back" id="bdBack"></span></div>
+      </div></div>
+      <button class="btn bd-close" type="button" id="bdClose">Close</button>
+      <p class="bd-tip" aria-hidden="true">Tap outside the book or press Esc to close</p>
+    </dialog>
   </div>
 </section>
 
@@ -1119,36 +1141,51 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   $('#wrapClose').addEventListener('click', () => dlg.close());
   dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
 
-  // ---------- Services: open one book at a time ----------
-  const shelfEl = $('.shelf');
-  const setOpen = (svc, open) => {
-    const book = $('.sbook', svc), cover = $('.sb-cover', svc), page = $('.sb-page', svc);
-    if (open) {
-      // Slide the open spread so it stays inside the shelf (centred where there is room)
-      const w = book.offsetWidth, cell = svc.getBoundingClientRect(), sh = shelfEl.getBoundingClientRect();
-      const left = cell.left + (cell.width - w) / 2, right = left + w;
-      const L = Math.max(sh.left, 12), R = Math.min(sh.right, innerWidth - 12);
-      svc.style.setProperty('--shift', Math.min(Math.max(w / 2, L - left + w), R - right) + 'px');
-    }
-    svc.classList.toggle('open', open);
-    cover.setAttribute('aria-expanded', open);
-    cover.setAttribute('aria-label', cover.dataset.title + (open ? ': close details' : ': open for details'));
-    page.inert = !open;
-    shelfEl.classList.toggle('has-open', !!$('.svc.open', shelfEl));
+  // ---------- Services: open a book in a pop-up in the middle of the screen ----------
+  const dlg2 = $('#bookDlg'), bdBook = $('#bdBook'), bdCover = $('#bdCover');
+  const animated = () => window.gsap && !reduce;
+  let lent = null, bookTl = null;
+  const openBook2 = svc => {
+    const src = $('.sbook', svc);
+    bdBook.className = 'bd-book ' + [...src.classList].filter(c => /^b\d$/.test(c)).join(' ');
+    $('#bdFront').innerHTML = $('.sb-front', src).innerHTML;
+    $('#bdBack').innerHTML = $('.sb-back', src).innerHTML;
+    $('#bdBack').insertAdjacentHTML('beforeend', $('.svc-ill', src).outerHTML);
+    $('#bdPage').innerHTML = $('.sb-page', src).innerHTML;
+    const title = $('#bdBack .sb-title');
+    title.id = 'bdTitle'; title.setAttribute('role', 'heading'); title.setAttribute('aria-level', '3');
+    $('#bdBack').removeAttribute('aria-hidden'); $('#bdFront').setAttribute('aria-hidden', 'true');
+    $('#bdPage .sb-add').addEventListener('click', e => addToBrief(e.currentTarget));
+    lent = svc;
+    window.kodLenis?.stop();
+    dlg2.showModal();
+    const W = bdBook.offsetWidth;
+    if (!animated()) { bdBook.style.transform = `translateX(${W / 2}px)`; bdCover.style.transform = 'rotateY(-178deg)'; return; }
+    // Fly from the shelf to the centre, then slide right and swing the cover open so the spread is centred
+    const r = src.getBoundingClientRect();
+    svc.classList.add('lent');
+    bookTl = gsap.timeline()
+      .fromTo(bdBook, {x:r.left + r.width / 2 - innerWidth / 2, y:r.top + r.height / 2 - innerHeight / 2, scale:r.width / W, rotationY:-14},
+        {x:0, y:0, scale:1, rotationY:0, duration:.6, ease:'power3.out'})
+      .fromTo(bdCover, {rotationY:0}, {rotationY:-178, duration:.85, ease:'power2.inOut'}, '+=.05')
+      .to(bdBook, {x:W / 2, duration:.85, ease:'power2.inOut'}, '<')
+      .from($$('#bdPage li, #bdPage .sb-add, #bdPage .sb-k'), {y:12, autoAlpha:0, stagger:.06, duration:.4, ease:'power2.out'}, '-=.35');
   };
-  const closeBooks = keep => $$('.svc.open', shelfEl).forEach(s => s !== keep && setOpen(s, false));
-  $$('.svc', shelfEl).forEach(svc => $('.sb-cover', svc).addEventListener('click', () => {
-    const open = !svc.classList.contains('open');
-    closeBooks(svc); setOpen(svc, open);
-  }));
-  document.addEventListener('click', e => { if (!e.target.closest('.svc')) closeBooks(); });
-  addEventListener('keydown', e => { if (e.key === 'Escape') closeBooks(); });
-  $$('.sb-add').forEach(b => b.addEventListener('click', () => {
-    const box = document.getElementById(b.dataset.check);
-    box.checked = true;
+  const closeBook2 = () => {
+    if (!dlg2.open) return;
+    const done = () => { dlg2.close(); window.kodLenis?.start(); if (lent) { lent.classList.remove('lent'); $('.sb-cover', lent).focus({preventScroll:true}); } lent = null; };
+    if (bookTl && animated()) { bookTl.timeScale(1.4).reverse().eventCallback('onReverseComplete', done); }
+    else done();
+  };
+  const addToBrief = b => {
+    document.getElementById(b.dataset.check).checked = true;
     b.textContent = 'Added to your brief \u2713';
-    setTimeout(() => $('#brief').scrollIntoView({behavior: reduce ? 'auto' : 'smooth'}), 450);
-  }));
+    setTimeout(() => { closeBook2(); setTimeout(() => $('#brief').scrollIntoView({behavior: reduce ? 'auto' : 'smooth'}), 500); }, 350);
+  };
+  $$('.svc').forEach(svc => $('.sb-cover', svc).addEventListener('click', () => openBook2(svc)));
+  $('#bdClose').addEventListener('click', closeBook2);
+  dlg2.addEventListener('cancel', e => { e.preventDefault(); closeBook2(); });
+  dlg2.addEventListener('click', e => { if (!e.target.closest('.bd-book, .bd-close')) closeBook2(); });
 
   if (!window.gsap || !window.ScrollTrigger || reduce) return;
   gsap.registerPlugin(ScrollTrigger);
@@ -1156,6 +1193,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   // Smooth scroll on desktop pointers only
   if (window.Lenis && matchMedia('(pointer: fine)').matches) {
     const lenis = new Lenis({lerp:.09});
+    window.kodLenis = lenis;
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(t => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -1272,8 +1310,9 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   });
 
   // ---------- Services slide out of the shelf ----------
-  gsap.from('.svc', {rotationY:-80, x:140, z:-200, autoAlpha:0, stagger:.15, ease:'power2.out',
-    scrollTrigger:{trigger:'.shelf', start:'top 92%', end:'top 30%', scrub:1}});
+  // Books rise onto the shelf one after another; played once rather than tied to the scrollbar, so it stays smooth
+  gsap.from('.svc', {y:70, rotationY:-35, autoAlpha:0, duration:1, stagger:.09, ease:'power3.out',
+    scrollTrigger:{trigger:'.shelf', start:'top 82%', once:true}});
 
   gsap.from('.svc-ill svg', {scale:.4, rotation:-12, autoAlpha:0, duration:.8, stagger:.1, ease:'back.out(1.8)',
     scrollTrigger:{trigger:'.shelf', start:'top 70%', once:true}});
