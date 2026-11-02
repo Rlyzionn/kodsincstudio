@@ -53,18 +53,23 @@ p{margin:0}
 .section>.wrap,.process .pin{position:relative;z-index:1}
 /* Drifting leaves behind each section, moved by scroll */
 .drifts{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.drift{position:absolute;height:auto;opacity:.9}
-.drift .sw{transform-box:fill-box;transform-origin:50% 100%;animation:sway 5s ease-in-out infinite}
+.drift{position:absolute;display:block;opacity:.9}
+.drift svg{display:block;width:100%;height:auto;transform-origin:50% 100%;animation:sway 5s ease-in-out infinite}
+.idle .drift svg,.hero.idle .leafbg,.hero.idle .sprout-sway{animation-play-state:paused}
 /* Reading progress as a vine that grows down the left edge */
-.vine{position:fixed;left:max(22px,env(safe-area-inset-left,0px));top:120px;bottom:40px;width:34px;z-index:40;pointer-events:none;display:none}
+.vine{position:fixed;left:max(22px,env(safe-area-inset-left,0px));top:120px;bottom:40px;width:34px;z-index:0;pointer-events:none;display:none}
 @media (min-width:1320px){.vine{display:block}}
 .vine::before,.vine .stem{content:"";position:absolute;left:15px;top:0;bottom:0;width:3px;border-radius:2px}
 .vine::before{background:rgba(75,122,31,.16)}
-.vine .stem{background:var(--moss);transform-origin:top;transform:scaleY(0)}
+.vine .stem{background:var(--moss);transform-origin:top;transform:scaleY(0);will-change:transform}
 .vine .vl{position:absolute;width:17px;height:17px;color:var(--leaf);transform:scale(0) rotate(-70deg);transition:transform .55s var(--spring)}
 .vine .vl.r{left:17px;transform-origin:0 100%}
 .vine .vl.l{left:-1px;transform-origin:100% 100%}
-.vine .vl.l svg{transform:scaleX(-1)}
+.vine .vl.r svg{transform-origin:0 100%;animation:vsway 3.4s ease-in-out infinite}
+.vine .vl.l svg{transform-origin:100% 100%;transform:scaleX(-1);animation:vswayl 3.4s ease-in-out infinite}
+.vine .vl:nth-child(odd) svg{animation-delay:-1.7s}
+@keyframes vsway{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(9deg)}}
+@keyframes vswayl{0%,100%{transform:scaleX(-1) rotate(-9deg)}50%{transform:scaleX(-1) rotate(9deg)}}
 .vine .vl.on{transform:scale(1) rotate(0)}
 .vine .vl:nth-child(3n){color:var(--moss)}.vine .vl:nth-child(4n){color:var(--gold-2)}
 .vine .vl svg{display:block;width:100%;height:100%}
@@ -369,7 +374,7 @@ p{margin:0}
 }
 
 /* ---------- Marquee ---------- */
-.marquee{background:var(--gold-2);border-block:2px solid var(--forest-deep);overflow:hidden;padding-block:16px}
+.marquee{position:relative;background:var(--gold-2);border-block:2px solid var(--forest-deep);overflow:hidden;padding-block:16px}
 .marquee-track{display:flex;width:max-content}
 .marquee-track ul{display:flex;gap:0;list-style:none;margin:0;padding:0}
 .marquee-track li{font:800 clamp(20px,2.6vw,30px) var(--display);color:var(--forest-deep);white-space:nowrap;display:flex;align-items:center}
@@ -443,7 +448,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
 @media (max-width:520px){.row2{grid-template-columns:1fr}.float-book{opacity:.35}}
 
 /* ---------- Footer ---------- */
-.foot{padding-block:56px 40px}
+.foot{position:relative;padding-block:56px 40px}
 .foot-in{display:grid;grid-template-columns:auto 1fr auto;gap:30px;align-items:center}
 .foot img{height:86px;width:auto;mix-blend-mode:multiply}
 .foot nav{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:center}
@@ -453,8 +458,16 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
 @media (max-width:760px){.foot-in{grid-template-columns:1fr;justify-items:start}.foot nav{justify-content:flex-start}}
 
 /* split headings */
-.w{display:inline-block;perspective:700px}
-.wi{display:inline-block;transform-origin:50% 100%}
+.w{position:relative;display:inline-block;perspective:700px}
+.wi{position:relative;z-index:1;display:inline-block;transform-origin:50% 100%}
+/* A gold editor's underline drawn under one key word per heading */
+.ink{position:absolute;left:-3%;width:106%;bottom:-.1em;height:.3em;overflow:visible;pointer-events:none}
+.ink path{fill:none;stroke:var(--gold-2);stroke-width:3.5;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:var(--ink-off,0)}
+.hero h1 em{position:relative;display:inline-block}
+.hero h1 .ink{bottom:.03em}
+/* Typewriter labels in the mono face, like a manuscript being typed */
+.caret{display:inline-block;width:.5em;height:1.05em;margin-left:2px;vertical-align:-.2em;background:currentColor;opacity:.75;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -572,7 +585,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
       <h1 aria-label="Your manuscript, made into a book readers can find.">
         <span class="line" aria-hidden="true"><span>Your manuscript,</span></span>
         <span class="line" aria-hidden="true"><span>made into a book</span></span>
-        <span class="line accent" aria-hidden="true"><span>readers can <em>f<span class="leaf-i">&#305;</span>nd.</em></span></span>
+        <span class="line accent" aria-hidden="true"><span>readers can <em>f<span class="leaf-i">&#305;</span>nd.<svg class="ink" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M2 8C28 3 62 2 98 7"/></svg></em></span></span>
       </h1>
       <p class="lede">Kodsinc Studio edits, formats, illustrates, designs and publishes your book and ebook. Then we build the author website and automated blog that keep readers finding you.</p>
       <div class="actions">
@@ -626,8 +639,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   <div class="wrap">
     <div class="halves-head">
       <p class="eyebrow" data-reveal>What we do</p>
-      <h2 class="h2" data-split>One studio for both halves of a book's life.</h2>
-      <p class="lede" data-reveal>Most authors juggle an editor, a designer, a formatter and a web developer. We put the making and the marketing under one roof, so the book and the author's brand look like they belong together.</p>
+      <h2 class="h2" data-split data-mark="both">One studio for both halves of a book's life.</h2>
+      <p class="lede" data-ink>Most authors juggle an editor, a designer, a formatter and a web developer. We put the making and the marketing under one roof, so the book and the author's brand look like they belong together.</p>
     </div>
     <div class="halves-grid">
       <div class="half-wrap">
@@ -657,7 +670,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     <div class="svc-head">
       <div style="display:grid;gap:18px">
         <p class="eyebrow" data-reveal>Services</p>
-        <h2 class="h2" data-split>Pull a book off the shelf.</h2>
+        <h2 class="h2" data-split data-mark="shelf.">Pull a book off the shelf.</h2>
       </div>
       <p class="lede" data-reveal>Pick one service or take the whole set. Each one hands off cleanly to the next, so your files never have to be redone.</p>
     </div>
@@ -708,7 +721,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     <div class="pf-head">
       <div style="display:grid;gap:18px">
         <p class="eyebrow" data-reveal>Cover portfolio</p>
-        <h2 class="h2" data-split>Covers from the studio.</h2>
+        <h2 class="h2" data-split data-mark="Covers">Covers from the studio.</h2>
       </div>
       <p class="lede" data-reveal>Real covers we designed, front, spine and back. Turn a book over to read the back, or open the full print wrap.</p>
     </div>
@@ -780,7 +793,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   <div class="pin">
     <div class="wrap proc-in">
       <p class="eyebrow" data-reveal>How a book moves through the studio</p>
-      <h2 class="h2" data-split>Draft in. Book out.</h2>
+      <h2 class="h2" data-split data-mark="out.">Draft in. Book out.</h2>
       <div class="ribbon" aria-hidden="true"><i id="ribbon"></i></div>
     </div>
     <ol class="track" style="list-style:none;margin:0">
@@ -846,8 +859,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   <div class="wrap mk-grid">
     <div class="mk-copy">
       <p class="eyebrow" data-reveal>Author marketing</p>
-      <h2 class="h2" data-split>A website that sells you, and a blog that never goes quiet.</h2>
-      <p class="lede" data-reveal>A finished book still needs to be found. We build an author-centric website around you and your titles, then keep it alive with a blog that publishes on schedule.</p>
+      <h2 class="h2" data-split data-mark="never">A website that sells you, and a blog that never goes quiet.</h2>
+      <p class="lede" data-ink>A finished book still needs to be found. We build an author-centric website around you and your titles, then keep it alive with a blog that publishes on schedule.</p>
       <div>
         <div class="feature" data-reveal>
           <span class="f-ic" aria-hidden="true"><svg viewBox="0 0 26 26" fill="none" stroke="#073b22" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="4" width="22" height="18" rx="3"/><path d="M2 9h22M7 14h8M7 18h5"/></svg></span>
@@ -890,7 +903,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   <div class="wrap brief-grid">
     <div class="brief-copy">
       <p class="eyebrow" data-reveal>Start your book</p>
-      <h2 class="h2" data-split>Tell us where your book is today.</h2>
+      <h2 class="h2" data-split data-mark="today.">Tell us where your book is today.</h2>
       <p class="lede" data-reveal>Answer a few questions and we'll turn them into a short brief you can send to the studio. It takes about a minute.</p>
     </div>
     <form class="form" id="briefForm" novalidate data-reveal>
@@ -1032,16 +1045,41 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     const words = h.textContent.trim().split(/\s+/);
     h.setAttribute('aria-label', words.join(' '));
     h.innerHTML = words.map(w => `<span class="w" aria-hidden="true"><span class="wi">${w}</span></span>`).join(' ');
-    gsap.from($$('.wi', h), {rotationX:-100, y:16, autoAlpha:0, duration:.9, stagger:.05, ease:'back.out(1.5)',
-      scrollTrigger:{trigger:h, start:'top 86%', once:true}});
+    const tl = gsap.timeline({scrollTrigger:{trigger:h, start:'top 86%', once:true}})
+      .from($$('.wi', h), {rotationX:-100, y:16, autoAlpha:0, duration:.9, stagger:.05, ease:'back.out(1.5)'});
+    const marked = $$('.w', h).find(w => w.textContent === h.dataset.mark);
+    if (marked) {
+      marked.insertAdjacentHTML('afterbegin', '<svg class="ink" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M2 8C28 3 62 2 98 7"/></svg>');
+      tl.fromTo(marked, {'--ink-off':100}, {'--ink-off':0, duration:.7, ease:'power2.inOut'}, '-=.2');
+    }
   });
   $$('[data-reveal]').forEach(el => {
     gsap.from(el, {y:36, autoAlpha:0, duration:.8, ease:'power3.out', scrollTrigger:{trigger:el, start:'top 90%', once:true}});
   });
-  // Eyebrow leaves sprout as their label scrolls in
+  // Eyebrow labels: the leaf sprouts, then the label types itself out with a blinking caret.
+  // Screen readers get the full label straight away from a hidden copy.
+  const typeLabel = el => {
+    const text = el.textContent.trim();
+    el.innerHTML = `<span class="sr-only">${text}</span><span aria-hidden="true"></span><span class="caret" aria-hidden="true"></span>`;
+    const out = el.children[1], caret = el.children[2], o = {n:0};
+    return gsap.timeline()
+      .fromTo(el, {'--g':0}, {'--g':1, duration:.8, ease:'back.out(2.2)'})
+      .to(o, {n:text.length, duration:Math.min(1.4, text.length * .03), ease:'none',
+        onUpdate:() => { out.textContent = text.slice(0, Math.round(o.n)); }}, '-=.4')
+      .to(caret, {autoAlpha:0, duration:.3}, '+=.9');
+  };
   $$('.eyebrow').forEach(el => {
-    if (el.closest('.hero')) return;
-    gsap.fromTo(el, {'--g':0}, {'--g':1, duration:.9, delay:.15, ease:'back.out(2.2)', scrollTrigger:{trigger:el, start:'top 90%', once:true}});
+    const tl = typeLabel(el);
+    if (el.closest('.hero')) { tl.delay(.3); return; }
+    tl.pause();
+    ScrollTrigger.create({trigger:el, start:'top 90%', once:true, onEnter:() => tl.play()});
+  });
+
+  // Key paragraphs fill in word by word as you read down, like ink soaking into paper
+  $$('[data-ink]').forEach(el => {
+    el.innerHTML = el.textContent.trim().split(/\s+/).map(w => `<span class="inkw">${w}</span>`).join(' ');
+    gsap.fromTo($$('.inkw', el), {opacity:.14}, {opacity:1, stagger:.1, ease:'none',
+      scrollTrigger:{trigger:el, start:'top 85%', end:'bottom 50%', scrub:true}});
   });
 
   // ---------- Hero intro ----------
@@ -1051,8 +1089,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     .from('.hero h1 .line>span', {yPercent:110, duration:1, stagger:.1})
     .from('.leafbg svg', {scale:0, rotation:-35, duration:1.2, ease:'back.out(1.3)'}, .05)
     .from('.floor', {scaleX:0, duration:.9}, .5)
-    .fromTo('.hero .eyebrow', {'--g':0}, {'--g':1, duration:.9, ease:'back.out(2.2)'}, .3)
     .fromTo('.leaf-i', {'--g':0}, {'--g':1, duration:1, ease:'back.out(2.4)'}, .9)
+    .fromTo('.hero h1 em', {'--ink-off':100}, {'--ink-off':0, duration:.8, ease:'power2.inOut'}, 1.2)
     .from('.scene', {y:-90, rotationX:40, autoAlpha:0, duration:1.3, ease:'back.out(1.3)'}, .25)
     .from('.hero .lede, .hero .actions, .scroll-cue', {y:24, autoAlpha:0, duration:.8, stagger:.08}, .4);
 
@@ -1186,12 +1224,15 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     const sec = $(sel); if (!sec) return;
     const box = document.createElement('div'); box.className = 'drifts'; box.setAttribute('aria-hidden', 'true');
     list.forEach(([x, y, k, c, r], i) => {
-      box.insertAdjacentHTML('beforeend', `<svg class="drift" viewBox="0 0 24 24" style="left:${x}%;top:${y}%;width:${Math.round(38 * k)}px;color:${COL[c]}"><g class="sw" style="animation-delay:${-i * 1.3}s"><use href="#leaf"/></g></svg>`);
+      box.insertAdjacentHTML('beforeend', `<span class="drift" style="left:${x}%;top:${y}%;width:${Math.round(38 * k)}px;color:${COL[c]}"><svg viewBox="0 0 24 24" style="animation-delay:${-i * 1.3}s"><use href="#leaf"/></svg></span>`);
       gsap.fromTo(box.lastElementChild, {y:90 * k, rotation:r}, {y:-180 * k, rotation:r + (i % 2 ? -80 : 80), ease:'none',
         scrollTrigger:{trigger:sec, start:'top bottom', end:'bottom top', scrub:true}});
     });
     sec.prepend(box);
   });
+  // Swaying loops only run while their section is on screen
+  const idle = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('idle', !e.isIntersecting)));
+  [...$$('.drifts'), $('.hero')].forEach(el => idle.observe(el));
 
   // ---------- Vine reading progress (wide screens) ----------
   const vine = $('.vine'), stem = $('.stem', vine);
@@ -1200,9 +1241,14 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     vine.insertAdjacentHTML('beforeend', `<span class="vl ${i % 2 ? 'l' : 'r'}" style="top:calc(${(p * 100).toFixed(2)}% - 17px)"><svg viewBox="0 0 24 24"><use href="#leaf"/></svg></span>`);
     return [vine.lastElementChild, p];
   });
+  const setStem = gsap.quickSetter(stem, 'scaleY');
+  let lit = -1;
   ScrollTrigger.create({start:0, end:'max', onUpdate:st => {
-    gsap.set(stem, {scaleY:st.progress});
-    vineLeaves.forEach(([el, p]) => el.classList.toggle('on', st.progress >= p));
+    setStem(st.progress);
+    const n = Math.floor(st.progress * 12 + 1e-6);
+    if (n === lit) return;
+    lit = n;
+    vineLeaves.forEach(([el], i) => el.classList.toggle('on', i < n));
   }});
 
   // ---------- Extra section reveals ----------
