@@ -45,7 +45,33 @@ h1,h2,h3{font-family:var(--display);line-height:1.02;letter-spacing:-.02em;margi
 p{margin:0}
 .wrap{max-width:1200px;margin-inline:auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
 .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--moss)}
-.section{padding-block:clamp(72px,11vw,140px)}
+/* Every eyebrow sprouts a small leaf; --g (0 to 1) grows it in on scroll */
+.eyebrow::before{content:"";display:inline-block;width:.95em;height:.95em;margin-right:.6em;vertical-align:-.12em;background:var(--leaf);
+  border-radius:0 70% 0 70%;transform-origin:0 100%;transform:scale(var(--g,1)) rotate(calc((1 - var(--g,1)) * -80deg))}
+.process .eyebrow::before,.brief .eyebrow::before,.half-wrap:last-child .eyebrow::before{background:var(--gold-2)}
+.section{position:relative;padding-block:clamp(72px,11vw,140px)}
+.section>.wrap,.process .pin{position:relative;z-index:1}
+/* Drifting leaves behind each section, moved by scroll */
+.drifts{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.drift{position:absolute;height:auto;opacity:.9}
+.drift .sw{transform-box:fill-box;transform-origin:50% 100%;animation:sway 5s ease-in-out infinite}
+/* Reading progress as a vine that grows down the left edge */
+.vine{position:fixed;left:max(22px,env(safe-area-inset-left,0px));top:120px;bottom:40px;width:34px;z-index:40;pointer-events:none;display:none}
+@media (min-width:1320px){.vine{display:block}}
+.vine::before,.vine .stem{content:"";position:absolute;left:15px;top:0;bottom:0;width:3px;border-radius:2px}
+.vine::before{background:rgba(75,122,31,.16)}
+.vine .stem{background:var(--moss);transform-origin:top;transform:scaleY(0)}
+.vine .vl{position:absolute;width:17px;height:17px;color:var(--leaf);transform:scale(0) rotate(-70deg);transition:transform .55s var(--spring)}
+.vine .vl.r{left:17px;transform-origin:0 100%}
+.vine .vl.l{left:-1px;transform-origin:100% 100%}
+.vine .vl.l svg{transform:scaleX(-1)}
+.vine .vl.on{transform:scale(1) rotate(0)}
+.vine .vl:nth-child(3n){color:var(--moss)}.vine .vl:nth-child(4n){color:var(--gold-2)}
+.vine .vl svg{display:block;width:100%;height:100%}
+/* The tittle of "find" is a leaf, like the leaf over the I in the Kodsinc wordmark */
+.leaf-i{position:relative;display:inline-block}
+.leaf-i::after{content:"";position:absolute;left:50%;top:.03em;width:.3em;height:.3em;margin-left:-.07em;background:var(--leaf);border-radius:0 70% 0 70%;
+  transform-origin:0 100%;transform:scale(var(--g,1)) rotate(calc((1 - var(--g,1)) * -70deg))}
 .h2{font-size:clamp(34px,5.6vw,68px);font-weight:800}
 .lede{font-size:clamp(17px,1.5vw,19.5px);color:var(--muted);max-width:56ch}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
@@ -128,11 +154,16 @@ p{margin:0}
 @keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
 .stage{position:relative;height:540px;min-width:0}
-.disc{position:absolute;left:50%;top:50%;width:470px;aspect-ratio:1;border-radius:50%;background:var(--leaf-pale);transform:translate(-50%,-50%)}
-.disc::after{content:"";position:absolute;inset:38px;border-radius:50%;border:2px dashed rgba(75,122,31,.35)}
-.sprout-big{position:absolute;left:calc(50% - 205px);bottom:96px;width:170px;transform-origin:70% 100%}
-.scene{position:absolute;left:50%;top:50%;width:250px;height:350px;margin:-175px 0 0 -110px;perspective:1600px}
-.book{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(-12deg) rotateY(32deg)}
+.leafbg{position:absolute;left:50%;top:50%;width:640px;height:640px;margin:-330px 0 0 -300px;transform-origin:15% 90%;animation:sway 9s ease-in-out infinite}
+.leafbg svg{display:block;width:100%;height:100%;transform-origin:15% 90%}
+@keyframes sway{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(2.5deg)}}
+.floor{position:absolute;left:50%;top:calc(50% + 186px);width:280px;height:22px;margin-left:-135px;border-radius:50%;background:#cfdcac}
+.sprout-sway{position:absolute;left:calc(50% - 215px);bottom:112px;width:165px;transform-origin:70% 100%;animation:sway 6s ease-in-out infinite}
+.sprout-big{display:block;width:100%;height:auto;transform-origin:70% 100%}
+.burst{position:absolute;left:50%;top:50%;width:36px;height:36px;margin:-18px 0 0 -13px;color:var(--leaf);opacity:0;pointer-events:none}
+.burst.b-m{color:var(--moss)}.burst.b-g{color:var(--gold-2)}
+.scene{position:absolute;left:50%;top:50%;width:250px;height:350px;margin:-175px 0 0 -110px;perspective:2400px}
+.book{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(-8deg) rotateY(24deg)}
 .book>div{position:absolute}
 .b-back{inset:0;background:var(--forest-deep);border-radius:2px 8px 8px 2px;transform:translateZ(-36px)}
 .b-spine{left:0;top:0;width:36px;height:350px;background:var(--forest-2);transform-origin:left center;transform:rotateY(90deg);
@@ -448,6 +479,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
 
 <!-- Flat service illustrations, drawn once and reused in the hero book and on the services shelf -->
 <svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="leaf" viewBox="0 0 24 24"><path d="M3 21C3 10 10 3 21 3c0 11-7 18-18 18z" fill="currentColor"/><path d="M5 19C9.5 14 13.5 10 18 6" stroke="#073b22" stroke-opacity=".28" stroke-width="1.6" fill="none" stroke-linecap="round"/></symbol>
   <symbol id="ill-publish" viewBox="0 0 200 170">
     <ellipse cx="100" cy="150" rx="82" ry="10" fill="#e4ecc9"/>
     <rect x="26" y="122" width="108" height="22" rx="3" fill="#073b22"/><rect x="26" y="122" width="10" height="22" fill="#0f5232"/><rect x="122" y="126" width="8" height="14" fill="#fffaf2"/>
@@ -529,6 +561,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   </symbol>
 </svg>
 
+<div class="vine" aria-hidden="true"><i class="stem"></i></div>
+
 <main>
 <!-- HERO -->
 <section class="hero" id="top">
@@ -538,7 +572,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
       <h1 aria-label="Your manuscript, made into a book readers can find.">
         <span class="line" aria-hidden="true"><span>Your manuscript,</span></span>
         <span class="line" aria-hidden="true"><span>made into a book</span></span>
-        <span class="line accent" aria-hidden="true"><span>readers can <em>find.</em></span></span>
+        <span class="line accent" aria-hidden="true"><span>readers can <em>f<span class="leaf-i">&#305;</span>nd.</em></span></span>
       </h1>
       <p class="lede">Kodsinc Studio edits, formats, illustrates, designs and publishes your book and ebook. Then we build the author website and automated blog that keep readers finding you.</p>
       <div class="actions">
@@ -553,11 +587,12 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
 
     <div class="stage" aria-hidden="true">
       <div class="stage-scale">
-        <div class="disc"></div>
-        <svg class="sprout-big" viewBox="0 0 170 300">
+        <div class="leafbg"><svg viewBox="0 0 400 400"><path d="M30 370C30 170 170 30 370 30c0 200-140 340-340 340z" fill="#e4ecc9"/><path d="M52 348C134 258 222 168 330 72" stroke="#d5e2b3" stroke-width="10" fill="none" stroke-linecap="round"/></svg></div>
+        <div class="floor"></div>
+        <div class="sprout-sway"><svg class="sprout-big" viewBox="0 0 170 300">
           <path d="M150 300C40 280 0 200 30 120 50 70 100 30 150 0c-30 50-40 100-10 160 20 40 20 90 10 140z" fill="#4b7a1f"/>
-          <path d="M150 300C80 260 60 190 90 120 110 75 140 50 160 30c-15 50-10 100 5 150 10 40 0 90-15 120z" fill="#7aad26"/>
-        </svg>
+          <path d="M150 300C80 260 60 190 90 120 110 75 140 50 160 30c-15 50-10 100 5 150 10 40 0 90-15 120z" fill="#7aad26" stroke="#f8f1e6" stroke-width="6" stroke-linejoin="round"/>
+        </svg></div>
         <div class="scene">
           <div class="book" id="book">
             <div class="b-back"></div>
@@ -580,6 +615,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
             </div>
           </div>
         </div>
+        <svg class="burst"><use href="#leaf"/></svg><svg class="burst b-m"><use href="#leaf"/></svg><svg class="burst b-g"><use href="#leaf"/></svg><svg class="burst"><use href="#leaf"/></svg><svg class="burst b-m"><use href="#leaf"/></svg><svg class="burst"><use href="#leaf"/></svg><svg class="burst b-g"><use href="#leaf"/></svg><svg class="burst b-m"><use href="#leaf"/></svg>
       </div>
     </div>
   </div>
@@ -1002,13 +1038,21 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   $$('[data-reveal]').forEach(el => {
     gsap.from(el, {y:36, autoAlpha:0, duration:.8, ease:'power3.out', scrollTrigger:{trigger:el, start:'top 90%', once:true}});
   });
+  // Eyebrow leaves sprout as their label scrolls in
+  $$('.eyebrow').forEach(el => {
+    if (el.closest('.hero')) return;
+    gsap.fromTo(el, {'--g':0}, {'--g':1, duration:.9, delay:.15, ease:'back.out(2.2)', scrollTrigger:{trigger:el, start:'top 90%', once:true}});
+  });
 
   // ---------- Hero intro ----------
   const book = $('#book'), cover = $('.cover', book), leaves = $$('.leaf', book);
   gsap.set([cover, ...leaves], {transformOrigin:'0% 50%'});
   gsap.timeline({defaults:{ease:'power4.out'}})
     .from('.hero h1 .line>span', {yPercent:110, duration:1, stagger:.1})
-    .from('.disc', {scale:0, duration:1, ease:'back.out(1.4)'}, .1)
+    .from('.leafbg svg', {scale:0, rotation:-35, duration:1.2, ease:'back.out(1.3)'}, .05)
+    .from('.floor', {scaleX:0, duration:.9}, .5)
+    .fromTo('.hero .eyebrow', {'--g':0}, {'--g':1, duration:.9, ease:'back.out(2.2)'}, .3)
+    .fromTo('.leaf-i', {'--g':0}, {'--g':1, duration:1, ease:'back.out(2.4)'}, .9)
     .from('.scene', {y:-90, rotationX:40, autoAlpha:0, duration:1.3, ease:'back.out(1.3)'}, .25)
     .from('.hero .lede, .hero .actions, .scroll-cue', {y:24, autoAlpha:0, duration:.8, stagger:.08}, .4);
 
@@ -1017,11 +1061,25 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   const pageTurns = ['.l1', '.l2', '.l3'].map(s => $(s, book));
   // Sine in-out on every move so each turn starts and settles softly instead of snapping.
   const TURN = 1.1;
+  // A pair of leaves flutters out of the gutter every time the cover or a page turns
+  const bursts = $$('.burst');
+  const FLY = [[-150,-150,-140],[130,-175,150],[-120,-200,-110],[160,-130,130],[-170,-120,-160],[110,-210,120],[-140,-180,-130],[150,-160,140]];
+  const flutter = (tl, i, t) => [bursts[i * 2], bursts[i * 2 + 1]].forEach((b, k) => {
+    const [x, y, r] = FLY[i * 2 + k];
+    tl.fromTo(b, {x:0, y:0, scale:.2, rotation:0, autoAlpha:0}, {x, y, scale:1, rotation:r, autoAlpha:1, duration:TURN * .7, ease:'sine.out'}, t)
+      .to(b, {y:'+=70', rotation:'+=50', autoAlpha:0, duration:TURN * .6, ease:'sine.in'}, t + TURN * .7);
+  });
   const openBook = (tl, hold) => {
-    tl.to(book, {rotationY:-6, rotationX:-6, x:() => innerWidth > 520 ? 115 : 120, duration:1.3}, 0)
+    tl.to(book, {rotationY:-3, rotationX:-4, x:() => innerWidth > 520 ? 115 : 120, duration:1.3}, 0)
       .to(cover, {rotationY:-172, duration:1.3}, 0)
-      .fromTo('.sprout-big', {scale:0, rotation:-20}, {scale:1, rotation:0, duration:1, ease:'back.out(1.4)'}, .4);
-    pageTurns.forEach((leaf, i) => tl.to(leaf, {rotationY:-166 + i * 6, duration:TURN}, 1.3 + hold + i * (TURN + hold)));
+      .to('.floor', {scaleX:1.85, duration:1.3}, 0)
+      .fromTo('.sprout-big', {scale:0, rotation:-20}, {scale:1, rotation:-8, x:-95, duration:1.2, ease:'back.out(1.4)'}, .3);
+    flutter(tl, 0, .5);
+    pageTurns.forEach((leaf, i) => {
+      const t = 1.3 + hold + i * (TURN + hold);
+      tl.to(leaf, {rotationY:-166 + i * 6, duration:TURN}, t);
+      flutter(tl, i + 1, t + .15);
+    });
     return tl.to({}, {duration:hold});
   };
 
@@ -1112,6 +1170,46 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   // ---------- Brief: books drift past the form ----------
   gsap.utils.toArray('.float-book').forEach((b, i) => gsap.to(b, {y:-(80 + i * 60), rotation:(i % 2 ? -1 : 1) * 24, ease:'none',
     scrollTrigger:{trigger:'.brief', start:'top bottom', end:'bottom top', scrub:true}}));
+
+  // ---------- Leaves drifting behind sections ----------
+  // [left %, top %, size, colour, starting angle]
+  const DRIFT = {
+    '#what':      [[4,14,1.1,'leaf',-20],[93,40,.8,'gold',40],[86,82,.6,'moss',10]],
+    '#services':  [[2,30,.9,'moss',30],[95,10,1.2,'leaf',-30],[50,4,.6,'gold',0]],
+    '#covers':    [[96,24,1,'leaf',20],[3,70,.8,'gold',-40]],
+    '.process':   [[90,12,1,'leaf',-10],[6,60,.9,'gold',30],[60,88,.7,'leaf',60]],
+    '#marketing': [[3,20,.9,'gold',10],[94,70,1.1,'leaf',-30]],
+    '#brief':     [[48,8,.8,'leaf',20],[30,90,1,'gold',-20]]
+  };
+  const COL = {leaf:'#7aad26', moss:'#4b7a1f', gold:'#e2ab3a'};
+  Object.entries(DRIFT).forEach(([sel, list]) => {
+    const sec = $(sel); if (!sec) return;
+    const box = document.createElement('div'); box.className = 'drifts'; box.setAttribute('aria-hidden', 'true');
+    list.forEach(([x, y, k, c, r], i) => {
+      box.insertAdjacentHTML('beforeend', `<svg class="drift" viewBox="0 0 24 24" style="left:${x}%;top:${y}%;width:${Math.round(38 * k)}px;color:${COL[c]}"><g class="sw" style="animation-delay:${-i * 1.3}s"><use href="#leaf"/></g></svg>`);
+      gsap.fromTo(box.lastElementChild, {y:90 * k, rotation:r}, {y:-180 * k, rotation:r + (i % 2 ? -80 : 80), ease:'none',
+        scrollTrigger:{trigger:sec, start:'top bottom', end:'bottom top', scrub:true}});
+    });
+    sec.prepend(box);
+  });
+
+  // ---------- Vine reading progress (wide screens) ----------
+  const vine = $('.vine'), stem = $('.stem', vine);
+  const vineLeaves = Array.from({length:11}, (_, i) => {
+    const p = (i + 1) / 12;
+    vine.insertAdjacentHTML('beforeend', `<span class="vl ${i % 2 ? 'l' : 'r'}" style="top:calc(${(p * 100).toFixed(2)}% - 17px)"><svg viewBox="0 0 24 24"><use href="#leaf"/></svg></span>`);
+    return [vine.lastElementChild, p];
+  });
+  ScrollTrigger.create({start:0, end:'max', onUpdate:st => {
+    gsap.set(stem, {scaleY:st.progress});
+    vineLeaves.forEach(([el, p]) => el.classList.toggle('on', st.progress >= p));
+  }});
+
+  // ---------- Extra section reveals ----------
+  gsap.from('.half li', {scale:.5, autoAlpha:0, stagger:.06, duration:.55, ease:'back.out(2.2)', scrollTrigger:{trigger:'.halves-grid', start:'top 60%', once:true}});
+  gsap.from('.f-ic', {scale:0, rotation:-90, stagger:.15, duration:.7, ease:'back.out(2)', scrollTrigger:{trigger:'.mk-copy', start:'top 55%', once:true}});
+  gsap.from('.check', {scale:.6, autoAlpha:0, stagger:.04, duration:.45, ease:'back.out(2.4)', scrollTrigger:{trigger:'.checks', start:'top 88%', once:true}});
+  gsap.from('.foot nav a, .foot small', {y:18, autoAlpha:0, stagger:.06, duration:.6, ease:'power3.out', scrollTrigger:{trigger:'.foot', start:'top 95%', once:true}});
 
   // Pins (hero, process) refresh first so every later trigger measures the page with their scroll space included
   ScrollTrigger.sort();
