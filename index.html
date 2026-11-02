@@ -244,53 +244,70 @@ p{margin:0}
   .half .gutter{display:none}
 }
 
-/* ---------- Services shelf ---------- */
+/* ---------- Services shelf: closed books that open on click ---------- */
 .services{background:var(--paper)}
 .svc-head{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:end}
-.shelf{margin-top:64px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px;perspective:1800px;padding-bottom:30px;position:relative}
+.shelf{margin-top:64px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:26px;perspective:2000px;padding-bottom:34px;position:relative}
 .shelf::after{content:"";position:absolute;left:-12px;right:-12px;bottom:0;height:20px;background:var(--gold);border:2px solid var(--forest-deep);border-radius:4px;box-shadow:0 8px 0 var(--forest-deep)}
-.svc{min-width:0;transform-style:preserve-3d}
-.svc-book{--c:var(--forest);--t:var(--cream);--s:var(--forest-deep);
-  position:relative;height:100%;min-height:440px;padding:26px 22px 30px;background:var(--c);color:var(--t);
-  border-radius:4px 12px 12px 4px;border-left:10px solid var(--s);
-  transform:rotateY(-16deg);transform-origin:left center;transform-style:preserve-3d;
-  box-shadow:10px 0 0 var(--paper-2),12px 0 0 var(--line),14px 0 0 var(--s);
-  transition:transform .55s var(--spring),box-shadow .55s var(--spring);display:flex;flex-direction:column;gap:14px}
-.svc-book:hover,.svc-book:focus-within{transform:rotateY(0deg) translateY(-14px);box-shadow:6px 14px 0 var(--s)}
-.svc-book .num{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.75}
-.svc-book h3{font-size:clamp(21px,1.9vw,25px);font-weight:800;color:var(--t)}
-.svc-book{padding:18px 18px 24px;min-height:520px}
-.svc-ill{display:block;background:var(--paper);border:2px solid var(--s);border-radius:10px;padding:8px 6px 2px;box-shadow:4px 4px 0 var(--s)}
-.svc-ill svg{display:block;width:100%;height:auto;max-height:150px;margin-inline:auto;transition:transform .5s var(--spring)}
-.svc-book:hover .svc-ill svg,.svc-book:focus-within .svc-ill svg{transform:scale(1.07) rotate(-2deg)}
-.svc-book.b5{--c:var(--leaf-pale);--t:var(--forest);--s:var(--moss);border:2px solid var(--moss);border-left:10px solid var(--moss)}
-.svc-book p{font-size:15.5px;line-height:1.6;opacity:.9}
-.svc-book ul{list-style:none;margin:auto 0 0;padding:14px 0 0;border-top:2px solid currentColor;display:grid;gap:7px;font:500 14px var(--display)}
-.svc-book li{display:flex;gap:9px;align-items:baseline}
-.svc-book li::before{content:"";flex:none;width:8px;height:8px;border-radius:2px;background:var(--gold-2);transform:translateY(-1px)}
-.svc-book.b2{--c:var(--leaf);--t:var(--forest-deep);--s:var(--moss)}
-.svc-book.b3{--c:var(--cream);--t:var(--forest);--s:var(--forest);border:2px solid var(--forest);border-left:10px solid var(--forest)}
-.svc-book.b4{--c:var(--gold-2);--t:var(--forest-deep);--s:var(--gold)}
-.svc-book.b2 li::before,.svc-book.b4 li::before{background:var(--forest)}
-.svc-art{height:70px;position:relative}
+.svc{position:relative;z-index:1;min-width:0;display:grid;justify-items:center;transform-style:preserve-3d;transition:opacity .4s}
+.svc.open{z-index:6}
+.shelf.has-open .svc:not(.open){opacity:.3}
+.sbook{--c:var(--forest);--t:var(--cream);--s:var(--forest-deep);
+  position:relative;width:100%;max-width:230px;aspect-ratio:2/3;container-type:inline-size;transform-style:preserve-3d;
+  transform:rotateY(-14deg);transform-origin:left center;transition:transform .8s cubic-bezier(.6,.05,.25,1)}
+.svc:not(.open) .sbook:hover{transform:rotateY(-3deg) translateY(-10px)}
+.svc.open .sbook{transform:translateX(var(--shift,50%)) rotateY(0)}
+/* Page block peeking out on the fore-edge, like a closed book */
+.sbook::before{content:"";position:absolute;top:2.5%;bottom:2.5%;right:-3.5cqw;width:4cqw;border:2px solid var(--forest);border-left:none;border-radius:0 4px 4px 0;
+  background:repeating-linear-gradient(90deg,var(--paper) 0 2px,var(--line) 2px 3px)}
+.sb-page{position:absolute;inset:0;background:var(--paper);border:2px solid var(--forest);border-radius:2px 10px 10px 2px;padding:9cqw 8cqw 8cqw;
+  display:flex;flex-direction:column;gap:5cqw;color:var(--ink);box-shadow:6px 6px 0 var(--forest)}
+.sb-k{font:500 max(9px,4.4cqw) var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
+.sb-page ul{list-style:none;margin:0;padding:0;display:grid;gap:3.2cqw;font:600 max(11px,5.8cqw)/1.3 var(--display);color:var(--forest)}
+.sb-page li{display:flex;gap:2.6cqw;align-items:baseline}
+.sb-page li::before{content:"";flex:none;width:3.4cqw;height:3.4cqw;border-radius:0 70% 0 70%;background:var(--leaf);transform:translateY(-1px)}
+.sb-add{all:unset;margin-top:auto;align-self:flex-start;cursor:pointer;font:700 max(11px,5.4cqw) var(--display);color:var(--forest-deep);background:var(--gold-2);
+  padding:2.6cqw 4cqw;border-radius:8px;border:2px solid var(--forest-deep);box-shadow:0 3px 0 var(--forest-deep);transition:transform .2s var(--spring),box-shadow .2s}
+.sb-add:hover{transform:translateY(-2px);box-shadow:0 5px 0 var(--forest-deep)}
+.sb-add:active{transform:translateY(3px);box-shadow:0 0 0 var(--forest-deep)}
+.sb-add:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.sb-cover{all:unset;position:absolute;inset:0;cursor:pointer;transform-style:preserve-3d;transform-origin:left center;
+  transition:transform .9s cubic-bezier(.6,.05,.25,1)}
+.svc.open .sb-cover{transform:rotateY(-178deg)}
+.sb-cover:focus-visible{outline:3px solid var(--gold);outline-offset:6px;border-radius:8px}
+.sb-face{position:absolute;inset:0;backface-visibility:hidden;display:flex;flex-direction:column;gap:4cqw;padding:7cqw 7cqw 7cqw 9cqw}
+.sb-front{background:var(--c);color:var(--t);border-radius:2px 10px 10px 2px;border:2px solid var(--s);border-left:5cqw solid var(--s);box-shadow:6px 6px 0 var(--s)}
+.sb-back{transform:rotateY(180deg);background:var(--paper);color:var(--ink);border:2px solid var(--forest);border-radius:10px 2px 2px 10px;padding:9cqw 8cqw 8cqw}
+.num{font:500 max(9px,4.4cqw) var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.8}
+.sb-title{display:block;font:800 max(15px,10.5cqw)/1.02 var(--display);letter-spacing:-.02em;text-wrap:balance}
+.sb-back .sb-title{font-size:max(14px,8.6cqw);color:var(--forest)}
+.sb-desc{font:400 max(11px,6cqw)/1.5 var(--body);color:var(--muted)}
+.sb-hint{margin-top:auto;display:inline-flex;align-items:center;gap:2cqw;font:500 max(9px,4.2cqw) var(--mono);letter-spacing:.12em;text-transform:uppercase;opacity:.75}
+.sb-hint::before{content:"";width:3.4cqw;height:3.4cqw;border-radius:0 70% 0 70%;background:currentColor}
+.svc-ill{display:block;background:var(--paper);border:2px solid var(--s);border-radius:8px;padding:3cqw 2cqw 1cqw;box-shadow:3px 3px 0 var(--s);margin-top:2cqw}
+.svc-ill svg{display:block;width:100%;height:auto;transition:transform .5s var(--spring)}
+.svc:not(.open) .sbook:hover .svc-ill svg{transform:scale(1.07) rotate(-2deg)}
+.sbook.b2{--c:var(--leaf);--t:var(--forest-deep);--s:var(--moss)}
+.sbook.b3{--c:var(--cream);--t:var(--forest);--s:var(--forest)}
+.sbook.b4{--c:var(--gold-2);--t:var(--forest-deep);--s:var(--gold)}
+.sbook.b5{--c:var(--leaf-pale);--t:var(--forest);--s:var(--moss)}
 @media (max-width:1100px){.shelf{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:46px}.shelf::after{display:none}.svc-head{grid-template-columns:1fr}}
-@media (max-width:760px){.shelf{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:560px){.shelf{grid-template-columns:1fr}.svc-book{min-height:0;transform:rotateY(-8deg)}}
+@media (max-width:760px){.shelf{grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 18px}.sbook{transform:rotateY(-8deg)}}
 
 /* ---------- Cover portfolio: real covers as 3D books ---------- */
 .pf-head{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:end}
 .pf-grid{margin-top:56px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px 24px}
 .pf-item{min-width:0;display:grid;justify-items:center;gap:18px;text-align:center}
-.pf-stage{--w:200px;--h:300px;position:relative;width:100%;height:calc(var(--h) + 40px);display:grid;place-items:center;perspective:1500px}
+.pf-stage{--w:220px;--h:calc(var(--w) / var(--r,.67));position:relative;width:100%;height:calc(var(--h) + 44px);display:grid;place-items:center;perspective:1500px}
 .pf-stage::before{content:"";position:absolute;left:50%;bottom:6px;width:calc(var(--w) * 1.05);height:22px;border-radius:50%;background:var(--leaf-pale);transform:translateX(-50%)}
 .pf-wrap{transform-style:preserve-3d}
 .pbook{all:unset;position:relative;display:block;width:var(--w);height:var(--h);transform-style:preserve-3d;cursor:pointer;
-  transform:rotateY(-28deg) rotateX(4deg);transition:transform .9s var(--spring)}
-.pbook:hover{transform:rotateY(-12deg) rotateX(2deg) translateZ(30px)}
+  transform:rotateY(-16deg) rotateX(3deg);transition:transform .9s var(--spring)}
+.pbook:hover{transform:rotateY(-5deg) rotateX(1deg) translateY(-8px)}
 .pbook[aria-pressed="true"]{transform:rotateY(-168deg) rotateX(2deg)}
 .pbook:focus-visible{outline:3px solid var(--gold);outline-offset:8px}
 .pbook>*{position:absolute;display:block}
-.pbook img{width:100%;height:100%;object-fit:cover}
+.pbook img{width:100%;height:100%;object-fit:fill}
 .pb-front,.pb-back{inset:0;overflow:hidden;border-radius:1px 4px 4px 1px}
 .pb-front{transform:translateZ(calc(var(--t) / 2))}
 .pb-front::after{content:"";position:absolute;inset:0 auto 0 0;width:7px;background:rgba(0,0,0,.18)}
@@ -327,7 +344,7 @@ p{margin:0}
 .wrap-dlg[open]{animation:dlg .5s var(--spring)}
 @keyframes dlg{from{transform:perspective(900px) rotateX(-18deg) translateY(30px);opacity:0}}
 @media (max-width:1000px){.pf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pf-head{grid-template-columns:1fr}}
-@media (max-width:560px){.pf-grid{gap:34px 10px}.pf-stage{--w:128px;--h:192px}.pf-meta h3{font-size:17px}.pf-meta p{font-size:13.5px}.pf-actions .btn{padding:8px 10px;font-size:12.5px}}
+@media (max-width:560px){.pf-grid{gap:34px 10px}.pf-stage{--w:140px}.pf-meta h3{font-size:17px}.pf-meta p{font-size:13.5px}.pf-actions .btn{padding:8px 10px;font-size:12.5px}}
 
 /* ---------- Process ---------- */
 .process{background:var(--forest);color:var(--cream);overflow:hidden;position:relative}
@@ -672,44 +689,69 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
         <p class="eyebrow" data-reveal>Services</p>
         <h2 class="h2" data-split data-mark="shelf.">Pull a book off the shelf.</h2>
       </div>
-      <p class="lede" data-reveal>Pick one service or take the whole set. Each one hands off cleanly to the next, so your files never have to be redone.</p>
+      <p class="lede" data-reveal>Pick one service or take the whole set. Open a book to see what's inside, and add it to your brief in one tap.</p>
     </div>
 
     <div class="shelf">
-      <div class="svc"><article class="svc-book" tabindex="0">
-        <span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-publish"/></svg></span>
-        <span class="num">Vol. 1</span>
-        <h3>Book &amp; ebook publishing</h3>
-        <p>We prepare and release your book in print and as an ebook, and set it up so it is ready to sell.</p>
-        <ul><li>Print-on-demand setup</li><li>Ebook store setup</li><li>Metadata, categories, keywords</li><li>Launch checklist</li></ul>
+      <div class="svc"><article class="sbook b1">
+        <div class="sb-page" inert>
+          <h3 class="sr-only">Book &amp; ebook publishing</h3><p class="sr-only">We prepare and release your book in print and as an ebook, set up and ready to sell.</p>
+          <span class="sb-k">What's included</span>
+          <ul><li>Print-on-demand setup</li><li>Ebook store setup</li><li>Metadata, categories, keywords</li><li>Launch checklist</li></ul>
+          <button class="sb-add" type="button" data-check="sPub">Add to my brief &rarr;</button>
+        </div>
+        <button class="sb-cover" type="button" aria-expanded="false" data-title="Book &amp; ebook publishing" aria-label="Book &amp; ebook publishing: open for details">
+          <span class="sb-face sb-front"><span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-publish"/></svg></span><span class="num">Vol. 1</span><span class="sb-title">Book &amp; ebook publishing</span><span class="sb-hint">Open</span></span>
+          <span class="sb-face sb-back" aria-hidden="true"><span class="num">Vol. 1</span><span class="sb-title">Book &amp; ebook publishing</span><span class="sb-desc">We prepare and release your book in print and as an ebook, set up and ready to sell.</span><span class="sb-hint">Close</span></span>
+        </button>
       </article></div>
-      <div class="svc"><article class="svc-book b2" tabindex="0">
-        <span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-edit"/></svg></span>
-        <span class="num">Vol. 2</span>
-        <h3>Editing</h3>
-        <p>Careful reading at the level your manuscript needs, from the shape of the story down to the commas.</p>
-        <ul><li>Developmental editing</li><li>Line editing</li><li>Copyediting</li><li>Proofreading</li></ul>
+      <div class="svc"><article class="sbook b2">
+        <div class="sb-page" inert>
+          <h3 class="sr-only">Editing</h3><p class="sr-only">Careful reading at the level your manuscript needs, from the shape of the story down to the commas.</p>
+          <span class="sb-k">What's included</span>
+          <ul><li>Developmental editing</li><li>Line editing</li><li>Copyediting</li><li>Proofreading</li></ul>
+          <button class="sb-add" type="button" data-check="sEdit">Add to my brief &rarr;</button>
+        </div>
+        <button class="sb-cover" type="button" aria-expanded="false" data-title="Editing" aria-label="Editing: open for details">
+          <span class="sb-face sb-front"><span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-edit"/></svg></span><span class="num">Vol. 2</span><span class="sb-title">Editing</span><span class="sb-hint">Open</span></span>
+          <span class="sb-face sb-back" aria-hidden="true"><span class="num">Vol. 2</span><span class="sb-title">Editing</span><span class="sb-desc">Careful reading at the level your manuscript needs, from the shape of the story down to the commas.</span><span class="sb-hint">Close</span></span>
+        </button>
       </article></div>
-      <div class="svc"><article class="svc-book b3" tabindex="0">
-        <span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-format"/></svg></span>
-        <span class="num">Vol. 3</span>
-        <h3>Formatting</h3>
-        <p>Interiors that read well on paper and reflow properly on every e-reader.</p>
-        <ul><li>Print interior and trim size</li><li>Margins, bleed, running heads</li><li>EPUB and Kindle files</li><li>Front and back matter</li></ul>
+      <div class="svc"><article class="sbook b3">
+        <div class="sb-page" inert>
+          <h3 class="sr-only">Formatting</h3><p class="sr-only">Interiors that read well on paper and reflow properly on every e-reader.</p>
+          <span class="sb-k">What's included</span>
+          <ul><li>Print interior and trim size</li><li>Margins, bleed, running heads</li><li>EPUB and Kindle files</li><li>Front and back matter</li></ul>
+          <button class="sb-add" type="button" data-check="sFmt">Add to my brief &rarr;</button>
+        </div>
+        <button class="sb-cover" type="button" aria-expanded="false" data-title="Formatting" aria-label="Formatting: open for details">
+          <span class="sb-face sb-front"><span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-format"/></svg></span><span class="num">Vol. 3</span><span class="sb-title">Formatting</span><span class="sb-hint">Open</span></span>
+          <span class="sb-face sb-back" aria-hidden="true"><span class="num">Vol. 3</span><span class="sb-title">Formatting</span><span class="sb-desc">Interiors that read well on paper and reflow properly on every e-reader.</span><span class="sb-hint">Close</span></span>
+        </button>
       </article></div>
-      <div class="svc"><article class="svc-book b4" tabindex="0">
-        <span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-cover"/></svg></span>
-        <span class="num">Vol. 4</span>
-        <h3>Cover design</h3>
-        <p>Covers made for your genre and readers, legible from a bookshop shelf to a phone screen.</p>
-        <ul><li>Front cover</li><li>Full wrap with spine and back</li><li>Ebook cover</li><li>Promo mockups</li></ul>
+      <div class="svc"><article class="sbook b4">
+        <div class="sb-page" inert>
+          <h3 class="sr-only">Cover design</h3><p class="sr-only">Covers made for your genre and readers, legible from a bookshop shelf to a phone screen.</p>
+          <span class="sb-k">What's included</span>
+          <ul><li>Front cover</li><li>Full wrap with spine and back</li><li>Ebook cover</li><li>Promo mockups</li></ul>
+          <button class="sb-add" type="button" data-check="sCov">Add to my brief &rarr;</button>
+        </div>
+        <button class="sb-cover" type="button" aria-expanded="false" data-title="Cover design" aria-label="Cover design: open for details">
+          <span class="sb-face sb-front"><span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-cover"/></svg></span><span class="num">Vol. 4</span><span class="sb-title">Cover design</span><span class="sb-hint">Open</span></span>
+          <span class="sb-face sb-back" aria-hidden="true"><span class="num">Vol. 4</span><span class="sb-title">Cover design</span><span class="sb-desc">Covers made for your genre and readers, legible from a bookshop shelf to a phone screen.</span><span class="sb-hint">Close</span></span>
+        </button>
       </article></div>
-      <div class="svc"><article class="svc-book b5" tabindex="0">
-        <span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-illustrate"/></svg></span>
-        <span class="num">Vol. 5</span>
-        <h3>Illustration</h3>
-        <p>Pictures that carry the story, for children's books and any book that needs art inside.</p>
-        <ul><li>Children's picture books</li><li>Chapter-book spot art</li><li>Maps and diagrams</li><li>Cover illustration</li></ul>
+      <div class="svc"><article class="sbook b5">
+        <div class="sb-page" inert>
+          <h3 class="sr-only">Illustration</h3><p class="sr-only">Pictures that carry the story, for children's books and any book that needs art inside.</p>
+          <span class="sb-k">What's included</span>
+          <ul><li>Children's picture books</li><li>Chapter-book spot art</li><li>Maps and diagrams</li><li>Cover illustration</li></ul>
+          <button class="sb-add" type="button" data-check="sIll">Add to my brief &rarr;</button>
+        </div>
+        <button class="sb-cover" type="button" aria-expanded="false" data-title="Illustration" aria-label="Illustration: open for details">
+          <span class="sb-face sb-front"><span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-illustrate"/></svg></span><span class="num">Vol. 5</span><span class="sb-title">Illustration</span><span class="sb-hint">Open</span></span>
+          <span class="sb-face sb-back" aria-hidden="true"><span class="num">Vol. 5</span><span class="sb-title">Illustration</span><span class="sb-desc">Pictures that carry the story, for children's books and any book that needs art inside.</span><span class="sb-hint">Close</span></span>
+        </button>
       </article></div>
     </div>
   </div>
@@ -728,12 +770,12 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
 
     <div class="pf-grid">
       <article class="pf-item">
-        <div class="pf-stage"><div class="pf-wrap">
+        <div class="pf-stage" style="--r:.6706"><div class="pf-wrap">
           <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over Whiskey Venus Boston" style="--t:calc(var(--h) * .046)">
-            <span class="pb-back"><img src="assets/covers/whiskey-back.webp" alt="" loading="lazy" width="745" height="1100"></span>
+            <span class="pb-back"><img src="assets/covers/whiskey-back.webp?v=2" alt="" loading="lazy" width="1075" height="1600"></span>
             <span class="pb-pages"></span><span class="pb-top"></span>
-            <span class="pb-spine"><img src="assets/covers/whiskey-spine.webp" alt="" loading="lazy" width="51" height="1100"></span>
-            <span class="pb-front"><img src="assets/covers/whiskey-front.webp" alt="Whiskey Venus Boston cover: a woman running beneath a huge orange moon" loading="lazy" width="743" height="1100"></span>
+            <span class="pb-spine"><img src="assets/covers/whiskey-spine.webp?v=2" alt="" loading="lazy" width="71" height="1600"></span>
+            <span class="pb-front"><img src="assets/covers/whiskey-front.webp?v=2" alt="Whiskey Venus Boston cover: a woman running beneath a huge orange moon" loading="lazy" width="1073" height="1600"></span>
           </button>
         </div></div>
         <div class="pf-meta"><span class="fmt">Hardback case wrap</span><h3>Whiskey Venus Boston</h3><p>Anna Bonnacord</p></div>
@@ -741,12 +783,12 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
       </article>
 
       <article class="pf-item">
-        <div class="pf-stage"><div class="pf-wrap">
+        <div class="pf-stage" style="--r:.6706"><div class="pf-wrap">
           <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over Goodnight Ditties for Curious Kiddies" style="--t:calc(var(--h) * .037)">
-            <span class="pb-back"><img src="assets/covers/terry-back.webp" alt="" loading="lazy" width="737" height="1100"></span>
+            <span class="pb-back"><img src="assets/covers/terry-back.webp?v=2" alt="" loading="lazy" width="1071" height="1600"></span>
             <span class="pb-pages"></span><span class="pb-top"></span>
-            <span class="pb-spine"><img src="assets/covers/terry-spine.webp" alt="" loading="lazy" width="41" height="1100"></span>
-            <span class="pb-front"><img src="assets/covers/terry-front.webp" alt="Goodnight Ditties for Curious Kiddies cover: a watercolour moon and stars" loading="lazy" width="737" height="1100"></span>
+            <span class="pb-spine"><img src="assets/covers/terry-spine.webp?v=2" alt="" loading="lazy" width="60" height="1600"></span>
+            <span class="pb-front"><img src="assets/covers/terry-front.webp?v=2" alt="Goodnight Ditties for Curious Kiddies cover: a watercolour moon and stars" loading="lazy" width="1073" height="1600"></span>
           </button>
         </div></div>
         <div class="pf-meta"><span class="fmt">Children's poetry</span><h3>Goodnight Ditties for Curious Kiddies</h3><p>Terry Bulger</p></div>
@@ -754,12 +796,12 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
       </article>
 
       <article class="pf-item">
-        <div class="pf-stage"><div class="pf-wrap">
+        <div class="pf-stage" style="--r:.6681"><div class="pf-wrap">
           <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over No Plan B" style="--t:calc(var(--h) * .016)">
-            <span class="pb-back"><img src="assets/covers/bn-back.webp" alt="" loading="lazy" width="735" height="1100"></span>
+            <span class="pb-back"><img src="assets/covers/bn-back.webp?v=2" alt="" loading="lazy" width="1069" height="1600"></span>
             <span class="pb-pages"></span><span class="pb-top"></span>
-            <span class="pb-spine"><img src="assets/covers/bn-spine.webp" alt="" loading="lazy" width="10" height="1100"></span>
-            <span class="pb-front"><img src="assets/covers/bn-front.webp" alt="No Plan B cover: elegant serif title on deep burgundy" loading="lazy" width="735" height="1100"></span>
+            <span class="pb-spine"><img src="assets/covers/bn-spine.webp?v=2" alt="" loading="lazy" width="14" height="1600"></span>
+            <span class="pb-front"><img src="assets/covers/bn-front.webp?v=2" alt="No Plan B cover: elegant serif title on deep burgundy" loading="lazy" width="1069" height="1600"></span>
           </button>
         </div></div>
         <div class="pf-meta"><span class="fmt">Paperback, nonfiction</span><h3>No Plan B</h3><p>Christina &amp; Akinyele Lovelace</p></div>
@@ -767,12 +809,12 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
       </article>
 
       <article class="pf-item">
-        <div class="pf-stage"><div class="pf-wrap">
+        <div class="pf-stage" style="--r:.6694"><div class="pf-wrap">
           <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over Doubting Nikki" style="--t:calc(var(--h) * .118)">
-            <span class="pb-back"><img src="assets/covers/nikki-back.webp" alt="" loading="lazy" width="783" height="1100"></span>
+            <span class="pb-back"><img src="assets/covers/nikki-back.webp?v=2" alt="" loading="lazy" width="1139" height="1600"></span>
             <span class="pb-pages"></span><span class="pb-top"></span>
-            <span class="pb-spine"><img src="assets/covers/nikki-spine.webp" alt="" loading="lazy" width="130" height="1100"></span>
-            <span class="pb-front"><img src="assets/covers/nikki-front.webp" alt="Doubting Nikki cover: a white line-art profile with a red tear on black" loading="lazy" width="736" height="1100"></span>
+            <span class="pb-spine"><img src="assets/covers/nikki-spine.webp?v=2" alt="" loading="lazy" width="190" height="1600"></span>
+            <span class="pb-front"><img src="assets/covers/nikki-front.webp?v=2" alt="Doubting Nikki cover: a white line-art profile with a red tear on black" loading="lazy" width="1071" height="1600"></span>
           </button>
         </div></div>
         <div class="pf-meta"><span class="fmt">Fiction, full wrap</span><h3>Doubting Nikki</h3><p>Matthew Galgani</p></div>
@@ -782,7 +824,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   </div>
   <dialog class="wrap-dlg" id="wrapDlg" aria-labelledby="wrapTitle">
     <figure>
-      <img id="wrapImg" src="" alt="" width="1600" height="1191">
+      <img id="wrapImg" src="" alt="" width="2400" height="1786">
       <figcaption><div><b id="wrapTitle"></b><span>Full print wrap: back cover, spine, front cover</span></div><button class="btn btn-stamp" type="button" id="wrapClose">Close</button></figcaption>
     </figure>
   </dialog>
@@ -1017,13 +1059,44 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   const dlg = $('#wrapDlg'), wrapImg = $('#wrapImg');
   $$('[data-wrap]').forEach(b => b.addEventListener('click', () => {
     const k = b.dataset.wrap;
-    wrapImg.src = 'assets/covers/' + k + '-wrap.webp';
+    wrapImg.src = 'assets/covers/' + k + '-wrap.webp?v=2';
     wrapImg.alt = 'Full print wrap for ' + titles[k] + ': back cover, spine and front cover';
     $('#wrapTitle').textContent = titles[k];
     dlg.showModal();
   }));
   $('#wrapClose').addEventListener('click', () => dlg.close());
   dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+
+  // ---------- Services: open one book at a time ----------
+  const shelfEl = $('.shelf');
+  const setOpen = (svc, open) => {
+    const book = $('.sbook', svc), cover = $('.sb-cover', svc), page = $('.sb-page', svc);
+    if (open) {
+      // Slide the open spread so it stays inside the shelf (centred where there is room)
+      const w = book.offsetWidth, cell = svc.getBoundingClientRect(), sh = shelfEl.getBoundingClientRect();
+      const left = cell.left + (cell.width - w) / 2, right = left + w;
+      const L = Math.max(sh.left, 12), R = Math.min(sh.right, innerWidth - 12);
+      svc.style.setProperty('--shift', Math.min(Math.max(w / 2, L - left + w), R - right) + 'px');
+    }
+    svc.classList.toggle('open', open);
+    cover.setAttribute('aria-expanded', open);
+    cover.setAttribute('aria-label', cover.dataset.title + (open ? ': close details' : ': open for details'));
+    page.inert = !open;
+    shelfEl.classList.toggle('has-open', !!$('.svc.open', shelfEl));
+  };
+  const closeBooks = keep => $$('.svc.open', shelfEl).forEach(s => s !== keep && setOpen(s, false));
+  $$('.svc', shelfEl).forEach(svc => $('.sb-cover', svc).addEventListener('click', () => {
+    const open = !svc.classList.contains('open');
+    closeBooks(svc); setOpen(svc, open);
+  }));
+  document.addEventListener('click', e => { if (!e.target.closest('.svc')) closeBooks(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeBooks(); });
+  $$('.sb-add').forEach(b => b.addEventListener('click', () => {
+    const box = document.getElementById(b.dataset.check);
+    box.checked = true;
+    b.textContent = 'Added to your brief \u2713';
+    setTimeout(() => $('#brief').scrollIntoView({behavior: reduce ? 'auto' : 'smooth'}), 450);
+  }));
 
   if (!window.gsap || !window.ScrollTrigger || reduce) return;
   gsap.registerPlugin(ScrollTrigger);
