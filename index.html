@@ -150,24 +150,13 @@ p{margin:0}
 .leaf.l1{transform:translateZ(-2px)}
 .leaf.l2{transform:translateZ(-3px)}
 .leaf.l3{transform:translateZ(-4px)}
-.pg-head,.pg-foot{display:flex;justify-content:space-between;font:500 8.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.pg-head{padding-bottom:7px;border-bottom:1px solid var(--line)}
-.pg-foot{margin-top:auto;padding-top:7px;border-top:1px solid var(--line)}
-.pg-ic{width:40px;height:40px;border-radius:9px;display:grid;place-items:center;background:var(--leaf-pale);border:1.5px solid var(--forest);box-shadow:2px 2px 0 var(--forest);margin-top:8px}
-.pg-ic svg{width:22px;height:22px}
-.pg-k{font:500 9px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--moss)}
-.pg-t{font:800 23px/1 var(--display);letter-spacing:-.02em;color:var(--forest)}
-.pg-p{font:400 11.5px/1.5 var(--body);color:var(--muted)}
-.pg-l{list-style:none;margin:0;padding:0;display:grid;gap:4px;font:600 10.5px var(--display);color:var(--forest)}
-.pg-l li{display:flex;gap:6px;align-items:center}
-.pg-l li::before{content:"";width:6px;height:6px;border-radius:0 70% 0 70%;background:var(--leaf);flex:none}
-.leaf .back .pg-ic{background:#f6e3b8}
-.pg-end{background:var(--forest)!important;color:var(--cream)}
-.pg-end .pg-t{color:var(--cream);font-size:27px}
-.pg-end .pg-p{color:var(--leaf-pale)}
-.pg-end .pg-head,.pg-end .pg-foot{color:var(--leaf-pale);border-color:var(--forest-2)}
-.pg-end .go{margin-top:6px;align-self:flex-start;font:700 12px var(--display);background:var(--gold-2);color:var(--forest-deep);padding:7px 11px;border-radius:7px;box-shadow:0 3px 0 var(--forest-deep)}
-.pg-end img{width:62px;height:auto;margin-top:6px}
+.book,.cover,.leaf{will-change:transform}
+.pg{align-items:center;justify-content:center;gap:14px;padding:22px 18px 16px}
+.pg-art{width:100%;height:auto;max-height:190px;display:block}
+.pg-t{font:800 25px/1.05 var(--display);letter-spacing:-.02em;color:var(--forest);text-align:center;text-wrap:balance}
+.pg-n{margin-top:auto;font:500 10px var(--mono);letter-spacing:.14em;color:var(--muted)}
+.leaf .back.pg,.b-first.pg{background:var(--paper)}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
 .cover{left:0;top:0;width:250px;height:350px;transform-style:preserve-3d;transform-origin:left center;transform:translateZ(0)}
 .cover .f{position:absolute;inset:0;backface-visibility:hidden;border-radius:2px 8px 8px 2px}
 /* Kodsinc-branded cover: the logo lockup on paper, a forest band, a gold rule */
@@ -177,15 +166,11 @@ p{margin:0}
 .cover .front b{display:block;margin-top:12px;font:800 36px/1 var(--display);letter-spacing:-.01em;color:var(--forest)}
 .cover .front small{display:block;margin-top:5px;font:700 15px var(--display);letter-spacing:.42em;padding-left:.42em;color:var(--gold)}
 .cover .front .band{margin-top:auto;width:100%;background:var(--forest);padding:13px 14px 15px;text-align:center;font:500 8.5px/1.7 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--leaf-pale)}
-.cover .inside{transform:rotateY(180deg);background:var(--forest);border-radius:8px 2px 2px 8px;padding:22px 22px 18px;display:flex;flex-direction:column;gap:12px;color:var(--cream)}
-.cover .inside .pg-k{color:var(--leaf)}
-.cover .inside h4{margin:0;font:800 26px/1 var(--display);color:var(--cream)}
-.cover .inside ol{list-style:none;margin:0;padding:0;display:grid;gap:7px;font:600 12px var(--display)}
-.cover .inside li{display:flex;align-items:baseline;gap:6px}
-.cover .inside li::after{content:attr(data-p);order:2;margin-left:auto;font:500 10px var(--mono);color:var(--gold-2)}
-.cover .inside li span{order:1}
-.cover .inside li i{order:1;flex:1;border-bottom:1.5px dotted var(--forest-2);transform:translateY(-3px)}
-.cover .inside .sig{margin-top:auto;font:italic 11.5px var(--body);color:var(--leaf-pale)}
+/* Inside cover: a Kodsinc endpaper of repeating leaves around the logo mark */
+.cover .inside{transform:rotateY(180deg);border-radius:8px 2px 2px 8px;display:grid;place-items:center;
+  background:var(--forest) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Cpath d='M6 28C6 17 13 9 27 7c0 13-8 21-21 21z' fill='%230f5232'/%3E%3C/svg%3E")}
+.cover .inside span{width:132px;height:132px;border-radius:50%;background:var(--paper);display:grid;place-items:center;border:3px solid var(--gold-2);box-shadow:5px 5px 0 var(--forest-deep)}
+.cover .inside img{width:88px;height:auto}
 @media (max-width:960px){
   .hero-in{grid-template-columns:1fr}
   .stage{height:470px;order:2}
@@ -221,7 +206,7 @@ p{margin:0}
 /* ---------- Services shelf ---------- */
 .services{background:var(--paper)}
 .svc-head{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:end}
-.shelf{margin-top:64px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px;perspective:1800px;padding-bottom:30px;position:relative}
+.shelf{margin-top:64px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px;perspective:1800px;padding-bottom:30px;position:relative}
 .shelf::after{content:"";position:absolute;left:-12px;right:-12px;bottom:0;height:20px;background:var(--gold);border:2px solid var(--forest-deep);border-radius:4px;box-shadow:0 8px 0 var(--forest-deep)}
 .svc{min-width:0;transform-style:preserve-3d}
 .svc-book{--c:var(--forest);--t:var(--cream);--s:var(--forest-deep);
@@ -232,7 +217,12 @@ p{margin:0}
   transition:transform .55s var(--spring),box-shadow .55s var(--spring);display:flex;flex-direction:column;gap:14px}
 .svc-book:hover,.svc-book:focus-within{transform:rotateY(0deg) translateY(-14px);box-shadow:6px 14px 0 var(--s)}
 .svc-book .num{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.75}
-.svc-book h3{font-size:28px;font-weight:800;color:var(--t)}
+.svc-book h3{font-size:clamp(21px,1.9vw,25px);font-weight:800;color:var(--t)}
+.svc-book{padding:18px 18px 24px;min-height:520px}
+.svc-ill{display:block;background:var(--paper);border:2px solid var(--s);border-radius:10px;padding:8px 6px 2px;box-shadow:4px 4px 0 var(--s)}
+.svc-ill svg{display:block;width:100%;height:auto;max-height:150px;margin-inline:auto;transition:transform .5s var(--spring)}
+.svc-book:hover .svc-ill svg,.svc-book:focus-within .svc-ill svg{transform:scale(1.07) rotate(-2deg)}
+.svc-book.b5{--c:var(--leaf-pale);--t:var(--forest);--s:var(--moss);border:2px solid var(--moss);border-left:10px solid var(--moss)}
 .svc-book p{font-size:15.5px;line-height:1.6;opacity:.9}
 .svc-book ul{list-style:none;margin:auto 0 0;padding:14px 0 0;border-top:2px solid currentColor;display:grid;gap:7px;font:500 14px var(--display)}
 .svc-book li{display:flex;gap:9px;align-items:baseline}
@@ -242,7 +232,8 @@ p{margin:0}
 .svc-book.b4{--c:var(--gold-2);--t:var(--forest-deep);--s:var(--gold)}
 .svc-book.b2 li::before,.svc-book.b4 li::before{background:var(--forest)}
 .svc-art{height:70px;position:relative}
-@media (max-width:1000px){.shelf{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:46px}.shelf::after{display:none}.svc-head{grid-template-columns:1fr}}
+@media (max-width:1100px){.shelf{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:46px}.shelf::after{display:none}.svc-head{grid-template-columns:1fr}}
+@media (max-width:760px){.shelf{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.shelf{grid-template-columns:1fr}.svc-book{min-height:0;transform:rotateY(-8deg)}}
 
 /* ---------- Cover portfolio: real covers as 3D books ---------- */
@@ -450,6 +441,89 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   </div>
 </header>
 
+<!-- Flat service illustrations, drawn once and reused in the hero book and on the services shelf -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="ill-publish" viewBox="0 0 200 170">
+    <ellipse cx="100" cy="150" rx="82" ry="10" fill="#e4ecc9"/>
+    <rect x="26" y="122" width="108" height="22" rx="3" fill="#073b22"/><rect x="26" y="122" width="10" height="22" fill="#0f5232"/><rect x="122" y="126" width="8" height="14" fill="#fffaf2"/>
+    <rect x="34" y="100" width="94" height="22" rx="3" fill="#7aad26"/><rect x="34" y="100" width="10" height="22" fill="#4b7a1f"/><rect x="116" y="104" width="8" height="14" fill="#fffaf2"/>
+    <rect x="30" y="78" width="100" height="22" rx="3" fill="#e2ab3a"/><rect x="30" y="78" width="10" height="22" fill="#c2891b"/><rect x="118" y="82" width="8" height="14" fill="#fffaf2"/>
+    <rect x="56" y="30" width="44" height="48" rx="3" fill="#fffaf2" stroke="#073b22" stroke-width="3"/><path d="M64 30h8v24l-4-4-4 4z" fill="#7aad26"/>
+    <rect x="144" y="56" width="40" height="86" rx="7" fill="#073b22"/><rect x="149" y="64" width="30" height="64" rx="3" fill="#fffaf2"/>
+    <rect x="154" y="72" width="20" height="4" rx="2" fill="#4b7a1f"/><rect x="154" y="82" width="20" height="3" rx="1.5" fill="#d9ccb4"/><rect x="154" y="89" width="16" height="3" rx="1.5" fill="#d9ccb4"/><rect x="154" y="96" width="20" height="3" rx="1.5" fill="#d9ccb4"/><rect x="154" y="103" width="12" height="3" rx="1.5" fill="#d9ccb4"/>
+    <path d="M128 22l4 9 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1z" fill="#e2ab3a"/>
+  </symbol>
+  <symbol id="ill-edit" viewBox="0 0 200 170">
+    <ellipse cx="100" cy="152" rx="76" ry="9" fill="#e4ecc9"/>
+    <rect x="50" y="20" width="96" height="124" rx="4" fill="#073b22"/>
+    <rect x="44" y="14" width="96" height="124" rx="4" fill="#fffaf2" stroke="#073b22" stroke-width="3"/>
+    <rect x="58" y="34" width="68" height="5" rx="2.5" fill="#d9ccb4"/>
+    <rect x="58" y="47" width="48" height="9" rx="2" fill="#e2ab3a"/><rect x="58" y="49" width="48" height="5" rx="2.5" fill="#d9ccb4"/>
+    <rect x="58" y="64" width="68" height="5" rx="2.5" fill="#d9ccb4"/>
+    <rect x="58" y="79" width="56" height="5" rx="2.5" fill="#d9ccb4"/><rect x="74" y="80" width="30" height="3" fill="#c4512a"/>
+    <rect x="58" y="94" width="68" height="5" rx="2.5" fill="#d9ccb4"/>
+    <rect x="58" y="109" width="40" height="5" rx="2.5" fill="#d9ccb4"/>
+    <path d="M110 108l6-8 6 8" fill="none" stroke="#4b7a1f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="rotate(38 152 92)"><rect x="142" y="30" width="20" height="96" rx="3" fill="#e2ab3a"/><rect x="142" y="30" width="20" height="14" rx="3" fill="#7aad26"/><rect x="142" y="44" width="20" height="6" fill="#c2891b"/><path d="M142 126h20l-10 22z" fill="#efe5d3"/><path d="M148 139h8l-4 9z" fill="#073b22"/></g>
+  </symbol>
+  <symbol id="ill-format" viewBox="0 0 200 170">
+    <ellipse cx="100" cy="152" rx="86" ry="9" fill="#e4ecc9"/>
+    <path d="M20 30q40-10 80 0v112q-40-10-80 0z" fill="#fffaf2" stroke="#073b22" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M180 30q-40-10-80 0v112q40-10 80 0z" fill="#fffaf2" stroke="#073b22" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="32" y="44" width="56" height="86" fill="none" stroke="#7aad26" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <rect x="112" y="44" width="56" height="86" fill="none" stroke="#7aad26" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <rect x="34" y="47" width="16" height="16" rx="2" fill="#073b22"/>
+    <g fill="#4b7a1f"><rect x="54" y="48" width="32" height="4" rx="2"/><rect x="54" y="57" width="32" height="4" rx="2"/><rect x="34" y="68" width="52" height="4" rx="2"/><rect x="34" y="77" width="52" height="4" rx="2"/><rect x="34" y="86" width="52" height="4" rx="2"/><rect x="34" y="95" width="52" height="4" rx="2"/><rect x="34" y="104" width="34" height="4" rx="2"/></g>
+    <g fill="#4b7a1f"><rect x="114" y="48" width="52" height="4" rx="2"/><rect x="114" y="57" width="52" height="4" rx="2"/><rect x="114" y="66" width="52" height="4" rx="2"/><rect x="114" y="75" width="52" height="4" rx="2"/><rect x="114" y="84" width="52" height="4" rx="2"/><rect x="114" y="93" width="52" height="4" rx="2"/><rect x="114" y="102" width="40" height="4" rx="2"/></g>
+    <rect x="44" y="146" width="112" height="14" rx="2" fill="#e2ab3a" stroke="#073b22" stroke-width="2"/>
+    <path d="M54 146v6M64 146v4M74 146v6M84 146v4M94 146v6M104 146v4M114 146v6M124 146v4M134 146v6M144 146v4" stroke="#073b22" stroke-width="2"/>
+  </symbol>
+  <symbol id="ill-cover" viewBox="0 0 200 170">
+    <ellipse cx="100" cy="152" rx="80" ry="9" fill="#e4ecc9"/>
+    <g transform="rotate(-6 80 86)"><rect x="40" y="18" width="84" height="122" rx="3" fill="#03271a"/><rect x="34" y="14" width="84" height="122" rx="3" fill="#073b22"/><rect x="34" y="14" width="9" height="122" fill="#0f5232"/>
+    <circle cx="84" cy="60" r="22" fill="#e2ab3a"/><path d="M50 118c10-30 30-40 60-36-6 22-24 36-60 36z" fill="#7aad26"/><path d="M60 112c12-16 26-22 44-24" stroke="#073b22" stroke-width="2.5" fill="none"/>
+    <rect x="52" y="26" width="52" height="6" rx="3" fill="#fffaf2"/><rect x="60" y="36" width="36" height="4" rx="2" fill="#e4ecc9"/></g>
+    <g transform="rotate(14 160 120)"><rect x="140" y="64" width="34" height="70" rx="6" fill="#fffaf2" stroke="#073b22" stroke-width="2.5"/><rect x="146" y="70" width="22" height="16" rx="3" fill="#7aad26"/><rect x="146" y="90" width="22" height="16" rx="3" fill="#e2ab3a"/><rect x="146" y="110" width="22" height="16" rx="3" fill="#073b22"/></g>
+    <g transform="rotate(-30 150 40)"><rect x="146" y="10" width="8" height="58" rx="3" fill="#073b22"/><rect x="145" y="60" width="10" height="8" fill="#c2891b"/><path d="M145 68h10c0 10-2 16-5 20-3-4-5-10-5-20z" fill="#7aad26"/></g>
+  </symbol>
+  <symbol id="ill-illustrate" viewBox="0 0 200 170">
+    <ellipse cx="100" cy="154" rx="84" ry="8" fill="#e4ecc9"/>
+    <rect x="28" y="20" width="132" height="116" rx="6" fill="#073b22"/>
+    <rect x="22" y="14" width="132" height="116" rx="6" fill="#dcecef" stroke="#073b22" stroke-width="3"/>
+    <circle cx="124" cy="42" r="14" fill="#e2ab3a"/>
+    <path d="M30 40c6-6 16-6 22 0 4-4 12-4 14 2-6 2-30 2-36-2z" fill="#fffaf2"/>
+    <path d="M24 110c20-30 50-34 76-18 20-14 40-12 52 4v32H24z" fill="#7aad26"/>
+    <path d="M24 122c30-14 70-14 128-4v10H24z" fill="#4b7a1f"/>
+    <rect x="44" y="86" width="5" height="20" fill="#073b22"/><circle cx="46" cy="80" r="13" fill="#4b7a1f"/>
+    <ellipse cx="104" cy="104" rx="14" ry="12" fill="#fffaf2" stroke="#073b22" stroke-width="2.5"/>
+    <ellipse cx="98" cy="86" rx="4" ry="10" fill="#fffaf2" stroke="#073b22" stroke-width="2.5"/><ellipse cx="110" cy="86" rx="4" ry="10" fill="#fffaf2" stroke="#073b22" stroke-width="2.5"/>
+    <circle cx="100" cy="102" r="2" fill="#073b22"/><circle cx="108" cy="102" r="2" fill="#073b22"/><circle cx="104" cy="107" r="2" fill="#c4512a"/>
+    <g transform="rotate(35 168 110)"><rect x="164" y="56" width="9" height="74" rx="4" fill="#e2ab3a"/><rect x="163" y="120" width="11" height="10" fill="#c2891b"/><path d="M163 130h11c0 10-2 16-5.5 22-3.5-6-5.5-12-5.5-22z" fill="#c4512a"/></g>
+  </symbol>
+  <symbol id="ill-web" viewBox="0 0 200 170">
+    <ellipse cx="100" cy="154" rx="86" ry="8" fill="#e4ecc9"/>
+    <rect x="22" y="22" width="164" height="120" rx="8" fill="#073b22"/>
+    <rect x="16" y="16" width="164" height="120" rx="8" fill="#fffaf2" stroke="#073b22" stroke-width="3"/>
+    <path d="M16 24a8 8 0 0 1 8-8h148a8 8 0 0 1 8 8v12H16z" fill="#073b22"/>
+    <circle cx="28" cy="26" r="3.5" fill="#7aad26"/><circle cx="39" cy="26" r="3.5" fill="#e2ab3a"/><circle cx="50" cy="26" r="3.5" fill="#fffaf2"/>
+    <rect x="28" y="48" width="140" height="44" rx="5" fill="#e4ecc9"/>
+    <circle cx="52" cy="66" r="11" fill="#e2ab3a"/><path d="M36 92c2-12 8-16 16-16s14 4 16 16z" fill="#4b7a1f"/>
+    <rect x="76" y="58" width="52" height="7" rx="3.5" fill="#073b22"/><rect x="76" y="70" width="36" height="5" rx="2.5" fill="#7aad26"/>
+    <rect x="138" y="54" width="22" height="32" rx="2" fill="#073b22"/><rect x="138" y="54" width="5" height="32" fill="#0f5232"/>
+    <rect x="28" y="102" width="40" height="26" rx="4" fill="#7aad26"/><rect x="78" y="102" width="40" height="26" rx="4" fill="#e2ab3a"/><rect x="128" y="102" width="40" height="26" rx="4" fill="#efe5d3"/>
+    <path d="M150 112l18 10-8 2 5 9-4 2-5-9-6 5z" fill="#fffaf2" stroke="#073b22" stroke-width="2" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="ill-blog" viewBox="0 0 200 170">
+    <ellipse cx="96" cy="154" rx="80" ry="8" fill="#e4ecc9"/>
+    <rect x="52" y="12" width="96" height="44" rx="6" fill="#efe5d3" stroke="#073b22" stroke-width="2.5"/>
+    <rect x="40" y="40" width="104" height="48" rx="6" fill="#fffaf2" stroke="#073b22" stroke-width="2.5"/><rect x="48" y="48" width="26" height="32" rx="3" fill="#e2ab3a"/><rect x="82" y="52" width="52" height="6" rx="3" fill="#073b22"/><rect x="82" y="64" width="44" height="4" rx="2" fill="#d9ccb4"/><rect x="82" y="72" width="36" height="4" rx="2" fill="#d9ccb4"/>
+    <rect x="28" y="96" width="112" height="50" rx="6" fill="#073b22"/><rect x="24" y="92" width="112" height="50" rx="6" fill="#fffaf2" stroke="#073b22" stroke-width="2.5"/><rect x="32" y="100" width="28" height="34" rx="3" fill="#7aad26"/><rect x="68" y="104" width="58" height="6" rx="3" fill="#073b22"/><rect x="68" y="116" width="48" height="4" rx="2" fill="#d9ccb4"/><rect x="68" y="124" width="40" height="4" rx="2" fill="#d9ccb4"/>
+    <circle cx="160" cy="100" r="26" fill="#e2ab3a" stroke="#073b22" stroke-width="3"/><circle cx="160" cy="100" r="19" fill="#fffaf2"/>
+    <path d="M160 88v12l8 6" stroke="#073b22" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M176 60a26 26 0 0 1 10 16" stroke="#4b7a1f" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M186 68l0 9-8-3" stroke="#4b7a1f" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
 <main>
 <!-- HERO -->
 <section class="hero" id="top">
@@ -461,7 +535,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
         <span class="line" aria-hidden="true"><span>made into a book</span></span>
         <span class="line accent" aria-hidden="true"><span>readers can <em>find.</em></span></span>
       </h1>
-      <p class="lede">Kodsinc Studio edits, formats, designs and publishes your book and ebook. Then we build the author website and automated blog that keep readers finding you.</p>
+      <p class="lede">Kodsinc Studio edits, formats, illustrates, designs and publishes your book and ebook. Then we build the author website and automated blog that keep readers finding you.</p>
       <div class="actions">
         <a class="btn btn-sprout" href="#brief">
           <svg class="sprout" viewBox="0 0 30 30" aria-hidden="true"><path d="M4 28C4 14 12 4 28 2c0 16-10 26-24 26z" fill="#7aad26" stroke="#073b22" stroke-width="2"/><path d="M5 27C11 19 17 12 24 7" stroke="#073b22" stroke-width="2" fill="none"/></svg>
@@ -485,95 +559,19 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
             <div class="b-spine"><i></i><span>KODSINC <b>STUDIO</b></span><i></i></div>
             <div class="b-edge"></div>
             <div class="b-top"></div>
-            <div class="b-first pg-end">
-              <div class="pg-head"><span>Kodsinc Studio</span><span>Next chapter</span></div>
-              <img src="assets/mark-cover.webp" alt="" width="420" height="414">
-              <p class="pg-t">Your book is next.</p>
-              <p class="pg-p">Tell us where your manuscript is today and we'll plan the route from draft to readers.</p>
-              <span class="go">Start your book &darr;</span>
-              <div class="pg-foot"><span>kodsinc studio</span><span>7</span></div>
-            </div>
-            <div class="leaf l3">
-              <div class="f front">
-                <div class="pg-head"><span>Kodsinc Studio</span><span>Author marketing</span></div>
-                <span class="pg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#073b22" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2.5"/><path d="M2 9h20M6 13h7M6 16h4"/></svg></span>
-                <span class="pg-k">Find the readers</span>
-                <p class="pg-t">Author websites</p>
-                <p class="pg-p">A home on the web built around you and your books, matched to your covers.</p>
-                <ul class="pg-l"><li>Author story and books</li><li>Buy links and events</li><li>Newsletter sign-up</li></ul>
-                <div class="pg-foot"><span>kodsinc studio</span><span>5</span></div>
-              </div>
-              <div class="f back">
-                <div class="pg-head"><span>6</span><span>Author marketing</span></div>
-                <span class="pg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#073b22" stroke-width="2" stroke-linecap="round"><path d="M5 3h10l4 4v14H5z"/><path d="M8 10h8M8 14h8M8 18h5"/></svg></span>
-                <span class="pg-k">Find the readers</span>
-                <p class="pg-t">Automated blogs</p>
-                <p class="pg-p">Posts on your books' themes, scheduled and published for you so your site keeps growing.</p>
-                <ul class="pg-l"><li>Topics from your books</li><li>Scheduled publishing</li><li>Search-friendly posts</li></ul>
-                <div class="pg-foot"><span>6</span><span>kodsinc studio</span></div>
-              </div>
-            </div>
-            <div class="leaf l2">
-              <div class="f front">
-                <div class="pg-head"><span>Kodsinc Studio</span><span>Make the book</span></div>
-                <span class="pg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#073b22" stroke-width="2" stroke-linecap="round"><path d="M4 5h16M4 9h16M4 13h16M4 17h10"/></svg></span>
-                <span class="pg-k">Vol. 3</span>
-                <p class="pg-t">Formatting</p>
-                <p class="pg-p">Interiors that read well on paper and reflow properly on every e-reader.</p>
-                <ul class="pg-l"><li>Print interior and trim size</li><li>EPUB and Kindle files</li><li>Front and back matter</li></ul>
-                <div class="pg-foot"><span>kodsinc studio</span><span>3</span></div>
-              </div>
-              <div class="f back">
-                <div class="pg-head"><span>4</span><span>Make the book</span></div>
-                <span class="pg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#073b22" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="1.5"/><path d="M8 7h8M8 10h5"/><circle cx="14" cy="16" r="2.5"/></svg></span>
-                <span class="pg-k">Vol. 4</span>
-                <p class="pg-t">Cover design</p>
-                <p class="pg-p">Covers made for your genre, legible from a bookshop shelf to a phone screen.</p>
-                <ul class="pg-l"><li>Front cover</li><li>Full wrap with spine</li><li>Ebook cover and mockups</li></ul>
-                <div class="pg-foot"><span>4</span><span>kodsinc studio</span></div>
-              </div>
-            </div>
-            <div class="leaf l1">
-              <div class="f front">
-                <div class="pg-head"><span>Kodsinc Studio</span><span>Make the book</span></div>
-                <span class="pg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#073b22" stroke-width="2" stroke-linecap="round"><path d="M3 5c3-1.5 6-1.5 9 0v15c-3-1.5-6-1.5-9 0zM21 5c-3-1.5-6-1.5-9 0v15c3-1.5 6-1.5 9 0z"/></svg></span>
-                <span class="pg-k">Vol. 1</span>
-                <p class="pg-t">Book &amp; ebook publishing</p>
-                <p class="pg-p">We release your book in print and as an ebook, set up and ready to sell.</p>
-                <ul class="pg-l"><li>Print-on-demand setup</li><li>Ebook store setup</li><li>Metadata and keywords</li></ul>
-                <div class="pg-foot"><span>kodsinc studio</span><span>1</span></div>
-              </div>
-              <div class="f back">
-                <div class="pg-head"><span>2</span><span>Make the book</span></div>
-                <span class="pg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#073b22" stroke-width="2" stroke-linecap="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 7l3 3"/></svg></span>
-                <span class="pg-k">Vol. 2</span>
-                <p class="pg-t">Editing</p>
-                <p class="pg-p">Careful reading at the level your manuscript needs, from story shape to commas.</p>
-                <ul class="pg-l"><li>Developmental and line editing</li><li>Copyediting</li><li>Proofreading</li></ul>
-                <div class="pg-foot"><span>2</span><span>kodsinc studio</span></div>
-              </div>
-            </div>
+            <div class="b-first pg"><svg class="pg-art" viewBox="0 0 200 170"><use href="#ill-blog"/></svg><p class="pg-t">Automated blogs</p><span class="pg-n">7</span></div>
+            <div class="leaf l3"><div class="f front pg"><svg class="pg-art" viewBox="0 0 200 170"><use href="#ill-illustrate"/></svg><p class="pg-t">Illustration</p><span class="pg-n">5</span></div><div class="f back pg"><svg class="pg-art" viewBox="0 0 200 170"><use href="#ill-web"/></svg><p class="pg-t">Author websites</p><span class="pg-n">6</span></div></div>
+            <div class="leaf l2"><div class="f front pg"><svg class="pg-art" viewBox="0 0 200 170"><use href="#ill-format"/></svg><p class="pg-t">Formatting</p><span class="pg-n">3</span></div><div class="f back pg"><svg class="pg-art" viewBox="0 0 200 170"><use href="#ill-cover"/></svg><p class="pg-t">Cover design</p><span class="pg-n">4</span></div></div>
+            <div class="leaf l1"><div class="f front pg"><svg class="pg-art" viewBox="0 0 200 170"><use href="#ill-publish"/></svg><p class="pg-t">Book &amp; ebook publishing</p><span class="pg-n">1</span></div><div class="f back pg"><svg class="pg-art" viewBox="0 0 200 170"><use href="#ill-edit"/></svg><p class="pg-t">Editing</p><span class="pg-n">2</span></div></div>
             <div class="cover">
               <div class="f front">
                 <div class="rule"></div>
                 <img src="assets/mark-cover.webp" alt="" width="420" height="414">
                 <b>KODSINC</b>
                 <small>STUDIO</small>
-                <div class="band">Publishing &middot; Editing &middot; Formatting<br>Covers &middot; Author marketing</div>
+                <div class="band">Publishing &middot; Editing &middot; Formatting<br>Covers &middot; Illustration &middot; Marketing</div>
               </div>
-              <div class="f inside">
-                <span class="pg-k">Kodsinc Studio</span>
-                <h4>Contents</h4>
-                <ol>
-                  <li data-p="1"><span>Publishing</span><i></i></li>
-                  <li data-p="2"><span>Editing</span><i></i></li>
-                  <li data-p="3"><span>Formatting</span><i></i></li>
-                  <li data-p="4"><span>Cover design</span><i></i></li>
-                  <li data-p="5"><span>Author websites</span><i></i></li>
-                  <li data-p="6"><span>Automated blogs</span><i></i></li>
-                </ol>
-                <p class="sig">Turn the page as you scroll.</p>
-              </div>
+              <div class="f inside"><span><img src="assets/mark-cover.webp" alt="" width="420" height="414"></span></div>
             </div>
           </div>
         </div>
@@ -595,9 +593,9 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
         <article class="half">
           <span class="gutter" aria-hidden="true"></span>
           <p class="eyebrow">Make the book</p>
-          <h3>Publishing, editing, formatting and cover design</h3>
+          <h3>Publishing, editing, formatting, covers and illustration</h3>
           <p>From a rough draft to files the printer and ebook stores accept, with a cover that holds its own at thumbnail size.</p>
-          <ul><li>Book &amp; ebook publishing</li><li>Editing</li><li>Formatting</li><li>Cover design</li></ul>
+          <ul><li>Book &amp; ebook publishing</li><li>Editing</li><li>Formatting</li><li>Cover design</li><li>Illustration</li></ul>
         </article>
       </div>
       <div class="half-wrap">
@@ -625,28 +623,39 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
 
     <div class="shelf">
       <div class="svc"><article class="svc-book" tabindex="0">
+        <span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-publish"/></svg></span>
         <span class="num">Vol. 1</span>
         <h3>Book &amp; ebook publishing</h3>
         <p>We prepare and release your book in print and as an ebook, and set it up so it is ready to sell.</p>
         <ul><li>Print-on-demand setup</li><li>Ebook store setup</li><li>Metadata, categories, keywords</li><li>Launch checklist</li></ul>
       </article></div>
       <div class="svc"><article class="svc-book b2" tabindex="0">
+        <span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-edit"/></svg></span>
         <span class="num">Vol. 2</span>
         <h3>Editing</h3>
         <p>Careful reading at the level your manuscript needs, from the shape of the story down to the commas.</p>
         <ul><li>Developmental editing</li><li>Line editing</li><li>Copyediting</li><li>Proofreading</li></ul>
       </article></div>
       <div class="svc"><article class="svc-book b3" tabindex="0">
+        <span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-format"/></svg></span>
         <span class="num">Vol. 3</span>
         <h3>Formatting</h3>
         <p>Interiors that read well on paper and reflow properly on every e-reader.</p>
         <ul><li>Print interior and trim size</li><li>Margins, bleed, running heads</li><li>EPUB and Kindle files</li><li>Front and back matter</li></ul>
       </article></div>
       <div class="svc"><article class="svc-book b4" tabindex="0">
+        <span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-cover"/></svg></span>
         <span class="num">Vol. 4</span>
         <h3>Cover design</h3>
         <p>Covers made for your genre and readers, legible from a bookshop shelf to a phone screen.</p>
         <ul><li>Front cover</li><li>Full wrap with spine and back</li><li>Ebook cover</li><li>Promo mockups</li></ul>
+      </article></div>
+      <div class="svc"><article class="svc-book b5" tabindex="0">
+        <span class="svc-ill" aria-hidden="true"><svg viewBox="0 0 200 170"><use href="#ill-illustrate"/></svg></span>
+        <span class="num">Vol. 5</span>
+        <h3>Illustration</h3>
+        <p>Pictures that carry the story, for children's books and any book that needs art inside.</p>
+        <ul><li>Children's picture books</li><li>Chapter-book spot art</li><li>Maps and diagrams</li><li>Cover illustration</li></ul>
       </article></div>
     </div>
   </div>
@@ -786,8 +795,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
 <!-- MARQUEE -->
 <div class="marquee" aria-label="Formats we prepare: paperback, hardcover, ebook, EPUB, Kindle, print-ready PDF, author websites, automated blogs">
   <div class="marquee-track" aria-hidden="true">
-    <ul><li>Paperback</li><li>Hardcover</li><li>Ebook</li><li>EPUB</li><li>Kindle</li><li>Print-ready PDF</li><li>6 &times; 9 in</li><li>5.5 &times; 8.5 in</li><li>Author websites</li><li>Automated blogs</li></ul>
-    <ul><li>Paperback</li><li>Hardcover</li><li>Ebook</li><li>EPUB</li><li>Kindle</li><li>Print-ready PDF</li><li>6 &times; 9 in</li><li>5.5 &times; 8.5 in</li><li>Author websites</li><li>Automated blogs</li></ul>
+    <ul><li>Paperback</li><li>Hardcover</li><li>Ebook</li><li>EPUB</li><li>Kindle</li><li>Print-ready PDF</li><li>Children's book illustration</li><li>6 &times; 9 in</li><li>5.5 &times; 8.5 in</li><li>Author websites</li><li>Automated blogs</li></ul>
+    <ul><li>Paperback</li><li>Hardcover</li><li>Ebook</li><li>EPUB</li><li>Kindle</li><li>Print-ready PDF</li><li>Children's book illustration</li><li>6 &times; 9 in</li><li>5.5 &times; 8.5 in</li><li>Author websites</li><li>Automated blogs</li></ul>
   </div>
 </div>
 
@@ -866,6 +875,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
           <label class="check"><input type="checkbox" id="sEdit" value="Editing"><span>Editing</span></label>
           <label class="check"><input type="checkbox" id="sFmt" value="Formatting"><span>Formatting</span></label>
           <label class="check"><input type="checkbox" id="sCov" value="Cover design"><span>Cover design</span></label>
+          <label class="check"><input type="checkbox" id="sIll" value="Illustration"><span>Illustration</span></label>
           <label class="check"><input type="checkbox" id="sWeb" value="Author website"><span>Author website</span></label>
           <label class="check"><input type="checkbox" id="sBlog" value="Automated blog"><span>Automated blog</span></label>
         </div>
@@ -966,7 +976,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
 
   // Smooth scroll on desktop pointers only
   if (window.Lenis && matchMedia('(pointer: fine)').matches) {
-    const lenis = new Lenis({lerp:.12});
+    const lenis = new Lenis({lerp:.09});
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(t => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -994,30 +1004,32 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   gsap.timeline({defaults:{ease:'power4.out'}})
     .from('.hero h1 .line>span', {yPercent:110, duration:1, stagger:.1})
     .from('.disc', {scale:0, duration:1, ease:'back.out(1.4)'}, .1)
-    .from('.scene', {y:-120, rotationX:50, autoAlpha:0, duration:1.2, ease:'bounce.out'}, .25)
+    .from('.scene', {y:-90, rotationX:40, autoAlpha:0, duration:1.3, ease:'back.out(1.3)'}, .25)
     .from('.hero .lede, .hero .actions, .scroll-cue', {y:24, autoAlpha:0, duration:.8, stagger:.08}, .4);
 
   // Book opening, then one page turn per spread so each pair of services gets its moment.
   // Leaves turn top first (l1, l2, l3); each stops a little short of the last so it lies on top of the pile.
   const pageTurns = ['.l1', '.l2', '.l3'].map(s => $(s, book));
+  // Sine in-out on every move so each turn starts and settles softly instead of snapping.
+  const TURN = 1.1;
   const openBook = (tl, hold) => {
-    tl.to(book, {rotationY:-6, rotationX:-6, x:() => innerWidth > 520 ? 115 : 120, duration:1}, 0)
-      .to(cover, {rotationY:-172, duration:1}, 0)
-      .fromTo('.sprout-big', {scale:0, rotation:-20}, {scale:1, rotation:0, duration:.8, ease:'back.out(1.7)'}, .3);
-    pageTurns.forEach((leaf, i) => tl.to(leaf, {rotationY:-166 + i * 6, duration:.8}, 1 + hold + i * (.8 + hold)));
+    tl.to(book, {rotationY:-6, rotationX:-6, x:() => innerWidth > 520 ? 115 : 120, duration:1.3}, 0)
+      .to(cover, {rotationY:-172, duration:1.3}, 0)
+      .fromTo('.sprout-big', {scale:0, rotation:-20}, {scale:1, rotation:0, duration:1, ease:'back.out(1.4)'}, .4);
+    pageTurns.forEach((leaf, i) => tl.to(leaf, {rotationY:-166 + i * 6, duration:TURN}, 1.3 + hold + i * (TURN + hold)));
     return tl.to({}, {duration:hold});
   };
 
   const mm = gsap.matchMedia();
   mm.add('(min-width: 961px)', () => {
     // Pin just below the sticky header so the top of the hero never slides under it
-    const tl = gsap.timeline({scrollTrigger:{trigger:'.hero', start:() => 'top ' + head.offsetHeight, end:'+=300%',
-      pin:true, anticipatePin:1, scrub:.6, invalidateOnRefresh:true}});
-    openBook(tl, .7);
-    tl.to('.scroll-cue', {autoAlpha:0, duration:.2}, 0);
+    const tl = gsap.timeline({defaults:{ease:'sine.inOut'}, scrollTrigger:{trigger:'.hero', start:() => 'top ' + head.offsetHeight,
+      end:'+=320%', pin:true, anticipatePin:1, scrub:1.2, invalidateOnRefresh:true, refreshPriority:2}});
+    openBook(tl, .6);
+    tl.to('.scroll-cue', {autoAlpha:0, duration:.3}, 0);
   });
   mm.add('(max-width: 960px)', () => {
-    openBook(gsap.timeline({delay:1.4, defaults:{ease:'power2.inOut'}}), 1.6);
+    openBook(gsap.timeline({delay:1.4, defaults:{ease:'sine.inOut'}}), 1.4);
   });
 
   // ---------- Two halves swing open like covers ----------
@@ -1037,6 +1049,9 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   gsap.from('.svc', {rotationY:-80, x:140, z:-200, autoAlpha:0, stagger:.15, ease:'power2.out',
     scrollTrigger:{trigger:'.shelf', start:'top 92%', end:'top 30%', scrub:1}});
 
+  gsap.from('.svc-ill svg', {scale:.4, rotation:-12, autoAlpha:0, duration:.8, stagger:.1, ease:'back.out(1.8)',
+    scrollTrigger:{trigger:'.shelf', start:'top 70%', once:true}});
+
   // ---------- Portfolio: books turn from spine-out to face-out ----------
   gsap.from('.pf-wrap', {rotationY:-62, y:70, autoAlpha:0, stagger:.12, ease:'power2.out',
     scrollTrigger:{trigger:'.pf-grid', start:'top 92%', end:'top 40%', scrub:1}});
@@ -1052,7 +1067,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   mm.add('(min-width: 900px)', () => {
     const dist = () => track.scrollWidth - innerWidth;
     const move = gsap.to(track, {x:() => -dist(), ease:'none',
-      scrollTrigger:{trigger:'.process', start:'top top', end:() => '+=' + dist(), pin:true, scrub:1, invalidateOnRefresh:true,
+      scrollTrigger:{trigger:'.process', start:'top top', end:() => '+=' + dist(), pin:true, scrub:1, invalidateOnRefresh:true, refreshPriority:1,
         onUpdate:s => gsap.set('#ribbon', {scaleX:s.progress})}});
     $$('.step').forEach(step => {
       artIn($('.iso', step), {scrollTrigger:{trigger:step, containerAnimation:move, start:'left 85%', toggleActions:'play none none reverse'}});
@@ -1093,6 +1108,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   gsap.utils.toArray('.float-book').forEach((b, i) => gsap.to(b, {y:-(80 + i * 60), rotation:(i % 2 ? -1 : 1) * 24, ease:'none',
     scrollTrigger:{trigger:'.brief', start:'top bottom', end:'bottom top', scrub:true}}));
 
+  // Pins (hero, process) refresh first so every later trigger measures the page with their scroll space included
+  ScrollTrigger.sort();
   addEventListener('load', () => ScrollTrigger.refresh());
 })();
 </script>
