@@ -97,20 +97,17 @@ main{overflow-x:clip}
 .ab-hero h1 .line>span{display:inline-block}
 .ab-hero h1 .accent{color:var(--moss)}
 .actions{display:flex;flex-wrap:wrap;gap:18px 16px;padding-top:6px}
-.ab-photo{position:relative;margin:0;min-width:0;justify-self:center;width:min(100%,470px)}
+.ab-photo{position:relative;margin:0;min-width:0;justify-self:center;width:min(100%,520px)}
 .ab-photo .bg-leaf{position:absolute;inset:-12% -14% -6% -10%;z-index:-1}
 .ab-photo .bg-leaf svg{width:100%;height:100%;animation:sway 9s ease-in-out infinite;transform-origin:20% 90%}
 @keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
 .ab-photo{perspective:1200px}
 .tilt{transform-style:preserve-3d;will-change:transform}
-.frame{position:relative;border:2px solid var(--forest);border-radius:22px;overflow:hidden;background:#06120c;box-shadow:12px 12px 0 var(--forest);will-change:transform}
-.frame img{will-change:transform}
-/* A soft band of light that sweeps across the portrait once it is revealed */
-.shine{position:absolute;inset:-20% -60%;background:linear-gradient(105deg,transparent 42%,rgba(255,249,238,.16) 50%,transparent 58%);transform:translateX(-70%);pointer-events:none}
+.frame{position:relative;will-change:transform}
 .founder-note{display:grid;gap:2px;max-width:52ch;padding:12px 16px;border-left:4px solid var(--leaf);background:var(--paper);border-radius:0 10px 10px 0;font-size:15.5px;color:var(--muted)}
 .founder-note b{font:700 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
-.frame img{width:100%;height:auto;aspect-ratio:1}
-.ab-photo figcaption{position:absolute;left:-18px;bottom:28px;display:grid;gap:2px;background:var(--paper);border:2px solid var(--forest);border-radius:12px;
+.frame img{display:block;width:100%;height:auto}
+.ab-photo figcaption{position:absolute;left:-8px;bottom:18px;display:grid;gap:2px;background:var(--paper);border:2px solid var(--forest);border-radius:12px;
   padding:12px 16px;box-shadow:5px 5px 0 var(--forest)}
 .ab-photo figcaption b{font:800 19px var(--display);color:var(--forest)}
 .ab-photo figcaption span{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
@@ -290,7 +287,7 @@ main{overflow-x:clip}
   </div>
   <figure class="ab-photo">
     <div class="bg-leaf" aria-hidden="true"><svg viewBox="0 0 400 400"><path d="M30 370C30 170 170 30 370 30c0 200-140 340-340 340z" fill="#e4ecc9"/><path d="M52 348C134 258 222 168 330 72" stroke="#d5e2b3" stroke-width="10" fill="none" stroke-linecap="round"/></svg></div>
-    <div class="tilt"><div class="frame"><img src="assets/about/sehrish.webp?v=2" alt="Portrait of Sehrish K, founder of Kodsinc Studio, seated and smiling" width="1200" height="1200"><span class="shine" aria-hidden="true"></span></div></div>
+    <div class="tilt"><div class="frame"><picture><source srcset="assets/about/sehrish-figure.webp" type="image/webp"><img src="assets/about/sehrish-figure.png" alt="Sehrish K, founder of Kodsinc Studio, seated and smiling" width="1100" height="1027"></picture></div></div>
     <figcaption><b>Sehrish K</b><span>Founder &amp; operator, Kodsinc Studio</span></figcaption>
     <svg class="tag-leaf" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-leaf"/></svg>
   </figure>
@@ -506,17 +503,14 @@ main{overflow-x:clip}
   gsap.timeline({defaults:{ease:'power4.out'}})
     .from('.ab-hero h1 .line>span', {yPercent:110, duration:1.05, stagger:.12})
     .from('.ab-photo .bg-leaf svg', {scale:0, rotation:-30, duration:1.2, ease:'back.out(1.3)'}, .05)
-    .fromTo('.frame', {clipPath:'inset(100% 0 0 0 round 22px)'}, {clipPath:'inset(0% 0 0 0 round 22px)', duration:1.2, ease:'power3.inOut'}, .15)
-    .fromTo('.frame img', {scale:1.25}, {scale:1.08, duration:1.6, ease:'power3.out'}, .15)
-    .to('.shine', {x:'70%', duration:1.4, ease:'power2.inOut'}, 1.1)
+    .fromTo('.frame', {clipPath:'inset(100% -10% 0 -10%)', y:60, scale:.92}, {clipPath:'inset(-10% -10% 0 -10%)', y:0, scale:1, duration:1.3, ease:'power3.out'}, .15)
     .from('.ab-photo figcaption', {x:-30, autoAlpha:0, duration:.7, ease:'back.out(1.7)'}, .95)
     .from('.tag-leaf', {scale:0, rotation:-90, duration:.8, ease:'back.out(2.2)'}, 1.05)
     .from('.ab-hero .lede, .ab-hero .founder-note, .ab-hero .actions', {y:24, autoAlpha:0, duration:.8, stagger:.1}, .45);
 
   // ---------- Portrait on scroll: zooms out, drifts up and turns as the hero leaves; text fades out ----------
   gsap.timeline({scrollTrigger:{trigger:'.ab-hero', start:'top top', end:'bottom top', scrub:.8}})
-    .fromTo('.frame', {y:0, rotation:0}, {y:-70, rotation:-4, ease:'none', immediateRender:false}, 0)
-    .fromTo('.frame img', {scale:1.08, yPercent:0}, {scale:1, yPercent:-4, ease:'none', immediateRender:false}, 0)
+    .fromTo('.frame', {y:0, rotation:0, scale:1}, {y:-80, rotation:-4, scale:.94, ease:'none', immediateRender:false}, 0)
     .fromTo('.ab-photo .bg-leaf', {rotation:0, scale:1}, {rotation:24, scale:1.15, ease:'none', immediateRender:false}, 0)
     .fromTo('.tag-leaf', {rotation:0, y:0}, {rotation:200, y:-40, ease:'none', immediateRender:false}, 0)
     .fromTo('.ab-photo figcaption', {x:0, y:0}, {x:-24, y:-30, ease:'none', immediateRender:false}, 0)
