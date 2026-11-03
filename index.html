@@ -467,30 +467,20 @@ p{margin:0}
 .f-ic svg{width:26px;height:26px}
 .feature h3{font-size:24px;font-weight:800}
 .feature p{color:var(--muted);font-size:16px;margin-top:6px}
-.mk-visual{position:relative;min-width:0;height:520px;perspective:1700px}
+.mk-visual{position:relative;min-width:0;height:520px;container-type:inline-size}
 .mk-visual .disc2{position:absolute;inset:8% 4%;border-radius:32px;background:var(--leaf-pale)}
-.browser-wrap{position:absolute;inset:6% 6% 10%;transform-style:preserve-3d}
-.browser{position:absolute;inset:0;transform-style:preserve-3d}
-.layer{position:absolute;border:2px solid var(--forest);border-radius:14px}
-.ly-frame{inset:0;background:var(--paper);box-shadow:8px 8px 0 var(--forest)}
-.ly-bar{left:0;right:0;top:0;height:40px;border-radius:12px 12px 0 0;background:var(--forest);display:flex;align-items:center;gap:6px;padding-inline:14px;border:none}
-.ly-bar b{width:10px;height:10px;border-radius:50%;background:var(--leaf)}
-.ly-bar b:nth-child(2){background:var(--gold-2)}.ly-bar b:nth-child(3){background:var(--cream)}
-.ly-bar span{margin-left:12px;font:500 12px var(--mono);color:var(--leaf-pale);background:var(--forest-2);padding:4px 12px;border-radius:6px}
-.ly-hero{left:5%;right:5%;top:58px;height:36%;background:var(--forest);display:flex;align-items:center;gap:18px;padding:18px;overflow:hidden}
-.mini-cover{flex:none;width:72px;height:104px;background:var(--gold-2);border:2px solid var(--forest-deep);border-radius:2px 6px 6px 2px;border-left:6px solid var(--gold);box-shadow:4px 4px 0 var(--forest-deep);position:relative}
-.mini-cover::after{content:"";position:absolute;left:10px;right:10px;top:16px;height:8px;background:var(--forest);border-radius:2px;box-shadow:0 14px 0 -1px var(--forest)}
-.ly-hero strong{display:block;font:800 clamp(20px,2.4vw,28px)/1 var(--display);color:var(--cream)}
-.ly-hero small{display:block;font:italic 14px var(--body);color:var(--leaf-pale);margin-top:6px}
-.ly-hero .pill{display:inline-block;margin-top:12px;font:700 12px var(--display);background:var(--leaf);color:var(--forest-deep);padding:6px 10px;border-radius:6px}
-.ly-posts{left:5%;right:5%;bottom:5%;top:calc(58px + 36% + 16px);background:var(--cream);padding:14px;display:grid;gap:8px;align-content:start;overflow:hidden}
-.ly-posts h4{margin:0;font:700 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
-.post{min-width:0;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--paper);border:1.5px solid var(--forest);border-radius:8px;padding:8px 11px;font:600 13.5px var(--display);color:var(--forest)}
-.post span:first-child{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.state{flex:none;font:500 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;border-radius:5px;background:var(--leaf-pale);color:var(--moss)}
-.state.sched{background:#f6e3b8;color:#7a560f}
-.ex-tag{position:absolute;right:6%;bottom:2%;font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-@media (max-width:900px){.mk-grid{grid-template-columns:1fr}.mk-visual{height:460px}}
+/* Three real author sites on a turning ring; scroll turns it so each site comes to the front in turn */
+.ring-stage{position:absolute;inset:0;perspective:1600px}
+.ring{--iw:min(430px,76cqw);position:absolute;left:50%;top:46%;width:0;height:0;transform-style:preserve-3d;transform:rotateX(-6deg)}
+/* Each site travels round the circle but stays face-on, so none is ever seen mirrored */
+.ring-item{position:absolute;width:var(--iw);left:calc(var(--iw) / -2);top:calc(var(--iw) * -.3125);display:block;
+  border:2px solid var(--forest);border-radius:12px;overflow:hidden;background:var(--paper);box-shadow:7px 7px 0 var(--forest);will-change:transform,opacity}
+.ring-item:not(:first-child){opacity:0}
+.ring-item img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top}
+.ring-cap{position:absolute;left:0;right:0;bottom:2%;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.ring-k{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
+.ring-n{font:800 20px var(--display);color:var(--forest)}
+@media (max-width:900px){.mk-grid{grid-template-columns:1fr}.mk-visual{height:460px;overflow:clip}}
 @media (max-width:520px){.mk-visual{height:420px}.browser-wrap{inset:4% 0 10%}.ly-hero{gap:12px;padding:12px}.mini-cover{width:54px;height:80px}}
 
 /* ---------- Author site showcase ---------- */
@@ -503,10 +493,6 @@ p{margin:0}
 /* Flat browser frame; hover tilts with the separate rotate/translate properties so scroll animation keeps transform */
 .sc-browser{display:block;border:2px solid var(--forest);border-radius:12px;overflow:hidden;background:var(--paper);box-shadow:7px 7px 0 var(--forest);
   transition:rotate .45s var(--spring),translate .45s var(--spring),box-shadow .45s var(--spring)}
-.sc-bar{display:flex;align-items:center;gap:5px;height:28px;padding-inline:10px;background:var(--forest)}
-.sc-bar i{width:8px;height:8px;border-radius:50%;background:var(--leaf)}
-.sc-bar i:nth-child(2){background:var(--gold-2)}.sc-bar i:nth-child(3){background:var(--cream)}
-.sc-bar span{margin-left:8px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:500 10.5px var(--mono);color:var(--leaf-pale);background:var(--forest-2);padding:3px 9px;border-radius:5px}
 .sc-browser img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top}
 .sc-phone{position:absolute;right:0;bottom:0;width:26%;height:auto;aspect-ratio:390/844;object-fit:cover;object-position:top;border:5px solid var(--forest-deep);border-radius:16px;
   background:var(--forest-deep);box-shadow:5px 5px 0 var(--forest);transition:translate .45s var(--spring),rotate .45s var(--spring)}
@@ -1091,21 +1077,20 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
 
     <div class="mk-visual" aria-hidden="true">
       <div class="disc2"></div>
-      <div class="browser-wrap" id="browserWrap">
-        <div class="browser">
-          <div class="layer ly-frame"></div>
-          <div class="layer ly-bar"><b></b><b></b><b></b><span>yourname.com</span></div>
-          <div class="layer ly-hero"><div class="mini-cover"></div><div><strong>Your Name</strong><small>Author of Your Book</small><span class="pill">Read chapter one</span></div></div>
-          <div class="layer ly-posts">
-            <h4>From the blog</h4>
-            <div class="post"><span>Where the idea for chapter one came from</span><span class="state">Published</span></div>
-            <div class="post"><span>Five books that shaped this series</span><span class="state">Published</span></div>
-            <div class="post"><span>Behind the cover: early sketches</span><span class="state sched" data-later="Published">Scheduled</span></div>
-            <div class="post"><span>Launch week reading list</span><span class="state sched">Scheduled</span></div>
-          </div>
+      <div class="ring-stage">
+        <div class="ring" id="siteRing">
+          <a class="ring-item" href="https://author-website1-eight.vercel.app" target="_blank" rel="noopener" tabindex="-1" style="--i:0" data-k="Crime fiction &amp; true crime" data-name="Joe Broadmeadow">
+            <img src="assets/showcase/broadmeadow-desktop.webp?v=2" alt="" width="1200" height="750" loading="lazy">
+          </a>
+          <a class="ring-item" href="https://author-website2.vercel.app" target="_blank" rel="noopener" tabindex="-1" style="--i:1" data-k="Poetry &amp; art" data-name="H.T. Manogue">
+            <img src="assets/showcase/manogue-desktop.webp?v=2" alt="" width="1200" height="750" loading="lazy">
+          </a>
+          <a class="ring-item" href="https://author-website3.vercel.app" target="_blank" rel="noopener" tabindex="-1" style="--i:2" data-k="Faith &amp; nonfiction" data-name="Gabriel Pollard">
+            <img src="assets/showcase/pollard-desktop.webp?v=2" alt="" width="1200" height="750" loading="lazy">
+          </a>
         </div>
       </div>
-      <span class="ex-tag">Example author site</span>
+      <p class="ring-cap"><span class="ring-k" id="ringK">Crime fiction &amp; true crime</span><span class="ring-n" id="ringN">Joe Broadmeadow</span></p>
     </div>
   </div>
 
@@ -1117,9 +1102,9 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     <div class="sc-grid">
       <article class="sc-card">
         <a class="sc-shot" href="https://author-website1-eight.vercel.app" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-          <span class="sc-browser"><span class="sc-bar"><i></i><i></i><i></i><span>author-website1-eight.vercel.app</span></span>
-            <img src="assets/showcase/broadmeadow-desktop.webp" alt="" width="1200" height="750" loading="lazy"></span>
-          <img class="sc-phone" src="assets/showcase/broadmeadow-phone.webp" alt="" width="390" height="844" loading="lazy">
+          <span class="sc-browser">
+            <img src="assets/showcase/broadmeadow-desktop.webp?v=2" alt="" width="1200" height="750" loading="lazy"></span>
+          <img class="sc-phone" src="assets/showcase/broadmeadow-phone.webp?v=2" alt="" width="390" height="844" loading="lazy">
         </a>
         <div class="sc-meta">
           <span class="sc-k">Crime fiction &amp; true crime</span>
@@ -1130,9 +1115,9 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
       </article>
       <article class="sc-card">
         <a class="sc-shot" href="https://author-website2.vercel.app" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-          <span class="sc-browser"><span class="sc-bar"><i></i><i></i><i></i><span>author-website2.vercel.app</span></span>
-            <img src="assets/showcase/manogue-desktop.webp" alt="" width="1200" height="750" loading="lazy"></span>
-          <img class="sc-phone" src="assets/showcase/manogue-phone.webp" alt="" width="390" height="844" loading="lazy">
+          <span class="sc-browser">
+            <img src="assets/showcase/manogue-desktop.webp?v=2" alt="" width="1200" height="750" loading="lazy"></span>
+          <img class="sc-phone" src="assets/showcase/manogue-phone.webp?v=2" alt="" width="390" height="844" loading="lazy">
         </a>
         <div class="sc-meta">
           <span class="sc-k">Poetry &amp; art</span>
@@ -1143,9 +1128,9 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
       </article>
       <article class="sc-card">
         <a class="sc-shot" href="https://author-website3.vercel.app" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-          <span class="sc-browser"><span class="sc-bar"><i></i><i></i><i></i><span>author-website3.vercel.app</span></span>
-            <img src="assets/showcase/pollard-desktop.webp" alt="" width="1200" height="750" loading="lazy"></span>
-          <img class="sc-phone" src="assets/showcase/pollard-phone.webp" alt="" width="390" height="844" loading="lazy">
+          <span class="sc-browser">
+            <img src="assets/showcase/pollard-desktop.webp?v=2" alt="" width="1200" height="750" loading="lazy"></span>
+          <img class="sc-phone" src="assets/showcase/pollard-phone.webp?v=2" alt="" width="390" height="844" loading="lazy">
         </a>
         <div class="sc-meta">
           <span class="sc-k">Faith &amp; nonfiction</span>
@@ -1524,15 +1509,35 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     },
     onLeave:() => skew(0), onLeaveBack:() => skew(0)});
 
-  // ---------- Author site assembles from exploded layers ----------
-  const layers = $$('.layer');
-  const bt = gsap.timeline({scrollTrigger:{trigger:'.mk-visual', start:'top 90%', end:'center 55%', scrub:1}});
-  bt.fromTo('#browserWrap', {rotationX:55, rotationZ:-32, scale:.82}, {rotationX:0, rotationZ:0, scale:1, ease:'power2.out'}, 0)
-    .fromTo(layers, {z:i => i * 55}, {z:0, ease:'power2.out'}, 0);
-  gsap.timeline({scrollTrigger:{trigger:'.mk-visual', start:'center 60%', once:true}})
-    .from('.post', {x:40, autoAlpha:0, stagger:.15, duration:.5, ease:'back.out(1.6)'})
-    .add(() => { const s = $('.state[data-later]'); s.textContent = s.dataset.later; s.classList.remove('sched'); }, '+=.6')
-    .from('.state[data-later]', {scale:1.4, duration:.4, ease:'back.out(3)'});
+  // ---------- Author sites ring: scroll turns it, one site at a time ----------
+  const ring = $('#siteRing'), ringItems = $$('.ring-item', ring), ringK = $('#ringK'), ringN = $('#ringN');
+  const spin = {a:0};
+  let frontIdx = 0;
+  const drawRing = () => {
+    const R = ringItems[0].offsetWidth * .62;
+    ringItems.forEach((it, i) => {
+      const d = ((i * 120 - spin.a) % 360 + 540) % 360 - 180;   // angle from the front, -180..180
+      const rad = d * Math.PI / 180, c = Math.cos(rad);
+      gsap.set(it, {x:R * Math.sin(rad), z:R * (c - 1), rotationY:-d * .3, zIndex:Math.round(c * 10) + 10});
+      it.style.opacity = (.3 + .7 * Math.max(0, c)).toFixed(3);
+      it.style.pointerEvents = Math.abs(d) < 30 ? 'auto' : 'none';
+    });
+    const n = ((Math.round(spin.a / 120) % 3) + 3) % 3;
+    if (n !== frontIdx) {
+      frontIdx = n;
+      ringK.innerHTML = ringItems[n].dataset.k; ringN.textContent = ringItems[n].dataset.name;
+      gsap.fromTo([ringK, ringN], {y:8, autoAlpha:0}, {y:0, autoAlpha:1, duration:.35, stagger:.05, ease:'power2.out'});
+    }
+  };
+  drawRing();
+  // Each site holds at the front for a moment before the ring turns to the next
+  gsap.timeline({onUpdate:drawRing, scrollTrigger:{trigger:'.mk-grid', start:'top 75%', end:'bottom 20%', scrub:1}})
+    .to(spin, {a:0, duration:.35})
+    .to(spin, {a:120, duration:1, ease:'sine.inOut'})
+    .to(spin, {a:120, duration:.35})
+    .to(spin, {a:240, duration:1, ease:'sine.inOut'})
+    .to(spin, {a:240, duration:.35});
+  gsap.from('.ring-stage', {scale:.85, autoAlpha:0, duration:.9, ease:'power3.out', scrollTrigger:{trigger:'.mk-visual', start:'top 85%', once:true}});
 
   // ---------- Author site showcase ----------
   $$('.sc-card').forEach((card, i) => {
