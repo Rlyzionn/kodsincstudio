@@ -120,10 +120,12 @@ main{overflow-x:clip}
 /* ---------- Story and journey ---------- */
 .ab-story .head{display:grid;gap:18px;max-width:820px}
 .journey{list-style:none;margin:60px 0 0;padding:0;position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
-.journey::before,.journey::after{content:"";position:absolute;left:calc(100% / 12);right:calc(100% / 12);top:27px;height:4px;border-radius:2px}
+/* Six columns with 14px gaps: the first and last circle centres sit (100% - 70px) / 12 in from each edge.
+   The line stays underneath (z-index 0) and every step sits above it (z-index 1). */
+.journey::before,.journey::after{content:"";position:absolute;z-index:0;left:calc((100% - 70px) / 12);right:calc((100% - 70px) / 12);top:27px;height:4px;border-radius:2px}
 .journey::before{background:rgba(75,122,31,.18)}
 .journey::after{background:var(--moss);transform-origin:left;transform:scaleX(var(--p,1))}
-.journey li{position:relative;display:grid;justify-items:center;gap:10px;text-align:center}
+.journey li{position:relative;z-index:1;display:grid;justify-items:center;gap:10px;text-align:center}
 .journey .dot{position:relative;z-index:1;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--paper);border:2px solid var(--forest);
   color:var(--forest);box-shadow:4px 4px 0 var(--forest);transition:background-color .4s,color .4s,scale .45s var(--spring)}
 .journey .dot svg{width:26px;height:26px}
@@ -155,18 +157,25 @@ main{overflow-x:clip}
 @media (max-width:1050px){.who{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:640px){.who{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.who li{min-height:200px;padding:16px 14px}.who b{font-size:18px}}
 
-/* Genres: two rows drifting in opposite directions */
-.genres{margin-top:56px;display:grid;gap:14px}
-.g-title{font:700 15px var(--display);color:var(--forest)}
-.g-row{overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-.g-track{display:flex;width:max-content}
-.g-track ul{list-style:none;margin:0;padding:0 6px 0 0;display:flex;gap:10px}
-.g-track li{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;padding:9px 16px;border-radius:999px;border:2px solid var(--forest);
-  background:var(--cream);font:600 15px var(--display);color:var(--forest)}
-.g-track li::before{content:"";width:10px;height:10px;border-radius:0 70% 0 70%;background:var(--leaf)}
-.g-track li:nth-child(3n+2){background:var(--leaf-pale)}
-.g-track li:nth-child(3n){background:var(--forest);color:var(--cream)}
-.g-track li:nth-child(3n)::before{background:var(--gold-2)}
+/* Genres: a shelf of small books in the same style as the author cards */
+.genres{margin-top:56px;display:grid;gap:18px}
+.g-title{font:700 16px var(--display);color:var(--forest)}
+.gshelf{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:16px 14px;perspective:1400px}
+.gbook{--c:var(--forest);--t:var(--cream);--s:var(--forest-deep);position:relative;min-width:0;min-height:128px;display:flex;flex-direction:column;justify-content:space-between;
+  padding:12px 10px 10px 12px;background:var(--c);color:var(--t);border:2px solid var(--s);border-left:6px solid var(--s);border-radius:3px 10px 10px 3px;
+  box-shadow:4px 4px 0 var(--s);transition:translate .3s var(--spring),rotate .3s var(--spring),box-shadow .3s var(--spring)}
+/* A short title rule at the top and a leaf at the foot, like a tiny cover */
+.gbook::before{content:"";display:block;width:22px;height:3px;border-radius:2px;background:currentColor;opacity:.55}
+.gbook::after{content:"";align-self:flex-end;width:11px;height:11px;border-radius:0 70% 0 70%;background:var(--gold-2)}
+.gbook span{font:700 13.5px/1.15 var(--display);hyphens:auto;-webkit-hyphens:auto;overflow-wrap:normal}
+.gbook:hover{translate:0 -6px;rotate:-2deg;box-shadow:6px 8px 0 var(--s)}
+.gbook:nth-child(5n+2){--c:var(--leaf);--t:var(--forest-deep);--s:var(--moss)}
+.gbook:nth-child(5n+3){--c:var(--cream);--t:var(--forest);--s:var(--forest)}
+.gbook:nth-child(5n+4){--c:var(--gold-2);--t:var(--forest-deep);--s:var(--gold)}
+.gbook:nth-child(5n+4)::after{background:var(--forest)}
+.gbook:nth-child(5n){--c:var(--leaf-pale);--t:var(--forest);--s:var(--moss)}
+@media (max-width:1100px){.gshelf{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media (max-width:640px){.gshelf{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 10px}.gbook{min-height:108px;padding:10px 8px 9px 10px;border-left-width:5px}.gbook span{font-size:13px}}
 
 /* ---------- Vision ---------- */
 .ab-vision{background:var(--forest);color:var(--cream);overflow:hidden}
@@ -323,9 +332,28 @@ main{overflow-x:clip}
     </ul>
     <div class="genres">
       <p class="g-title">And the genres we work across</p>
-      <ul class="sr-only"><li>Children's picture books</li><li>Early readers</li><li>Middle grade</li><li>Young adult</li><li>Fantasy</li><li>Science fiction</li><li>Romance</li><li>Literary fiction</li><li>Historical fiction</li><li>Mystery</li><li>Thriller</li><li>Crime &amp; true crime</li><li>Horror</li><li>Memoir &amp; biography</li><li>Poetry</li><li>Self-help</li><li>Business &amp; leadership</li><li>Faith &amp; inspirational</li><li>Health &amp; wellness</li><li>Cookbooks</li></ul>
-      <div class="g-row" aria-hidden="true"><div class="g-track"><ul><li>Children's picture books</li><li>Early readers</li><li>Middle grade</li><li>Young adult</li><li>Fantasy</li><li>Science fiction</li><li>Romance</li><li>Literary fiction</li><li>Historical fiction</li></ul><ul><li>Children's picture books</li><li>Early readers</li><li>Middle grade</li><li>Young adult</li><li>Fantasy</li><li>Science fiction</li><li>Romance</li><li>Literary fiction</li><li>Historical fiction</li></ul></div></div>
-      <div class="g-row rev" aria-hidden="true"><div class="g-track"><ul><li>Mystery</li><li>Thriller</li><li>Crime &amp; true crime</li><li>Horror</li><li>Memoir &amp; biography</li><li>Poetry</li><li>Self-help</li><li>Business &amp; leadership</li><li>Faith &amp; inspirational</li><li>Health &amp; wellness</li><li>Cookbooks</li></ul><ul><li>Mystery</li><li>Thriller</li><li>Crime &amp; true crime</li><li>Horror</li><li>Memoir &amp; biography</li><li>Poetry</li><li>Self-help</li><li>Business &amp; leadership</li><li>Faith &amp; inspirational</li><li>Health &amp; wellness</li><li>Cookbooks</li></ul></div></div>
+      <ul class="gshelf">
+        <li class="gbook"><span>Children's picture books</span></li>
+        <li class="gbook"><span>Early readers</span></li>
+        <li class="gbook"><span>Middle grade</span></li>
+        <li class="gbook"><span>Young adult</span></li>
+        <li class="gbook"><span>Fantasy</span></li>
+        <li class="gbook"><span>Science fiction</span></li>
+        <li class="gbook"><span>Romance</span></li>
+        <li class="gbook"><span>Literary fiction</span></li>
+        <li class="gbook"><span>Historical fiction</span></li>
+        <li class="gbook"><span>Mystery</span></li>
+        <li class="gbook"><span>Thriller</span></li>
+        <li class="gbook"><span>Crime &amp; true crime</span></li>
+        <li class="gbook"><span>Horror</span></li>
+        <li class="gbook"><span>Memoir &amp; biography</span></li>
+        <li class="gbook"><span>Poetry</span></li>
+        <li class="gbook"><span>Self-help</span></li>
+        <li class="gbook"><span>Business &amp; leadership</span></li>
+        <li class="gbook"><span>Faith &amp; inspiration</span></li>
+        <li class="gbook"><span>Health &amp; wellness</span></li>
+        <li class="gbook"><span>Cookbooks</span></li>
+      </ul>
     </div>
   </div>
 </section>
@@ -514,13 +542,9 @@ main{overflow-x:clip}
   // ---------- Who: cards swing in like books pulled off a shelf, and back out ----------
   fade('.who li', '.who', {y:40, stagger:.08, from:{rotationY:-50, transformOrigin:'0% 50%'}, to:{rotationY:0}});
 
-  // ---------- Genres: rows drift in opposite directions, faster while scrolling, paused off screen ----------
-  const g1 = gsap.to('.g-row:not(.rev) .g-track', {xPercent:-50, ease:'none', duration:38, repeat:-1, paused:true});
-  const g2 = gsap.fromTo('.g-row.rev .g-track', {xPercent:-50}, {xPercent:0, ease:'none', duration:44, repeat:-1, paused:true});
-  ScrollTrigger.create({trigger:'.genres', start:'top bottom', end:'bottom top',
-    onToggle:st => [g1, g2].forEach(t => st.isActive ? t.play() : t.pause()),
-    onUpdate:st => { const v = 1 + Math.min(Math.abs(st.getVelocity()) / 300, 4); gsap.to([g1, g2], {timeScale:v, duration:.2, overwrite:true}); gsap.to([g1, g2], {timeScale:1, duration:1, delay:.2}); }});
-  fade('.genres', '.genres', {y:30});
+  // ---------- Genres: the little books swing onto the shelf one after another, and back out ----------
+  fade('.g-title', '.genres', {y:16});
+  fade('.gbook', '.gshelf', {y:30, stagger:.035, d:.6, from:{rotationY:-55, transformOrigin:'0% 50%'}, to:{rotationY:0}});
 
   // ---------- Vision: ambitions rise in and out; icons spin in ----------
   fade('.amb li', '.amb', {y:60, stagger:.12, d:.9});
