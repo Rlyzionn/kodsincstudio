@@ -308,6 +308,25 @@ p{margin:0}
 @media (max-width:1100px){.shelf{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:46px}.shelf::after{display:none}.svc-head{grid-template-columns:1fr}}
 @media (max-width:760px){.shelf{grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 18px}.sbook{transform:rotateY(-8deg)}}
 
+/* ---------- Publishing platforms ---------- */
+.pl-head{display:grid;gap:18px;max-width:780px}
+.pl-grid{list-style:none;margin:48px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;perspective:1400px}
+.pl{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:14px;row-gap:3px;align-items:center;min-width:0;
+  background:var(--paper);border:2px solid var(--forest);border-radius:14px;padding:16px;box-shadow:5px 5px 0 var(--forest);
+  transition:transform .3s var(--spring),box-shadow .3s var(--spring)}
+.pl:hover{transform:translate(-2px,-4px);box-shadow:8px 9px 0 var(--forest)}
+.pl-logo{grid-row:1 / 3;width:52px;height:52px;border-radius:12px;display:grid;place-items:center;background:var(--leaf-pale);border:2px solid var(--forest);color:var(--forest);transition:background-color .3s,color .3s}
+.pl:hover .pl-logo{background:var(--forest);color:var(--cream)}
+.pl-logo svg{width:26px;height:26px;fill:currentColor}
+.pl-mono{font:800 17px/1 var(--display);letter-spacing:-.02em}
+.pl-mono.sm{font-size:14px}
+.pl-mono.lc{font-size:15px;letter-spacing:0}
+.pl-name{font:700 16px/1.2 var(--display);color:var(--forest);min-width:0;text-wrap:balance}
+.pl-k{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--moss)}
+.pl-note{margin-top:22px;font:italic 13.5px var(--body);color:var(--muted);max-width:70ch}
+@media (max-width:1000px){.pl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.pl-grid{gap:12px}.pl{padding:12px;grid-template-columns:1fr;row-gap:6px;align-content:start}.pl-logo{grid-row:auto;width:42px;height:42px;margin-bottom:4px}.pl-logo svg{width:21px;height:21px}.pl-name{font-size:14px}.pl-k{font-size:10px}}
+
 /* ---------- Cover portfolio: real covers as 3D books ---------- */
 .pf-head{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:end}
 .pf-grid{margin-top:56px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px 24px}
@@ -778,6 +797,28 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
       <button class="btn bd-close" type="button" id="bdClose">Close</button>
       <p class="bd-tip" aria-hidden="true">Tap outside the book or press Esc to close</p>
     </dialog>
+  </div>
+</section>
+
+<!-- PLATFORMS -->
+<section class="section platforms" id="platforms">
+  <div class="wrap">
+    <div class="pl-head">
+      <p class="eyebrow" data-reveal>Where your book goes</p>
+      <h2 class="h2" data-split data-mark="readers">On the stores readers already use.</h2>
+      <p class="lede" data-reveal>We prepare your files and set up your print and ebook editions on the major self-publishing platforms, so your book is ready to sell wherever your readers shop.</p>
+    </div>
+    <ul class="pl-grid" aria-label="Publishing platforms">
+      <li class="pl"><span class="pl-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M.045 18.02c.072-.116.187-.124.348-.022 3.636 2.11 7.594 3.166 11.87 3.166 2.852 0 5.668-.533 8.447-1.595l.315-.14c.138-.06.234-.1.293-.13.226-.088.39-.046.525.13.12.174.09.336-.12.48-.256.19-.6.41-1.006.654-1.244.743-2.64 1.316-4.185 1.726a17.617 17.617 0 01-10.951-.577 17.88 17.88 0 01-5.43-3.35c-.1-.074-.151-.15-.151-.22 0-.047.021-.09.051-.13zm6.565-6.218c0-1.005.247-1.863.743-2.577.495-.71 1.17-1.25 2.04-1.615.796-.335 1.756-.575 2.912-.72.39-.046 1.033-.103 1.92-.174v-.37c0-.93-.105-1.558-.3-1.875-.302-.43-.78-.65-1.44-.65h-.182c-.48.046-.896.196-1.246.46-.35.27-.575.63-.675 1.096-.06.3-.206.465-.435.51l-2.52-.315c-.248-.06-.372-.18-.372-.39 0-.046.007-.09.022-.15.247-1.29.855-2.25 1.82-2.88.976-.616 2.1-.975 3.39-1.05h.54c1.65 0 2.957.434 3.888 1.29.135.15.27.3.405.48.12.165.224.314.283.45.075.134.15.33.195.57.06.254.105.42.135.51.03.104.062.3.076.615.01.313.02.493.02.553v5.28c0 .376.06.72.165 1.036.105.313.21.54.315.674l.51.674c.09.136.136.256.136.36 0 .12-.06.226-.18.314-1.2 1.05-1.86 1.62-1.963 1.71-.165.135-.375.15-.63.045a6.062 6.062 0 01-.526-.496l-.31-.347a9.391 9.391 0 01-.317-.42l-.3-.435c-.81.886-1.603 1.44-2.4 1.665-.494.15-1.093.227-1.83.227-1.11 0-2.04-.343-2.76-1.034-.72-.69-1.08-1.665-1.08-2.94l-.05-.076zm3.753-.438c0 .566.14 1.02.425 1.364.285.34.675.512 1.155.512.045 0 .106-.007.195-.02.09-.016.134-.023.166-.023.614-.16 1.08-.553 1.424-1.178.165-.28.285-.58.36-.91.09-.32.12-.59.135-.8.015-.195.015-.54.015-1.005v-.54c-.84 0-1.484.06-1.92.18-1.275.36-1.92 1.17-1.92 2.43l-.035-.02zm9.162 7.027c.03-.06.075-.11.132-.17.362-.243.714-.41 1.05-.5a8.094 8.094 0 011.612-.24c.14-.012.28 0 .41.03.65.06 1.05.168 1.172.33.063.09.099.228.099.39v.15c0 .51-.149 1.11-.424 1.8-.278.69-.664 1.248-1.156 1.68-.073.06-.14.09-.197.09-.03 0-.06 0-.09-.012-.09-.044-.107-.12-.064-.24.54-1.26.806-2.143.806-2.64 0-.15-.03-.27-.087-.344-.145-.166-.55-.257-1.224-.257-.243 0-.533.016-.87.046-.363.045-.7.09-1 .135-.09 0-.148-.014-.18-.044-.03-.03-.036-.047-.02-.077 0-.017.006-.03.02-.063v-.06z"/></svg></span><span class="pl-name">Amazon Kindle Direct Publishing</span><span class="pl-k">KDP &middot; print + ebook</span></li>
+      <li class="pl"><span class="pl-logo pl-mono" aria-hidden="true">IS</span><span class="pl-name">IngramSpark</span><span class="pl-k">Print + ebook</span></li>
+      <li class="pl"><span class="pl-logo pl-mono sm" aria-hidden="true">B&amp;N</span><span class="pl-name">Barnes &amp; Noble Press</span><span class="pl-k">Print + ebook</span></li>
+      <li class="pl"><span class="pl-logo pl-mono lc" aria-hidden="true">lulu</span><span class="pl-name">Lulu</span><span class="pl-k">Print + ebook</span></li>
+      <li class="pl"><span class="pl-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg></span><span class="pl-name">Apple Books for Authors</span><span class="pl-k">Ebook</span></li>
+      <li class="pl"><span class="pl-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg></span><span class="pl-name">Google Play Books</span><span class="pl-k">Ebook</span></li>
+      <li class="pl"><span class="pl-logo pl-mono lc" aria-hidden="true">kobo</span><span class="pl-name">Kobo Writing Life</span><span class="pl-k">Ebook</span></li>
+      <li class="pl"><span class="pl-logo pl-mono sm" aria-hidden="true">D2D</span><span class="pl-name">Draft2Digital</span><span class="pl-k">Ebook + print</span></li>
+    </ul>
+    <p class="pl-note">Platform names and logos belong to their owners. Kodsinc Studio is an independent studio, not affiliated with or endorsed by these platforms.</p>
   </div>
 </section>
 
@@ -1317,6 +1358,10 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   gsap.from('.svc-ill svg', {scale:.4, rotation:-12, autoAlpha:0, duration:.8, stagger:.1, ease:'back.out(1.8)',
     scrollTrigger:{trigger:'.shelf', start:'top 70%', once:true}});
 
+  // ---------- Platforms: tiles flip down like index cards ----------
+  gsap.from('.pl', {rotationX:-85, y:24, autoAlpha:0, transformOrigin:'50% 0%', duration:.8, stagger:.07, ease:'back.out(1.5)',
+    scrollTrigger:{trigger:'.pl-grid', start:'top 82%', once:true}});
+
   // ---------- Portfolio: books turn from spine-out to face-out ----------
   // Each book has its own trigger so the second row turns as it arrives; later columns start a touch later
   $$('.pf-item').forEach((item, i) => {
@@ -1382,6 +1427,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   const DRIFT = {
     '#what':      [[4,14,1.1,'leaf',-20],[93,40,.8,'gold',40],[86,82,.6,'moss',10]],
     '#services':  [[2,30,.9,'moss',30],[95,10,1.2,'leaf',-30],[50,4,.6,'gold',0]],
+    '#platforms': [[95,18,.9,'gold',-20],[4,78,.8,'leaf',30]],
     '#covers':    [[96,24,1,'leaf',20],[3,70,.8,'gold',-40]],
     '.process':   [[90,12,1,'leaf',-10],[6,60,.9,'gold',30],[60,88,.7,'leaf',60]],
     '#marketing': [[3,20,.9,'gold',10],[94,70,1.1,'leaf',-30]],
