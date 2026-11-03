@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>About Sehrish K | Kodsinc Studio</title>
-<meta name="description" content="Meet Sehrish K of Kodsinc Studio. Editing, covers, formatting, publishing and author websites for indie, self-published and first-time authors.">
+<title>About Sehrish K, Founder | Kodsinc Studio</title>
+<meta name="description" content="Meet Sehrish K, founder of Kodsinc Studio. Editing, covers, formatting, publishing and author websites for indie, self-published and first-time authors.">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -101,7 +101,14 @@ main{overflow-x:clip}
 .ab-photo .bg-leaf{position:absolute;inset:-12% -14% -6% -10%;z-index:-1}
 .ab-photo .bg-leaf svg{width:100%;height:100%;animation:sway 9s ease-in-out infinite;transform-origin:20% 90%}
 @keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
-.frame{position:relative;border:2px solid var(--forest);border-radius:22px;overflow:hidden;background:#0b0b0b;box-shadow:12px 12px 0 var(--forest)}
+.ab-photo{perspective:1200px}
+.tilt{transform-style:preserve-3d;will-change:transform}
+.frame{position:relative;border:2px solid var(--forest);border-radius:22px;overflow:hidden;background:#06120c;box-shadow:12px 12px 0 var(--forest);will-change:transform}
+.frame img{will-change:transform}
+/* A soft band of light that sweeps across the portrait once it is revealed */
+.shine{position:absolute;inset:-20% -60%;background:linear-gradient(105deg,transparent 42%,rgba(255,249,238,.16) 50%,transparent 58%);transform:translateX(-70%);pointer-events:none}
+.founder-note{display:grid;gap:2px;max-width:52ch;padding:12px 16px;border-left:4px solid var(--leaf);background:var(--paper);border-radius:0 10px 10px 0;font-size:15.5px;color:var(--muted)}
+.founder-note b{font:700 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
 .frame img{width:100%;height:auto;aspect-ratio:1}
 .ab-photo figcaption{position:absolute;left:-18px;bottom:28px;display:grid;gap:2px;background:var(--paper);border:2px solid var(--forest);border-radius:12px;
   padding:12px 16px;box-shadow:5px 5px 0 var(--forest)}
@@ -147,6 +154,19 @@ main{overflow-x:clip}
 .who span{font-size:14.5px;line-height:1.5;opacity:.9;margin-top:auto}
 @media (max-width:1050px){.who{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:640px){.who{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.who li{min-height:200px;padding:16px 14px}.who b{font-size:18px}}
+
+/* Genres: two rows drifting in opposite directions */
+.genres{margin-top:56px;display:grid;gap:14px}
+.g-title{font:700 15px var(--display);color:var(--forest)}
+.g-row{overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.g-track{display:flex;width:max-content}
+.g-track ul{list-style:none;margin:0;padding:0 6px 0 0;display:flex;gap:10px}
+.g-track li{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;padding:9px 16px;border-radius:999px;border:2px solid var(--forest);
+  background:var(--cream);font:600 15px var(--display);color:var(--forest)}
+.g-track li::before{content:"";width:10px;height:10px;border-radius:0 70% 0 70%;background:var(--leaf)}
+.g-track li:nth-child(3n+2){background:var(--leaf-pale)}
+.g-track li:nth-child(3n){background:var(--forest);color:var(--cream)}
+.g-track li:nth-child(3n)::before{background:var(--gold-2)}
 
 /* ---------- Vision ---------- */
 .ab-vision{background:var(--forest);color:var(--cream);overflow:hidden}
@@ -247,9 +267,10 @@ main{overflow-x:clip}
 <!-- HERO -->
 <section class="wrap ab-hero" aria-labelledby="abTitle">
   <div class="ab-copy">
-    <p class="eyebrow">About Kodsinc Studio</p>
+    <p class="eyebrow">Meet the founder</p>
     <h1 id="abTitle" aria-label="Hey, I'm Sehrish."><span class="line" aria-hidden="true"><span>Hey, I'm</span></span><span class="line accent" aria-hidden="true"><span>Sehrish.</span></span></h1>
-    <p class="lede">I help indie authors, self-published writers and first-time authors turn their manuscripts into books they're genuinely proud to share with the world.</p>
+    <p class="lede">I'm the founder of Kodsinc Studio and the person running it behind the scenes. I help indie authors, self-published writers and first-time authors turn their manuscripts into books they're genuinely proud to share with the world.</p>
+    <p class="founder-note"><b>Founder &amp; operator</b> I run the studio day to day and stay close to every project, from the first read of your manuscript to launch day.</p>
     <div class="actions">
       <a class="btn btn-sprout" href="index.html#brief">
         <svg class="sprout" viewBox="0 0 30 30" aria-hidden="true"><path d="M4 28C4 14 12 4 28 2c0 16-10 26-24 26z" fill="#7aad26" stroke="#073b22" stroke-width="2"/><path d="M5 27C11 19 17 12 24 7" stroke="#073b22" stroke-width="2" fill="none"/></svg>
@@ -260,8 +281,8 @@ main{overflow-x:clip}
   </div>
   <figure class="ab-photo">
     <div class="bg-leaf" aria-hidden="true"><svg viewBox="0 0 400 400"><path d="M30 370C30 170 170 30 370 30c0 200-140 340-340 340z" fill="#e4ecc9"/><path d="M52 348C134 258 222 168 330 72" stroke="#d5e2b3" stroke-width="10" fill="none" stroke-linecap="round"/></svg></div>
-    <div class="frame"><img src="assets/about/sehrish.webp" alt="Portrait of Sehrish K, seated, smiling, in black and white" width="960" height="960"></div>
-    <figcaption><b>Sehrish K</b><span>Kodsinc Studio</span></figcaption>
+    <div class="tilt"><div class="frame"><img src="assets/about/sehrish.webp?v=2" alt="Portrait of Sehrish K, founder of Kodsinc Studio, seated and smiling" width="1200" height="1200"><span class="shine" aria-hidden="true"></span></div></div>
+    <figcaption><b>Sehrish K</b><span>Founder &amp; operator, Kodsinc Studio</span></figcaption>
     <svg class="tag-leaf" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-leaf"/></svg>
   </figure>
 </section>
@@ -300,6 +321,12 @@ main{overflow-x:clip}
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg><b>Indie authors</b><span>Publishing on your own terms, with the polish of a big house.</span></li>
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V11"/><path d="M12 11C12 6 8 3 4 3c0 5 3 8 8 8zM12 13c0-4 3-7 8-7 0 5-3 7-8 7z"/></svg><b>First-time writers</b><span>Your first book, guided step by step.</span></li>
     </ul>
+    <div class="genres">
+      <p class="g-title">And the genres we work across</p>
+      <ul class="sr-only"><li>Children's picture books</li><li>Early readers</li><li>Middle grade</li><li>Young adult</li><li>Fantasy</li><li>Science fiction</li><li>Romance</li><li>Literary fiction</li><li>Historical fiction</li><li>Mystery</li><li>Thriller</li><li>Crime &amp; true crime</li><li>Horror</li><li>Memoir &amp; biography</li><li>Poetry</li><li>Self-help</li><li>Business &amp; leadership</li><li>Faith &amp; inspirational</li><li>Health &amp; wellness</li><li>Cookbooks</li></ul>
+      <div class="g-row" aria-hidden="true"><div class="g-track"><ul><li>Children's picture books</li><li>Early readers</li><li>Middle grade</li><li>Young adult</li><li>Fantasy</li><li>Science fiction</li><li>Romance</li><li>Literary fiction</li><li>Historical fiction</li></ul><ul><li>Children's picture books</li><li>Early readers</li><li>Middle grade</li><li>Young adult</li><li>Fantasy</li><li>Science fiction</li><li>Romance</li><li>Literary fiction</li><li>Historical fiction</li></ul></div></div>
+      <div class="g-row rev" aria-hidden="true"><div class="g-track"><ul><li>Mystery</li><li>Thriller</li><li>Crime &amp; true crime</li><li>Horror</li><li>Memoir &amp; biography</li><li>Poetry</li><li>Self-help</li><li>Business &amp; leadership</li><li>Faith &amp; inspirational</li><li>Health &amp; wellness</li><li>Cookbooks</li></ul><ul><li>Mystery</li><li>Thriller</li><li>Crime &amp; true crime</li><li>Horror</li><li>Memoir &amp; biography</li><li>Poetry</li><li>Self-help</li><li>Business &amp; leadership</li><li>Faith &amp; inspirational</li><li>Health &amp; wellness</li><li>Cookbooks</li></ul></div></div>
+    </div>
   </div>
 </section>
 
@@ -345,7 +372,7 @@ main{overflow-x:clip}
 <section class="ab-quote" aria-label="Our belief">
   <div class="wrap">
     <blockquote id="bigQuote">Your story deserves to be seen, read, and remembered.</blockquote>
-    <cite>Sehrish K, Kodsinc Studio</cite>
+    <cite>Sehrish K, founder of Kodsinc Studio</cite>
   </div>
 </section>
 
@@ -410,18 +437,24 @@ main{overflow-x:clip}
   }
   const INK = '<svg class="ink" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M2 8C28 3 62 2 98 7"/></svg>';
 
+  // Reversible reveal: fades and rises in as it arrives, fades out as it leaves (both scroll directions)
+  const fade = (targets, trigger, o = {}) => gsap.fromTo(targets,
+    Object.assign({autoAlpha:0, y:o.y ?? 40}, o.from || {}),
+    Object.assign({autoAlpha:1, y:0, duration:o.d ?? .8, stagger:o.stagger ?? 0, ease:'power3.out',
+      scrollTrigger:{trigger, start:o.start ?? 'top 86%', end:o.end ?? 'bottom 8%', toggleActions:'play reverse play reverse'}}, o.to || {}));
+
   // Headings flip up word by word; one key word gets a gold editor's underline
   $$('[data-split]').forEach(h => {
     const words = h.textContent.trim().split(/\s+/);
     h.setAttribute('aria-label', words.join(' '));
     h.innerHTML = words.map(w => `<span class="w" aria-hidden="true"><span class="wi">${w}</span></span>`).join(' ');
-    const tl = gsap.timeline({scrollTrigger:{trigger:h, start:'top 86%', once:true}})
-      .from($$('.wi', h), {rotationX:-100, y:16, autoAlpha:0, duration:.9, stagger:.05, ease:'back.out(1.5)'});
+    const tl = gsap.timeline({scrollTrigger:{trigger:h, start:'top 86%', end:'bottom 6%', toggleActions:'play reverse play reverse'}})
+      .fromTo($$('.wi', h), {rotationX:-100, y:16, autoAlpha:0}, {rotationX:0, y:0, autoAlpha:1, duration:.8, stagger:.045, ease:'back.out(1.5)'});
     const marked = $$('.w', h).find(w => w.textContent === h.dataset.mark);
-    if (marked) { marked.insertAdjacentHTML('afterbegin', INK); tl.fromTo(marked, {'--ink-off':100}, {'--ink-off':0, duration:.7, ease:'power2.inOut'}, '-=.2'); }
+    if (marked) { marked.insertAdjacentHTML('afterbegin', INK); tl.fromTo(marked, {'--ink-off':100}, {'--ink-off':0, duration:.6, ease:'power2.inOut'}, '-=.25'); }
   });
 
-  // Labels: the leaf sprouts, then the label types itself out
+  // Labels: the leaf sprouts, then the label types itself out (once)
   $$('.eyebrow').forEach(el => {
     const text = el.textContent.trim();
     el.innerHTML = `<span class="sr-only">${text}</span><span aria-hidden="true"></span><span class="caret" aria-hidden="true"></span>`;
@@ -434,59 +467,91 @@ main{overflow-x:clip}
     else ScrollTrigger.create({trigger:el, start:'top 90%', once:true, onEnter:() => tl.play()});
   });
 
-  // Paragraphs that fill in word by word as you read
+  // Paragraphs that fill in word by word as you read, and soften again as they leave the top
   $$('[data-ink]').forEach(el => {
     el.innerHTML = el.textContent.trim().split(/\s+/).map(w => `<span class="inkw">${w}</span>`).join(' ');
     gsap.fromTo($$('.inkw', el), {opacity:.15}, {opacity:1, stagger:.1, ease:'none', scrollTrigger:{trigger:el, start:'top 85%', end:'bottom 55%', scrub:true}});
   });
+  $$('.lede:not([data-ink]), .founder-note').forEach(el => { if (!el.closest('.ab-hero')) fade(el, el, {y:24}); });
 
-  // ---------- Hero: name rises, the portrait is revealed from the bottom, the caption and leaf pop in ----------
+  // ---------- Hero intro ----------
   gsap.timeline({defaults:{ease:'power4.out'}})
     .from('.ab-hero h1 .line>span', {yPercent:110, duration:1.05, stagger:.12})
     .from('.ab-photo .bg-leaf svg', {scale:0, rotation:-30, duration:1.2, ease:'back.out(1.3)'}, .05)
     .fromTo('.frame', {clipPath:'inset(100% 0 0 0 round 22px)'}, {clipPath:'inset(0% 0 0 0 round 22px)', duration:1.2, ease:'power3.inOut'}, .15)
-    .from('.frame img', {scale:1.18, duration:1.6, ease:'power3.out'}, .15)
+    .fromTo('.frame img', {scale:1.25}, {scale:1.08, duration:1.6, ease:'power3.out'}, .15)
+    .to('.shine', {x:'70%', duration:1.4, ease:'power2.inOut'}, 1.1)
     .from('.ab-photo figcaption', {x:-30, autoAlpha:0, duration:.7, ease:'back.out(1.7)'}, .95)
     .from('.tag-leaf', {scale:0, rotation:-90, duration:.8, ease:'back.out(2.2)'}, 1.05)
-    .from('.ab-hero .lede, .ab-hero .actions', {y:24, autoAlpha:0, duration:.8, stagger:.1}, .45);
-  gsap.to('.frame img', {yPercent:-6, ease:'none', scrollTrigger:{trigger:'.ab-hero', start:'top top', end:'bottom top', scrub:true}});
+    .from('.ab-hero .lede, .ab-hero .founder-note, .ab-hero .actions', {y:24, autoAlpha:0, duration:.8, stagger:.1}, .45);
+
+  // ---------- Portrait on scroll: zooms out, drifts up and turns as the hero leaves; text fades out ----------
+  gsap.timeline({scrollTrigger:{trigger:'.ab-hero', start:'top top', end:'bottom top', scrub:.8}})
+    .fromTo('.frame', {y:0, rotation:0}, {y:-70, rotation:-4, ease:'none', immediateRender:false}, 0)
+    .fromTo('.frame img', {scale:1.08, yPercent:0}, {scale:1, yPercent:-4, ease:'none', immediateRender:false}, 0)
+    .fromTo('.ab-photo .bg-leaf', {rotation:0, scale:1}, {rotation:24, scale:1.15, ease:'none', immediateRender:false}, 0)
+    .fromTo('.tag-leaf', {rotation:0, y:0}, {rotation:200, y:-40, ease:'none', immediateRender:false}, 0)
+    .fromTo('.ab-photo figcaption', {x:0, y:0}, {x:-24, y:-30, ease:'none', immediateRender:false}, 0)
+    .fromTo('.ab-copy', {autoAlpha:1, y:0}, {autoAlpha:0, y:-50, ease:'none', immediateRender:false}, .35);
+
+  // ---------- Portrait follows the cursor a little (desktop only) ----------
+  const photo = $('.ab-photo');
+  if (matchMedia('(pointer: fine)').matches) {
+    const rx = gsap.quickTo('.tilt', 'rotationX', {duration:.6, ease:'power3'}), ry = gsap.quickTo('.tilt', 'rotationY', {duration:.6, ease:'power3'});
+    photo.addEventListener('pointermove', e => {
+      const r = photo.getBoundingClientRect();
+      ry(((e.clientX - r.left) / r.width - .5) * 14); rx(-((e.clientY - r.top) / r.height - .5) * 14);
+    });
+    photo.addEventListener('pointerleave', () => { rx(0); ry(0); });
+  }
 
   // ---------- Journey: a vine grows along the path and each stop lights up as it reaches it ----------
   const journey = $('.journey'), stops = $$('.journey li');
   gsap.fromTo(journey, {'--p':0}, {'--p':1, ease:'none', scrollTrigger:{trigger:journey, start:'top 78%', end:'bottom 45%', scrub:.8,
     onUpdate:s => stops.forEach((li, i) => li.classList.toggle('on', s.progress >= i / (stops.length - 1) - .02))}});
-  gsap.from(stops, {y:30, autoAlpha:0, stagger:.08, duration:.6, ease:'power3.out', scrollTrigger:{trigger:journey, start:'top 85%', once:true}});
+  fade(stops, journey, {y:30, stagger:.07, d:.6, end:'bottom 5%'});
 
-  // ---------- Who: cards flip in like books being pulled off a shelf ----------
-  gsap.from('.who li', {rotationY:-70, x:60, autoAlpha:0, transformOrigin:'0% 50%', stagger:.1, duration:.9, ease:'power3.out',
-    scrollTrigger:{trigger:'.who', start:'top 85%', once:true}});
+  // ---------- Who: cards swing in like books pulled off a shelf, and back out ----------
+  fade('.who li', '.who', {y:40, stagger:.08, from:{rotationY:-50, transformOrigin:'0% 50%'}, to:{rotationY:0}});
 
-  // ---------- Vision: ambitions rise, their icons spin in ----------
-  gsap.from('.amb li', {y:60, autoAlpha:0, stagger:.12, duration:.9, ease:'power3.out', scrollTrigger:{trigger:'.amb', start:'top 85%', once:true}});
-  gsap.from('.amb .ic', {scale:0, rotation:-120, stagger:.12, duration:.8, ease:'back.out(2)', delay:.3, scrollTrigger:{trigger:'.amb', start:'top 85%', once:true}});
+  // ---------- Genres: rows drift in opposite directions, faster while scrolling, paused off screen ----------
+  const g1 = gsap.to('.g-row:not(.rev) .g-track', {xPercent:-50, ease:'none', duration:38, repeat:-1, paused:true});
+  const g2 = gsap.fromTo('.g-row.rev .g-track', {xPercent:-50}, {xPercent:0, ease:'none', duration:44, repeat:-1, paused:true});
+  ScrollTrigger.create({trigger:'.genres', start:'top bottom', end:'bottom top',
+    onToggle:st => [g1, g2].forEach(t => st.isActive ? t.play() : t.pause()),
+    onUpdate:st => { const v = 1 + Math.min(Math.abs(st.getVelocity()) / 300, 4); gsap.to([g1, g2], {timeScale:v, duration:.2, overwrite:true}); gsap.to([g1, g2], {timeScale:1, duration:1, delay:.2}); }});
+  fade('.genres', '.genres', {y:30});
 
-  // ---------- Promises: slide in, then the tick draws itself ----------
-  $$('.promises li').forEach((li, i) => {
-    gsap.timeline({scrollTrigger:{trigger:li, start:'top 88%', once:true}})
-      .from(li, {x:50, autoAlpha:0, duration:.7, ease:'power3.out'})
-      .from($('.chk', li), {scale:0, rotation:-90, duration:.6, ease:'back.out(2.4)'}, '-=.35');
+  // ---------- Vision: ambitions rise in and out; icons spin in ----------
+  fade('.amb li', '.amb', {y:60, stagger:.12, d:.9});
+  gsap.fromTo('.amb .ic', {scale:0, rotation:-120}, {scale:1, rotation:0, stagger:.12, duration:.8, ease:'back.out(2)', delay:.25,
+    scrollTrigger:{trigger:'.amb', start:'top 86%', end:'bottom 8%', toggleActions:'play reverse play reverse'}});
+
+  // ---------- Promises: each slides in, its tick pops; they fade as they leave ----------
+  $$('.promises li').forEach(li => {
+    gsap.timeline({scrollTrigger:{trigger:li, start:'top 88%', end:'bottom 6%', toggleActions:'play reverse play reverse'}})
+      .fromTo(li, {x:50, autoAlpha:0}, {x:0, autoAlpha:1, duration:.7, ease:'power3.out'})
+      .fromTo($('.chk', li), {scale:0, rotation:-90}, {scale:1, rotation:0, duration:.55, ease:'back.out(2.4)'}, '-=.35');
   });
-  gsap.from('.beyond', {y:30, autoAlpha:0, duration:.8, ease:'power3.out', scrollTrigger:{trigger:'.beyond', start:'top 88%', once:true}});
+  fade('.beyond', '.beyond', {y:30});
 
-  // ---------- Big quote: each word darkens as you scroll through it, then "remembered" is underlined ----------
+  // ---------- Big quote: words darken in, "remembered" is underlined, then the quote softens as it leaves ----------
   const q = $('#bigQuote'), qText = q.textContent.trim();
   q.setAttribute('aria-label', qText);
   q.innerHTML = qText.split(/\s+/).map(w => `<span class="qw" aria-hidden="true">${w}</span>`).join(' ');
   const qWords = $$('.qw', q), last = qWords[qWords.length - 1];
   last.insertAdjacentHTML('beforeend', INK);
-  gsap.timeline({scrollTrigger:{trigger:'.ab-quote', start:'top 75%', end:'center 45%', scrub:.6}})
+  gsap.timeline({scrollTrigger:{trigger:'.ab-quote', start:'top 80%', end:'bottom 15%', scrub:.6}})
     .fromTo(qWords, {opacity:.12, y:18}, {opacity:1, y:0, stagger:.15, ease:'power1.out'})
-    .fromTo(last, {'--ink-off':100}, {'--ink-off':0, duration:.6});
+    .fromTo(last, {'--ink-off':100}, {'--ink-off':0, duration:.6})
+    .to({}, {duration:.8})
+    .to(q, {opacity:.25, y:-30, duration:.8, ease:'none'});
+  fade('.ab-quote cite', '.ab-quote', {y:16, start:'top 60%'});
 
   // ---------- Call to action ----------
-  gsap.from('.ab-cta .actions > *, .socials > *', {y:24, autoAlpha:0, stagger:.08, duration:.6, ease:'power3.out', scrollTrigger:{trigger:'.ab-cta .actions', start:'top 90%', once:true}});
+  fade('.ab-cta .actions > *, .socials > *', '.ab-cta .actions', {y:24, stagger:.08, d:.6, start:'top 92%', end:'bottom -40%'});
   gsap.fromTo('.cta-leaf', {rotation:-25, scale:.8}, {rotation:6, scale:1, ease:'none', scrollTrigger:{trigger:'.ab-cta', start:'top bottom', end:'bottom top', scrub:true}});
-  gsap.from('.foot nav a, .foot .end > *', {y:18, autoAlpha:0, stagger:.06, duration:.6, ease:'power3.out', scrollTrigger:{trigger:'.foot', start:'top 95%', once:true}});
+  gsap.from('.foot nav a, .foot .end > *', {y:18, autoAlpha:0, stagger:.06, duration:.6, ease:'power3.out', scrollTrigger:{trigger:'.foot', start:'top 98%', once:true}});
 
   addEventListener('load', () => ScrollTrigger.refresh());
 })();

@@ -457,6 +457,10 @@ p{margin:0}
 .marquee-track ul{display:flex;gap:0;list-style:none;margin:0;padding:0}
 .marquee-track li{font:800 clamp(20px,2.6vw,30px) var(--display);color:var(--forest-deep);white-space:nowrap;display:flex;align-items:center}
 .marquee-track li::after{content:"";width:14px;height:14px;margin-inline:26px;background:var(--forest);border-radius:0 70% 0 70%}
+/* Genre strip: forest band under the formats strip, running the other way */
+.marquee.genre{background:var(--forest);border-top:none;padding-block:12px}
+.marquee.genre .marquee-track li{font:600 clamp(16px,1.8vw,21px) var(--display);color:var(--cream)}
+.marquee.genre .marquee-track li::after{width:10px;height:10px;margin-inline:20px;background:var(--gold-2)}
 
 /* ---------- Author marketing ---------- */
 /* The side sites on the ring can reach past the window edge; clip sideways so the page never scrolls horizontally */
@@ -1088,6 +1092,12 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
     <ul><li>Paperback</li><li>Hardcover</li><li>Ebook</li><li>EPUB</li><li>Kindle</li><li>Print-ready PDF</li><li>Children's book illustration</li><li>6 &times; 9 in</li><li>5.5 &times; 8.5 in</li><li>Author websites</li><li>Automated blogs</li></ul>
   </div>
 </div>
+<div class="marquee genre" aria-label="Genres we work across: Children's picture books, Middle grade, Young adult, Fantasy, Science fiction, Romance, Literary fiction, Historical fiction, Mystery, Thriller, Crime and true crime, Horror, Memoir, Poetry, Self-help, Business, Faith and inspirational, Cookbooks">
+  <div class="marquee-track" aria-hidden="true">
+    <ul><li>Children's picture books</li><li>Middle grade</li><li>Young adult</li><li>Fantasy</li><li>Science fiction</li><li>Romance</li><li>Literary fiction</li><li>Historical fiction</li><li>Mystery</li><li>Thriller</li><li>Crime &amp; true crime</li><li>Horror</li><li>Memoir</li><li>Poetry</li><li>Self-help</li><li>Business</li><li>Faith &amp; inspirational</li><li>Cookbooks</li></ul>
+    <ul><li>Children's picture books</li><li>Middle grade</li><li>Young adult</li><li>Fantasy</li><li>Science fiction</li><li>Romance</li><li>Literary fiction</li><li>Historical fiction</li><li>Mystery</li><li>Thriller</li><li>Crime &amp; true crime</li><li>Horror</li><li>Memoir</li><li>Poetry</li><li>Self-help</li><li>Business</li><li>Faith &amp; inspirational</li><li>Cookbooks</li></ul>
+  </div>
+</div>
 
 <!-- AUTHOR MARKETING -->
 <section class="section" id="marketing">
@@ -1547,13 +1557,15 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   });
 
   // ---------- Marquee speeds up and leans with scroll velocity ----------
-  const mq = gsap.to('.marquee-track', {xPercent:-50, ease:'none', duration:30, repeat:-1});
+  const mq = gsap.to('.marquee:not(.genre) .marquee-track', {xPercent:-50, ease:'none', duration:30, repeat:-1});
+  // The genre strip runs the opposite way and reacts to scroll speed with the formats strip
+  const mqG = gsap.fromTo('.marquee.genre .marquee-track', {xPercent:-50}, {xPercent:0, ease:'none', duration:46, repeat:-1});
   const skew = gsap.quickTo('.marquee-track li', 'skewX', {duration:.4, ease:'power3'});
   ScrollTrigger.create({trigger:'.marquee', start:'top bottom', end:'bottom top',
     onUpdate:s => {
       const v = s.getVelocity();
-      gsap.to(mq, {timeScale: s.direction * (1 + Math.min(Math.abs(v) / 250, 6)), duration:.25, overwrite:true});
-      gsap.to(mq, {timeScale: s.direction, duration:1.2, delay:.25});
+      gsap.to([mq, mqG], {timeScale: s.direction * (1 + Math.min(Math.abs(v) / 250, 6)), duration:.25, overwrite:true});
+      gsap.to([mq, mqG], {timeScale: s.direction, duration:1.2, delay:.25});
       skew(gsap.utils.clamp(-14, 14, -v / 120));
     },
     onLeave:() => skew(0), onLeaveBack:() => skew(0)});
