@@ -283,26 +283,41 @@ p{margin:0}
 .sb-desc{font:400 max(11px,6cqw)/1.5 var(--body);color:var(--muted)}
 .sb-hint{margin-top:auto;display:inline-flex;align-items:center;gap:2cqw;font:500 max(9px,4.2cqw) var(--mono);letter-spacing:.12em;text-transform:uppercase;opacity:.75}
 .sb-hint::before{content:"";width:3.4cqw;height:3.4cqw;border-radius:0 70% 0 70%;background:currentColor}
-.svc-ill{display:block;background:var(--paper);border:2px solid var(--s);border-radius:8px;padding:3cqw 2cqw 1cqw;box-shadow:3px 3px 0 var(--s);margin-top:2cqw}
+.svc-ill{display:block;overflow:hidden;background:var(--paper);border:2px solid var(--s);border-radius:8px;padding:3cqw 2cqw 1cqw;box-shadow:3px 3px 0 var(--s);margin-top:2cqw}
 .svc-ill svg{display:block;width:100%;height:auto;transition:transform .5s var(--spring)}
 .sbook:hover .svc-ill svg{transform:scale(1.07) rotate(-2deg)}
-.b2{--c:var(--leaf);--t:var(--forest-deep);--s:var(--moss)}
-.b3{--c:var(--cream);--t:var(--forest);--s:var(--forest)}
-.b4{--c:var(--gold-2);--t:var(--forest-deep);--s:var(--gold)}
-.b5{--c:var(--leaf-pale);--t:var(--forest);--s:var(--moss)}
+.b2,.bd-book.b2{--c:var(--leaf);--t:var(--forest-deep);--s:var(--moss)}
+.b3,.bd-book.b3{--c:var(--cream);--t:var(--forest);--s:var(--forest)}
+.b4,.bd-book.b4{--c:var(--gold-2);--t:var(--forest-deep);--s:var(--gold)}
+.b5,.bd-book.b5{--c:var(--leaf-pale);--t:var(--forest);--s:var(--moss)}
 /* Book pop-up: the chosen book flies to the middle of the screen and opens into a spread */
 .book-dlg{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;overflow:hidden;color:var(--ink)}
 .book-dlg::backdrop{background:rgba(3,39,26,.82)}
-.book-dlg[open]::backdrop{animation:bdfade .45s ease-out}
+.book-dlg[open]::backdrop{animation:bdfade .25s ease-out}
+.book-dlg.closing::backdrop{opacity:0;transition:opacity .3s ease-in}
 @keyframes bdfade{from{opacity:0}}
 .bd-stage{position:absolute;inset:0;perspective:2400px}
-.bd-book{--c:var(--forest);--t:var(--cream);--s:var(--forest-deep);--W:min(340px,44vw,calc((100vh - 140px) / 1.5));
+.bd-book{--c:var(--forest);--t:var(--cream);--s:var(--forest-deep);--a:var(--gold-2);will-change:transform;--W:min(340px,44vw,calc((100vh - 140px) / 1.5));
   position:absolute;left:calc(50% - var(--W) / 2);top:calc(50% - var(--W) * .75);width:var(--W);aspect-ratio:2/3;container-type:inline-size;transform-style:preserve-3d}
-.bd-book .sb-page{display:flex;box-shadow:8px 8px 0 var(--forest-deep)}
+/* The open spread wears the same colours as the closed book */
+.bd-book .sb-page{display:flex;overflow:hidden;gap:3.4cqw;padding:8cqw 7cqw 7cqw;background:var(--c);color:var(--t);border-color:var(--s);box-shadow:8px 8px 0 var(--forest-deep)}
+.bd-book .sb-page .sb-k{color:var(--t);opacity:.75}
+.bd-book .sb-page ul{color:var(--t);gap:2.6cqw;font-size:max(11px,5.2cqw)}
+.bd-book .sb-page li::before{background:var(--a)}
+.sb-out{font:400 max(10.5px,4.8cqw)/1.4 var(--body);padding-top:3cqw;border-top:2px solid var(--s)}
+.sb-out b{display:block;font:500 max(9px,4cqw) var(--mono);letter-spacing:.12em;text-transform:uppercase;opacity:.75;margin-bottom:1cqw}
+.bd-book .sb-add{background:var(--t);color:var(--c);border-color:var(--t);box-shadow:0 3px 0 var(--forest-deep)}
+.b2{--a:var(--forest)}.b3{--a:var(--leaf)}.b4{--a:var(--forest)}.b5{--a:var(--leaf)}
+@media (max-width:520px){.bd-book .sb-page{gap:1.4cqw;padding:6cqw 6cqw 5cqw}.bd-book .sb-page ul{gap:1cqw}.sb-out{padding-top:1.4cqw}}
 .bd-cover{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:left center}
-.bd-book .sb-back{display:flex;box-shadow:-8px 8px 0 var(--forest-deep)}
+.bd-book .sb-back{display:flex;overflow:hidden;background:var(--c);color:var(--t);border-color:var(--s);box-shadow:-8px 8px 0 var(--forest-deep)}
+.bd-book .sb-back .sb-title{color:var(--t)}
+.bd-book .sb-back .sb-desc{color:var(--t);opacity:.85}
 .bd-book .sb-hint{display:none}
-.bd-book .sb-back .svc-ill{margin-top:auto}
+/* The picture keeps a fixed slot at the foot of the page, so it never pushes past the edge */
+.bd-book .sb-back .svc-ill{margin-top:auto;flex:none;height:40cqw}
+.bd-book .sb-back .svc-ill svg{width:auto;height:100%;margin-inline:auto}
+.bd-cover{will-change:transform}
 .bd-close{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));right:max(18px,env(safe-area-inset-right,0px));--bg:var(--paper);--fg:var(--forest);--edge:var(--forest-deep);padding:10px 16px;font-size:14px}
 .bd-tip{position:absolute;left:0;right:0;padding-inline:max(16px,env(safe-area-inset-left,0px));text-wrap:balance;bottom:calc(20px + env(safe-area-inset-bottom,0px));text-align:center;font:500 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--leaf-pale)}
 @media (max-width:1100px){.shelf{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:46px}.shelf::after{display:none}.svc-head{grid-template-columns:1fr}}
@@ -733,7 +748,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
         <div class="sb-page" inert>
           <h3 class="sr-only">Book &amp; ebook publishing</h3><p class="sr-only">We prepare and release your book in print and as an ebook, set up and ready to sell.</p>
           <span class="sb-k">What's included</span>
-          <ul><li>Print-on-demand setup</li><li>Ebook store setup</li><li>Metadata, categories, keywords</li><li>Launch checklist</li></ul>
+          <ul><li>Print-on-demand setup</li><li>Ebook store setup</li><li>ISBN and barcode guidance</li><li>Metadata, categories, keywords</li><li>Pricing and territories</li><li>Launch checklist</li></ul>
+          <p class="sb-out"><b>You get</b>Live print and ebook listings</p>
           <button class="sb-add" type="button" data-check="sPub">Add to my brief &rarr;</button>
         </div>
         <button class="sb-cover" type="button" aria-haspopup="dialog" data-title="Book &amp; ebook publishing" aria-label="Book &amp; ebook publishing: open details">
@@ -745,7 +761,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
         <div class="sb-page" inert>
           <h3 class="sr-only">Editing</h3><p class="sr-only">Careful reading at the level your manuscript needs, from the shape of the story down to the commas.</p>
           <span class="sb-k">What's included</span>
-          <ul><li>Developmental editing</li><li>Line editing</li><li>Copyediting</li><li>Proofreading</li></ul>
+          <ul><li>Manuscript assessment</li><li>Developmental editing</li><li>Line editing</li><li>Copyediting</li><li>Proofreading</li><li>A style sheet for your book</li></ul>
+          <p class="sb-out"><b>You get</b>A tracked-changes manuscript with notes</p>
           <button class="sb-add" type="button" data-check="sEdit">Add to my brief &rarr;</button>
         </div>
         <button class="sb-cover" type="button" aria-haspopup="dialog" data-title="Editing" aria-label="Editing: open details">
@@ -757,7 +774,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
         <div class="sb-page" inert>
           <h3 class="sr-only">Formatting</h3><p class="sr-only">Interiors that read well on paper and reflow properly on every e-reader.</p>
           <span class="sb-k">What's included</span>
-          <ul><li>Print interior and trim size</li><li>Margins, bleed, running heads</li><li>EPUB and Kindle files</li><li>Front and back matter</li></ul>
+          <ul><li>Trim size and page layout</li><li>Margins, bleed, running heads</li><li>Chapter openers and drop caps</li><li>Front and back matter</li><li>EPUB and Kindle files</li><li>Print-ready PDF</li></ul>
+          <p class="sb-out"><b>You get</b>Print PDF and ebook files</p>
           <button class="sb-add" type="button" data-check="sFmt">Add to my brief &rarr;</button>
         </div>
         <button class="sb-cover" type="button" aria-haspopup="dialog" data-title="Formatting" aria-label="Formatting: open details">
@@ -769,7 +787,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
         <div class="sb-page" inert>
           <h3 class="sr-only">Cover design</h3><p class="sr-only">Covers made for your genre and readers, legible from a bookshop shelf to a phone screen.</p>
           <span class="sb-k">What's included</span>
-          <ul><li>Front cover</li><li>Full wrap with spine and back</li><li>Ebook cover</li><li>Promo mockups</li></ul>
+          <ul><li>Genre and market research</li><li>Initial cover concepts</li><li>Front cover</li><li>Full wrap with spine and back</li><li>Ebook cover</li><li>3D promo mockups</li></ul>
+          <p class="sb-out"><b>You get</b>Print wrap PDF and ebook cover</p>
           <button class="sb-add" type="button" data-check="sCov">Add to my brief &rarr;</button>
         </div>
         <button class="sb-cover" type="button" aria-haspopup="dialog" data-title="Cover design" aria-label="Cover design: open details">
@@ -781,7 +800,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
         <div class="sb-page" inert>
           <h3 class="sr-only">Illustration</h3><p class="sr-only">Pictures that carry the story, for children's books and any book that needs art inside.</p>
           <span class="sb-k">What's included</span>
-          <ul><li>Children's picture books</li><li>Chapter-book spot art</li><li>Maps and diagrams</li><li>Cover illustration</li></ul>
+          <ul><li>Character design</li><li>Children's picture book spreads</li><li>Chapter-book spot art</li><li>Maps and diagrams</li><li>Cover illustration</li><li>Print-ready art files</li></ul>
+          <p class="sb-out"><b>You get</b>High-resolution print files</p>
           <button class="sb-add" type="button" data-check="sIll">Add to my brief &rarr;</button>
         </div>
         <button class="sb-cover" type="button" aria-haspopup="dialog" data-title="Illustration" aria-label="Illustration: open details">
@@ -1186,7 +1206,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   // ---------- Services: open a book in a pop-up in the middle of the screen ----------
   const dlg2 = $('#bookDlg'), bdBook = $('#bdBook'), bdCover = $('#bdCover');
   const animated = () => window.gsap && !reduce;
-  let lent = null, bookTl = null;
+  let lent = null, shelfPose = null;
   const openBook2 = svc => {
     const src = $('.sbook', svc);
     bdBook.className = 'bd-book ' + [...src.classList].filter(c => /^b\d$/.test(c)).join(' ');
@@ -1206,18 +1226,27 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     // Fly from the shelf to the centre, then slide right and swing the cover open so the spread is centred
     const r = src.getBoundingClientRect();
     svc.classList.add('lent');
-    bookTl = gsap.timeline()
-      .fromTo(bdBook, {x:r.left + r.width / 2 - innerWidth / 2, y:r.top + r.height / 2 - innerHeight / 2, scale:r.width / W, rotationY:-14},
-        {x:0, y:0, scale:1, rotationY:0, duration:.6, ease:'power3.out'})
-      .fromTo(bdCover, {rotationY:0}, {rotationY:-178, duration:.85, ease:'power2.inOut'}, '+=.05')
-      .to(bdBook, {x:W / 2, duration:.85, ease:'power2.inOut'}, '<')
-      .from($$('#bdPage li, #bdPage .sb-add, #bdPage .sb-k'), {y:12, autoAlpha:0, stagger:.06, duration:.4, ease:'power2.out'}, '-=.35');
+    shelfPose = {x:r.left + r.width / 2 - innerWidth / 2, y:r.top + r.height / 2 - innerHeight / 2, scale:r.width / W, rotationY:-14};
+    // About 0.75s in all: the cover starts opening while the book is still settling
+    gsap.killTweensOf([bdBook, bdCover]);
+    dlg2.classList.remove('closing');
+    gsap.timeline()
+      .fromTo(bdBook, shelfPose, {x:0, y:0, scale:1, rotationY:0, duration:.38, ease:'power3.out'})
+      .fromTo(bdCover, {rotationY:0}, {rotationY:-178, duration:.5, ease:'power2.inOut'}, .22)
+      .to(bdBook, {x:W / 2, duration:.5, ease:'power2.inOut'}, .22)
+      .from($$('#bdPage .sb-k, #bdPage li, #bdPage .sb-out, #bdPage .sb-add'), {y:8, autoAlpha:0, stagger:.03, duration:.25, ease:'power2.out'}, .45);
   };
   const closeBook2 = () => {
     if (!dlg2.open) return;
-    const done = () => { dlg2.close(); window.kodLenis?.start(); if (lent) { lent.classList.remove('lent'); $('.sb-cover', lent).focus({preventScroll:true}); } lent = null; };
-    if (bookTl && animated()) { bookTl.timeScale(1.4).reverse().eventCallback('onReverseComplete', done); }
-    else done();
+    const done = () => { dlg2.classList.remove('closing'); dlg2.close(); bdBook.style.transform = bdCover.style.transform = ''; window.kodLenis?.start(); if (lent) { lent.classList.remove('lent'); $('.sb-cover', lent).focus({preventScroll:true}); } lent = null; };
+    if (!animated() || !shelfPose) { done(); return; }
+    // Close in about 0.5s: fold the cover shut while sliding back, then drop onto the shelf
+    gsap.killTweensOf([bdBook, bdCover]);
+    dlg2.classList.add('closing');
+    gsap.timeline({onComplete:done})
+      .to(bdCover, {rotationY:0, duration:.28, ease:'power2.in'}, 0)
+      .to(bdBook, {x:0, duration:.28, ease:'power2.in'}, 0)
+      .to(bdBook, {...shelfPose, duration:.26, ease:'power2.in'}, .24);
   };
   const addToBrief = b => {
     document.getElementById(b.dataset.check).checked = true;
