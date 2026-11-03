@@ -504,26 +504,62 @@ p{margin:0}
 .brief .lede{color:var(--leaf-pale)}
 .brief-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(30px,5vw,70px);align-items:start;position:relative;z-index:2}
 .brief-copy{display:grid;gap:20px;min-width:0}
-.form{background:var(--paper);color:var(--ink);border:2px solid var(--forest-deep);border-radius:20px;box-shadow:10px 10px 0 var(--forest-deep);padding:clamp(22px,3vw,34px);display:grid;gap:18px;min-width:0}
+.form{background:var(--paper);color:var(--ink);border:2px solid var(--forest-deep);border-radius:20px;box-shadow:10px 10px 0 var(--forest-deep);padding:clamp(22px,3vw,34px);display:grid;gap:20px;min-width:0}
+.form-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:2px solid var(--line)}
+.form-title{font:800 22px var(--display);color:var(--forest);letter-spacing:-.01em}
+.form-time{font:500 11.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--moss)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.field{display:grid;gap:6px;min-width:0}
-.field label,.legend{font:700 14px var(--display);color:var(--forest)}
-.field input,.field select,.field textarea{font:16px var(--body);color:var(--ink);background:var(--cream);border:2px solid var(--forest);border-radius:10px;padding:11px 13px;width:100%;transition:box-shadow .2s,transform .2s}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;box-shadow:4px 4px 0 var(--leaf);transform:translate(-2px,-2px)}
-.field textarea{min-height:96px;resize:vertical}
-fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
-.checks{display:flex;flex-wrap:wrap;gap:8px}
+.field{display:grid;gap:7px;min-width:0;align-content:start}
+.field label,.field-lbl,.legend{font:700 14px var(--display);color:var(--forest)}
+.opt{font-weight:500;font-size:12.5px;color:var(--muted);margin-left:3px}
+/* One typeface and one height for every control, so the form reads as a set */
+.field input,.field textarea{font:500 15.5px var(--display);color:var(--ink);background:var(--cream);border:2px solid var(--forest);border-radius:10px;padding:0 14px;width:100%;transition:box-shadow .2s,translate .2s}
+.field input{height:48px}
+.field textarea{min-height:104px;padding:12px 14px;line-height:1.5;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:#8a948c;opacity:1}
+.field input:focus,.field textarea:focus{outline:none;box-shadow:4px 4px 0 var(--leaf);translate:-2px -2px}
+/* Custom dropdown, styled like the other fields */
+.dd{position:relative}
+.dd-btn{all:unset;box-sizing:border-box;width:100%;height:48px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 14px;
+  background:var(--cream);border:2px solid var(--forest);border-radius:10px;font:500 15.5px var(--display);color:var(--ink);cursor:pointer;transition:box-shadow .2s,translate .2s}
+.dd-btn:focus-visible,.dd.open .dd-btn{box-shadow:4px 4px 0 var(--leaf);translate:-2px -2px}
+.dd-val{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dd-btn svg{flex:none;width:16px;height:16px;color:var(--forest);transition:rotate .25s var(--spring)}
+.dd.open .dd-btn svg{rotate:180deg}
+.dd-list{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:20;margin:0;padding:6px;list-style:none;background:var(--paper);border:2px solid var(--forest);
+  border-radius:12px;box-shadow:6px 6px 0 var(--forest);outline:none;transform-origin:top;animation:ddIn .18s ease-out}
+@keyframes ddIn{from{opacity:0;transform:translateY(-6px) scaleY(.96)}}
+.dd-list li{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font:500 15px/1.3 var(--display);color:var(--ink);cursor:pointer}
+.dd-list li::before{content:"";flex:none;width:12px;height:12px;border-radius:0 70% 0 70%;border:1.5px solid var(--line)}
+.dd-list li.active{background:var(--leaf-pale)}
+.dd-list li[aria-selected="true"]{color:var(--forest);font-weight:700}
+.dd-list li[aria-selected="true"]::before{background:var(--leaf);border-color:var(--leaf)}
+fieldset{border:none;padding:0;margin:0;min-width:0}
+/* Floated legend so it lays out like a normal label instead of sitting on the fieldset edge */
+.legend{float:left;width:100%;padding:0;margin-bottom:10px}
+.checks{clear:both;display:flex;flex-wrap:wrap;gap:8px}
 .check input{position:absolute;opacity:0}
-.check span{display:inline-block;padding:8px 13px;border:2px solid var(--forest);border-radius:9px;font:600 14px var(--display);color:var(--forest);background:var(--cream);cursor:pointer;transition:transform .2s var(--spring),background-color .2s,box-shadow .2s}
-.check input:checked+span{background:var(--leaf);box-shadow:3px 3px 0 var(--forest);transform:translate(-2px,-2px)}
+.check span{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border:2px solid var(--forest);border-radius:9px;font:600 14px var(--display);color:var(--forest);background:var(--cream);cursor:pointer;transition:translate .2s var(--spring),background-color .2s,box-shadow .2s}
+.check span::before{content:"+";width:.8em;text-align:center;font-weight:800}
+.check input:checked+span{background:var(--leaf);box-shadow:3px 3px 0 var(--forest);translate:-2px -2px}
+.check input:checked+span::before{content:"\2713"}
 .check input:focus-visible+span{outline:3px solid var(--gold);outline-offset:2px}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding-top:4px}
+.form-note{font:italic 14px var(--body);color:var(--muted);max-width:30ch}
+/* What happens next */
+.next{list-style:none;counter-reset:n;margin:10px 0 0;padding:0;display:grid;gap:18px}
+.next li{counter-increment:n;display:grid;grid-template-columns:42px 1fr;column-gap:16px;row-gap:2px;align-items:center}
+.next li::before{content:counter(n);grid-row:1 / 3;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--leaf);color:var(--forest-deep);
+  font:800 18px var(--display);border:2px solid var(--forest-deep);box-shadow:3px 3px 0 var(--forest-deep)}
+.next b{font:700 18px var(--display);color:var(--cream)}
+.next span{font-size:15px;color:var(--leaf-pale)}
 .out{display:grid;gap:12px;background:var(--leaf-pale);border:2px dashed var(--moss);border-radius:14px;padding:16px}
 .out pre{margin:0;white-space:pre-wrap;font:500 13px/1.6 var(--mono);color:var(--forest-deep);max-height:220px;overflow:auto}
 .out p{font-size:15px;color:var(--forest)}
 .out .ph{background:#f6e3b8;padding:0 4px;border-radius:4px}
 .err{color:#9a3412;font:600 14px var(--display)}
 .float-book{position:absolute;width:90px;height:126px;border-radius:3px 8px 8px 3px;border:2px solid var(--forest-deep);z-index:1}
-.float-book.f1{left:3%;bottom:8%;background:var(--leaf);border-left:9px solid var(--moss);box-shadow:6px 6px 0 var(--forest-deep);transform:rotate(-12deg)}
+.float-book.f1{left:2%;bottom:-36px;background:var(--leaf);border-left:9px solid var(--moss);box-shadow:6px 6px 0 var(--forest-deep);transform:rotate(-12deg)}
 .float-book.f2{right:4%;top:10%;background:var(--gold-2);border-left:9px solid var(--gold);box-shadow:6px 6px 0 var(--forest-deep);transform:rotate(10deg);width:70px;height:98px}
 .float-book.f3{right:42%;bottom:-30px;background:var(--cream);border-left:9px solid var(--forest-2);box-shadow:6px 6px 0 var(--forest-deep);transform:rotate(6deg);width:64px;height:90px}
 @media (max-width:900px){.brief-grid{grid-template-columns:1fr}.float-book.f3{display:none}}
@@ -1100,26 +1136,39 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     <div class="brief-copy">
       <p class="eyebrow" data-reveal>Start your book</p>
       <h2 class="h2" data-split data-mark="today.">Tell us where your book is today.</h2>
-      <p class="lede" data-reveal>Answer a few questions and we'll turn them into a short brief you can send to the studio. It takes about a minute.</p>
+      <p class="lede" data-reveal>Answer a few quick questions and we'll turn them into a short brief for the studio.</p>
+      <ol class="next" aria-label="What happens next">
+        <li><b>Fill in the brief</b><span>A few questions about your book and what it needs.</span></li>
+        <li><b>Send it to the studio</b><span>Copy the brief we build and email it to us.</span></li>
+        <li><b>Get your plan</b><span>We reply with the next steps for your book.</span></li>
+      </ol>
     </div>
     <form class="form" id="briefForm" novalidate data-reveal>
+      <div class="form-head"><p class="form-title">Your book brief</p><span class="form-time">About a minute</span></div>
       <div class="row2">
-        <div class="field"><label for="fName">Your name</label><input id="fName" name="name" autocomplete="name" required></div>
-        <div class="field"><label for="fEmail">Email</label><input id="fEmail" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="fName">Your name</label><input id="fName" name="name" autocomplete="name" required placeholder="Jane Author"></div>
+        <div class="field"><label for="fEmail">Email</label><input id="fEmail" name="email" type="email" autocomplete="email" required placeholder="you@example.com"></div>
       </div>
       <div class="row2">
-        <div class="field"><label for="fTitle">Working title</label><input id="fTitle" name="title" placeholder="Optional"></div>
-        <div class="field"><label for="fStage">Where is the book now?</label>
-          <select id="fStage" name="stage">
-            <option>Still writing</option>
-            <option selected>Manuscript finished</option>
-            <option>Edited, needs formatting and cover</option>
-            <option>Already published, needs marketing</option>
-          </select>
+        <div class="field"><label for="fTitle">Working title <span class="opt">(optional)</span></label><input id="fTitle" name="title" placeholder="Untitled is fine"></div>
+        <div class="field"><span class="field-lbl" id="fStageL">Where is the book now?</span>
+          <div class="dd" id="stageDD">
+            <button class="dd-btn" type="button" id="fStageBtn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="fStageL fStageBtn">
+              <span class="dd-val">Manuscript finished</span>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6l4.5 4.5L12.5 6"/></svg>
+            </button>
+            <ul class="dd-list" role="listbox" id="fStageList" aria-labelledby="fStageL" tabindex="-1" hidden>
+              <li role="option" id="stage0" data-v="Still writing" aria-selected="false">Still writing</li>
+              <li role="option" id="stage1" data-v="Manuscript finished" aria-selected="true">Manuscript finished</li>
+              <li role="option" id="stage2" data-v="Edited, needs formatting and cover" aria-selected="false">Edited, needs formatting and cover</li>
+              <li role="option" id="stage3" data-v="Already published, needs marketing" aria-selected="false">Already published, needs marketing</li>
+            </ul>
+            <input type="hidden" id="fStage" name="stage" value="Manuscript finished">
+          </div>
         </div>
       </div>
       <fieldset>
-        <legend class="legend">What do you need?</legend>
+        <legend class="legend">What do you need? <span class="opt">Pick any</span></legend>
         <div class="checks">
           <label class="check"><input type="checkbox" id="sPub" value="Book and ebook publishing" checked><span>Publishing</span></label>
           <label class="check"><input type="checkbox" id="sEdit" value="Editing"><span>Editing</span></label>
@@ -1130,11 +1179,12 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
           <label class="check"><input type="checkbox" id="sBlog" value="Automated blog"><span>Automated blog</span></label>
         </div>
       </fieldset>
-      <div class="field"><label for="fNote">Anything else?</label><textarea id="fNote" name="note" placeholder="Genre, word count, deadlines, questions"></textarea></div>
+      <div class="field"><label for="fNote">Anything else? <span class="opt">(optional)</span></label><textarea id="fNote" name="note" placeholder="Genre, word count, deadlines or questions"></textarea></div>
       <p class="err" id="formErr" role="alert" hidden></p>
-      <div><button class="btn btn-flip" type="submit"><span class="flip"><span>Build my brief</span><span>Ready when you are</span></span></button></div>
+      <div class="form-foot"><button class="btn btn-flip" type="submit"><span class="flip"><span>Build my brief</span><span>Ready when you are</span></span></button>
+        <p class="form-note">Nothing is sent from this page. You choose when to email it.</p></div>
       <div class="out" id="briefOut" hidden>
-        <p><strong>Your brief is ready.</strong> Copy it and email it to the studio at <span class="ph">[studio email]</span>.</p>
+        <p><strong>Your brief is ready.</strong> Copy it and send it to the studio at <span class="ph">[studio email]</span>.</p>
         <pre id="briefText"></pre>
         <div><button class="btn btn-stamp" type="button" id="copyBtn">Copy brief <span class="tick" aria-hidden="true">&#10003;</span></button></div>
       </div>
@@ -1166,6 +1216,43 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   const head = $('#head');
   const onScroll = () => head.classList.toggle('scrolled', scrollY > 8);
   addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  // ---------- "Where is the book now?" dropdown: button + listbox, keyboard friendly ----------
+  const dd = $('#stageDD'), ddBtn = $('.dd-btn', dd), ddList = $('.dd-list', dd), ddOpts = $$('[role=option]', dd);
+  let ddActive = 0;
+  const ddSet = i => {
+    ddOpts.forEach((o, k) => o.setAttribute('aria-selected', k === i));
+    $('#fStage').value = ddOpts[i].dataset.v; $('.dd-val', dd).textContent = ddOpts[i].textContent;
+  };
+  const ddFocus = i => {
+    ddActive = (i + ddOpts.length) % ddOpts.length;
+    ddOpts.forEach((o, k) => o.classList.toggle('active', k === ddActive));
+    ddList.setAttribute('aria-activedescendant', ddOpts[ddActive].id);
+  };
+  const ddOpen = () => {
+    dd.classList.add('open'); ddBtn.setAttribute('aria-expanded', 'true'); ddList.hidden = false;
+    ddFocus(Math.max(0, ddOpts.findIndex(o => o.getAttribute('aria-selected') === 'true'))); ddList.focus();
+  };
+  const ddClose = (refocus = true) => {
+    dd.classList.remove('open'); ddBtn.setAttribute('aria-expanded', 'false'); ddList.hidden = true;
+    if (refocus) ddBtn.focus();
+  };
+  ddBtn.addEventListener('click', () => dd.classList.contains('open') ? ddClose() : ddOpen());
+  ddBtn.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); ddOpen(); } });
+  ddList.addEventListener('keydown', e => {
+    const k = e.key;
+    if (k === 'ArrowDown' || k === 'ArrowUp' || k === 'Home' || k === 'End') {
+      e.preventDefault();
+      ddFocus(k === 'Home' ? 0 : k === 'End' ? ddOpts.length - 1 : ddActive + (k === 'ArrowDown' ? 1 : -1));
+    } else if (k === 'Enter' || k === ' ') { e.preventDefault(); ddSet(ddActive); ddClose(); }
+    else if (k === 'Escape') { e.preventDefault(); e.stopPropagation(); ddClose(); }
+    else if (k === 'Tab') ddClose(false);
+  });
+  ddOpts.forEach((o, i) => {
+    o.addEventListener('click', () => { ddSet(i); ddClose(); });
+    o.addEventListener('pointermove', () => ddFocus(i));
+  });
+  document.addEventListener('click', e => { if (dd.classList.contains('open') && !dd.contains(e.target)) ddClose(false); });
 
   // ---------- Brief builder (works without animation) ----------
   const form = $('#briefForm'), out = $('#briefOut'), text = $('#briefText'), err = $('#formErr');
@@ -1514,6 +1601,8 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
   restartAuto();
   gsap.from('.ring-stage', {scale:.85, autoAlpha:0, duration:.9, ease:'power3.out', scrollTrigger:{trigger:'.mk-visual', start:'top 85%', once:true}});
 
+  gsap.from('.next li', {x:-24, autoAlpha:0, stagger:.12, duration:.6, ease:'power3.out', scrollTrigger:{trigger:'.next', start:'top 85%', once:true}});
+
   // ---------- Brief: books drift past the form ----------
   gsap.utils.toArray('.float-book').forEach((b, i) => gsap.to(b, {y:-(80 + i * 60), rotation:(i % 2 ? -1 : 1) * 24, ease:'none',
     scrollTrigger:{trigger:'.brief', start:'top bottom', end:'bottom top', scrub:true}}));
@@ -1527,7 +1616,7 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     '#covers':    [[96,24,1,'leaf',20],[3,70,.8,'gold',-40]],
     '.process':   [[90,12,1,'leaf',-10],[6,60,.9,'gold',30],[60,88,.7,'leaf',60]],
     '#marketing': [[3,20,.9,'gold',10],[94,70,1.1,'leaf',-30]],
-    '#brief':     [[48,8,.8,'leaf',20],[30,90,1,'gold',-20]]
+    '#brief':     [[47,6,.8,'leaf',20],[94,88,1,'gold',-20]]
   };
   const COL = {leaf:'#7aad26', moss:'#4b7a1f', gold:'#e2ab3a'};
   Object.entries(DRIFT).forEach(([sel, list]) => {
