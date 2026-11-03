@@ -8,7 +8,12 @@
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#073b22">
+<meta name="theme-color" content="#f8f1e6">
+<link rel="manifest" href="site.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kodsinc">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Literata:ital,opsz,wght@0,7..72,400..600;1,7..72,400&family=JetBrains+Mono:wght@500&display=swap">
@@ -30,9 +35,14 @@
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
 html:not(.lenis){scroll-behavior:smooth}
+/* Phones: no font inflation */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
-body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65;overflow-x:hidden}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+/* Taps act at once (no double-tap zoom wait) and long presses on controls don't select text */
+a,button,summary{touch-action:manipulation}
+button,.btn,.tabbar,.soc{-webkit-user-select:none;user-select:none}
 img{max-width:100%;display:block}
 a{color:inherit}
 h1,h2,h3{font-family:var(--display);line-height:1.02;letter-spacing:-.02em;margin:0;text-wrap:balance;color:var(--forest)}
@@ -57,34 +67,35 @@ p{margin:0}
 .btn{--bg:var(--forest);--fg:var(--cream);--edge:var(--forest-deep);position:relative;display:inline-flex;align-items:center;gap:10px;padding:14px 24px;
   font:700 16px/1 var(--display);text-decoration:none;color:var(--fg);background:var(--bg);border:2px solid var(--edge);border-radius:12px;cursor:pointer;
   box-shadow:0 6px 0 var(--edge);transition:translate .18s var(--ease-out),box-shadow .18s var(--ease-out),color .3s,background-color .3s}
-.btn:hover{translate:0 -3px;box-shadow:0 9px 0 var(--edge)}
+@media (hover:hover){.btn:hover{translate:0 -3px;box-shadow:0 9px 0 var(--edge)}}
 .btn:active{translate:0 6px;box-shadow:0 0 0 var(--edge);transition-duration:.06s}
 .btn-fold{overflow:hidden}
 .btn-fold::after{content:"";position:absolute;top:-2px;right:-2px;width:0;height:0;background:linear-gradient(225deg,var(--cream) 50%,var(--gold-2) 50%);
   box-shadow:-2px 2px 0 rgba(3,39,26,.35);border-bottom-left-radius:4px;transition:width .32s var(--spring),height .32s var(--spring)}
-.btn-fold:hover::after,.btn-fold:focus-visible::after{width:22px;height:22px}
+.btn-fold:focus-visible::after{width:22px;height:22px}@media (hover:hover){.btn-fold:hover::after{width:22px;height:22px}}
 .btn-sprout{--bg:var(--leaf);--fg:var(--forest-deep);--edge:var(--forest)}
 .btn-sprout .sprout{position:absolute;right:14px;top:-24px;width:30px;height:30px;transform-origin:20% 100%;transform:scale(0) rotate(-50deg);transition:transform .45s var(--spring)}
-.btn-sprout:hover .sprout,.btn-sprout:focus-visible .sprout{transform:scale(1) rotate(0)}
+.btn-sprout:focus-visible .sprout{transform:scale(1) rotate(0)}@media (hover:hover){.btn-sprout:hover .sprout{transform:scale(1) rotate(0)}}
 .btn-sprout .arr{transition:translate .3s var(--spring)}
-.btn-sprout:hover .arr{translate:5px 0}
+@media (hover:hover){.btn-sprout:hover .arr{translate:5px 0}}
 .btn-ink{--bg:transparent;--fg:var(--forest);--edge:var(--forest);overflow:hidden;isolation:isolate}
 .btn-ink::before{content:"";position:absolute;left:50%;top:110%;width:260%;aspect-ratio:1;z-index:-1;background:var(--forest);border-radius:42%;transform:translateX(-50%);transition:top .6s var(--ease-out)}
-.btn-ink:hover,.btn-ink:focus-visible{--fg:var(--cream)}
-.btn-ink:hover::before,.btn-ink:focus-visible::before{top:-60%;animation:ink 3s linear infinite}
+.btn-ink:focus-visible{--fg:var(--cream)}@media (hover:hover){.btn-ink:hover{--fg:var(--cream)}}
+.btn-ink:focus-visible::before{top:-60%;animation:ink 3s linear infinite}@media (hover:hover){.btn-ink:hover::before{top:-60%;animation:ink 3s linear infinite}}
 @keyframes ink{to{transform:translateX(-50%) rotate(360deg)}}
 .btn-ink.on-dark{--fg:var(--cream);--edge:var(--cream)}
 .btn-ink.on-dark::before{background:var(--cream)}
-.btn-ink.on-dark:hover,.btn-ink.on-dark:focus-visible{--fg:var(--forest)}
+.btn-ink.on-dark:focus-visible{--fg:var(--forest)}@media (hover:hover){.btn-ink.on-dark:hover{--fg:var(--forest)}}
 
 /* Header */
-.site-head{position:sticky;top:0;z-index:50;background:var(--cream);border-bottom:2px solid transparent;transition:border-color .3s}
+/* The header reaches up under the status bar / notch when the site runs full screen */
+.site-head{position:sticky;top:0;padding-top:env(safe-area-inset-top,0px);z-index:50;background:var(--cream);border-bottom:2px solid transparent;transition:border-color .3s}
 .site-head.scrolled{border-bottom-color:var(--forest)}
 .head-in{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-block:12px}
 .brand img{height:52px;width:auto}
 .nav{display:flex;gap:26px}
 .nav a{font:600 15px var(--display);text-decoration:none;color:var(--forest);padding-block:4px;background:linear-gradient(var(--leaf),var(--leaf)) 0 100%/0% 3px no-repeat;transition:background-size .35s var(--ease-out)}
-.nav a:hover,.nav a:focus-visible,.nav a[aria-current="page"]{background-size:100% 3px}
+.nav a:focus-visible,.nav a[aria-current="page"]{background-size:100% 3px}@media (hover:hover){.nav a:hover{background-size:100% 3px}}
 @media (max-width:900px){.nav{display:none}.brand img{height:40px}.site-head .btn{padding:11px 16px;font-size:14px}}
 
 /* Decorative leaves may reach past the edges; never let them make the page scroll sideways */
@@ -143,7 +154,7 @@ main{overflow-x:clip}
 .who{list-style:none;margin:52px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px;perspective:1600px}
 .who li{--c:var(--forest);--t:var(--cream);--s:var(--forest-deep);min-height:230px;display:flex;flex-direction:column;gap:12px;padding:20px 18px;background:var(--c);color:var(--t);
   border:2px solid var(--s);border-left:10px solid var(--s);border-radius:4px 14px 14px 4px;box-shadow:7px 7px 0 var(--s);transition:translate .35s var(--spring),rotate .35s var(--spring)}
-.who li:hover{translate:0 -8px;rotate:-1.5deg}
+@media (hover:hover){.who li:hover{translate:0 -8px;rotate:-1.5deg}}
 .who li:nth-child(2){--c:var(--leaf);--t:var(--forest-deep);--s:var(--moss)}
 .who li:nth-child(3){--c:var(--cream);--t:var(--forest);--s:var(--forest)}
 .who li:nth-child(4){--c:var(--gold-2);--t:var(--forest-deep);--s:var(--gold)}
@@ -165,7 +176,7 @@ main{overflow-x:clip}
 .gbook::before{content:"";display:block;width:22px;height:3px;border-radius:2px;background:currentColor;opacity:.55}
 .gbook::after{content:"";align-self:flex-end;width:11px;height:11px;border-radius:0 70% 0 70%;background:var(--gold-2)}
 .gbook span{font:700 13.5px/1.15 var(--display);hyphens:auto;-webkit-hyphens:auto;overflow-wrap:normal}
-.gbook:hover{translate:0 -8px;rotate:0deg;box-shadow:6px 8px 0 var(--s)}
+@media (hover:hover){.gbook:hover{translate:0 -8px;rotate:0deg;box-shadow:6px 8px 0 var(--s)}}
 .gbook.g2{--c:var(--leaf);--t:var(--forest-deep);--s:var(--moss)}
 .gbook.g3{--c:var(--cream);--t:var(--forest);--s:var(--forest)}
 .gbook.g4{--c:var(--gold-2);--t:var(--forest-deep);--s:var(--gold)}
@@ -201,7 +212,7 @@ main{overflow-x:clip}
 .beyond b{font:800 20px var(--display);color:var(--forest)}
 .beyond p{font-size:16px;color:var(--ink)}
 .beyond a{justify-self:start;font:700 15px var(--display);color:var(--forest);text-decoration:none;padding-bottom:2px;background:linear-gradient(var(--leaf),var(--leaf)) 0 100% / 100% 2px no-repeat}
-.beyond a:hover{color:var(--moss)}
+@media (hover:hover){.beyond a:hover{color:var(--moss)}}
 @media (max-width:900px){.ab-promise .grid{grid-template-columns:1fr}.ab-promise .head{position:static}}
 
 /* ---------- Big quote ---------- */
@@ -222,7 +233,7 @@ main{overflow-x:clip}
 .soc{display:inline-flex;align-items:center;gap:10px;padding:10px 16px 10px 12px;border-radius:999px;border:2px solid var(--leaf-pale);color:var(--cream);
   text-decoration:none;font:600 15px var(--display);transition:background-color .25s,color .25s,translate .25s var(--spring)}
 .soc svg{width:20px;height:20px;fill:currentColor}
-.soc:hover,.soc:focus-visible{background:var(--cream);color:var(--forest);translate:0 -3px}
+.soc:focus-visible{background:var(--cream);color:var(--forest);translate:0 -3px}@media (hover:hover){.soc:hover{background:var(--cream);color:var(--forest);translate:0 -3px}}
 .cta-leaf{position:absolute;right:-60px;bottom:-80px;width:min(440px,60vw);opacity:.9;pointer-events:none}
 
 /* ---------- Footer ---------- */
@@ -231,11 +242,11 @@ main{overflow-x:clip}
 .foot img{height:86px;width:auto}
 .foot nav{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:center}
 .foot nav a{font:600 15px var(--display);text-decoration:none;color:var(--forest)}
-.foot nav a:hover{color:var(--moss)}
+@media (hover:hover){.foot nav a:hover{color:var(--moss)}}
 .foot .end{display:grid;gap:10px;justify-items:end}
 .foot .mini{display:flex;gap:10px}
 .foot .mini a{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--forest);color:var(--forest);transition:background-color .25s,color .25s}
-.foot .mini a:hover{background:var(--forest);color:var(--cream)}
+@media (hover:hover){.foot .mini a:hover{background:var(--forest);color:var(--cream)}}
 .foot .mini svg{width:17px;height:17px;fill:currentColor}
 .foot small{font:500 12px var(--mono);letter-spacing:.08em;color:var(--muted)}
 @media (max-width:760px){.foot-in{grid-template-columns:1fr;justify-items:start}.foot nav{justify-content:flex-start}.foot .end{justify-items:start}}
@@ -245,36 +256,46 @@ main{overflow-x:clip}
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
 }
 
-/* ---------- Phone-only, app-style interface ---------- */
+/* ---------- Phone and tablet, app-style interface ---------- */
 .tabbar,.swipe-hint{display:none}
-@media (max-width:760px){
-  /* Floating tab bar with a raised Start button, like a native app */
+/* Floating tab bar with a raised Start button, like a native app. Phones, and tablets held upright (which would
+   otherwise have no navigation at all between 761 and 860px). Not on short landscape phones, where it would cover a
+   quarter of the screen; the header's Start button shows there instead. */
+@media (max-width:760px) and (min-height:441px), (max-width:860px) and (min-height:600px){
   .tabbar{display:grid;grid-template-columns:repeat(5,1fr);align-items:end;position:fixed;z-index:70;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));
-    bottom:calc(10px + env(safe-area-inset-bottom,0px));height:66px;padding:0 4px 8px;background:rgba(255,250,242,.93);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
+    bottom:calc(10px + env(safe-area-inset-bottom,0px));height:66px;max-width:520px;margin-inline:auto;padding:0 4px 8px;background:rgba(255,250,242,.93);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
     border:2px solid var(--forest);border-radius:22px;box-shadow:0 5px 0 var(--forest)}
-  .tabbar a{display:grid;justify-items:center;gap:2px;text-decoration:none;color:var(--muted);font:600 10.5px/1.2 var(--display);-webkit-tap-highlight-color:transparent;transition:color .2s,scale .15s}
+  /* Reading progress runs along the top of the bar, standing in for the desktop vine */
+  .tabbar::before{content:"";position:absolute;left:20px;right:20px;top:4px;height:3px;border-radius:2px;background:var(--leaf);transform-origin:left;transform:scaleX(var(--read,0));pointer-events:none}
+  .tabbar a{display:grid;justify-items:center;gap:2px;text-decoration:none;color:var(--muted);font:600 10.5px/1.2 var(--display);-webkit-touch-callout:none;transition:color .2s,scale .15s}
   .tabbar a .ic{display:grid;place-items:center;width:48px;height:30px;border-radius:15px;transition:background-color .25s,color .25s}
   .tabbar a svg{width:22px;height:22px}
   .tabbar a.on{color:var(--forest)}
   .tabbar a.on .ic{background:var(--leaf-pale)}
   .tabbar a:active{scale:.9}
+  .tabbar a:active .ic{background:var(--leaf-pale)}
   .tabbar .tab-cta{color:var(--forest)}
-  .tabbar .tab-cta .ic{width:54px;height:54px;border-radius:50%;background:var(--forest);color:var(--cream);border:2px solid var(--forest-deep);box-shadow:0 4px 0 var(--forest-deep);translate:0 -14px;margin-bottom:-14px}
+  .tabbar .tab-cta .ic{position:relative;z-index:1;width:54px;height:54px;border-radius:50%;background:var(--forest);color:var(--cream);border:2px solid var(--forest-deep);box-shadow:0 4px 0 var(--forest-deep);translate:0 -14px;margin-bottom:-14px}
+  .tabbar .tab-cta:active .ic{background:var(--forest-2)}
   .tabbar .tab-cta.on .ic{background:var(--leaf);color:var(--forest-deep)}
   body{padding-bottom:calc(98px + env(safe-area-inset-bottom,0px))}
   .site-head .btn{display:none}
   .head-in{padding-block:10px}
+}
+@media (max-width:760px){
   /* Swipeable rows that snap card by card and peek at the next one */
   .swipe{display:flex!important;grid-template-columns:none!important;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;
     margin-inline:calc(-1 * max(20px,env(safe-area-inset-left,0px)));padding-inline:max(20px,env(safe-area-inset-left,0px));scroll-padding-inline:max(20px,env(safe-area-inset-left,0px))}
   .swipe::-webkit-scrollbar{display:none}
   .swipe > *{scroll-snap-align:start;flex:0 0 auto}
-  .swipe-hint{display:flex;align-items:center;gap:8px;margin-top:14px;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
-  .swipe-hint::after{content:"";width:28px;height:2px;background:currentColor;animation:hint 1.6s ease-in-out infinite}
+  /* The hint nudges a few times, then fades once the row has been swiped */
+  .swipe-hint{display:flex;align-items:center;gap:8px;margin-top:14px;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--moss);transition:opacity .5s}
+  .swipe-hint::after{content:"";width:28px;height:2px;background:currentColor;animation:hint 1.6s ease-in-out 5}
+  .swipe-hint.done{opacity:0}
   @keyframes hint{0%,100%{translate:0 0}50%{translate:6px 0}}
-  /* Form controls at 16px so iPhones don't zoom in when typing */
-  input,textarea,select,.dd-btn{font-size:16px!important}
 }
+/* Form controls at 16px on touch screens so iOS doesn't zoom in when typing */
+@media (pointer:coarse){input,textarea,select,.dd-btn{font-size:16px!important}}
 @media (max-width:760px){
   .who.swipe{gap:14px;padding-block:6px 14px}
   .who.swipe li{width:68%;min-height:210px}
@@ -293,7 +314,7 @@ main{overflow-x:clip}
 
 <header class="site-head" id="head">
   <div class="wrap head-in">
-    <a class="brand" href="index.html" aria-label="Kodsinc Studio home"><img src="assets/logo.webp" alt="Kodsinc Studio"></a>
+    <a class="brand" href="index.html" aria-label="Kodsinc Studio home"><img src="assets/logo-780.webp" alt="Kodsinc Studio" width="780" height="260"></a>
     <nav class="nav" aria-label="Main">
       <a href="index.html#services">Services</a>
       <a href="index.html#covers">Covers</a>
@@ -470,7 +491,7 @@ main{overflow-x:clip}
 
 <footer class="foot">
   <div class="wrap foot-in">
-    <img src="assets/logo.webp" alt="Kodsinc Studio">
+    <img src="assets/logo-780.webp" alt="Kodsinc Studio" width="780" height="260">
     <nav aria-label="Footer">
       <a href="index.html#services">Services</a><a href="index.html#covers">Covers</a><a href="index.html#process">Process</a><a href="index.html#marketing">Author marketing</a><a href="about.html">About</a><a href="index.html#brief">Start your book</a>
     </nav>
@@ -496,8 +517,16 @@ main{overflow-x:clip}
   const onScroll = () => head.classList.toggle('scrolled', scrollY > 8);
   addEventListener('scroll', onScroll, {passive:true}); onScroll();
 
+  // Swipe row hint retires once the row has been swiped (works with or without animation)
+  $$('.swipe').forEach(row => {
+    const hint = row.nextElementSibling?.classList.contains('swipe-hint') ? row.nextElementSibling : null;
+    if (hint) row.addEventListener('scroll', () => { if (row.scrollLeft > 40) hint.classList.add('done'); }, {passive:true});
+  });
+
   if (!window.gsap || !window.ScrollTrigger || reduce) return;
   gsap.registerPlugin(ScrollTrigger);
+  // Touch screens: the address bar sliding in and out must never re-measure the page mid-scroll
+  ScrollTrigger.config({ignoreMobileResize:true});
 
   if (window.Lenis && matchMedia('(pointer: fine)').matches) {
     const lenis = new Lenis({lerp:.09});
@@ -558,8 +587,15 @@ main{overflow-x:clip}
     .fromTo('.frame', {y:0, rotation:0, scale:1}, {y:-80, rotation:-4, scale:.94, ease:'none', immediateRender:false}, 0)
     .fromTo('.ab-photo .bg-leaf', {rotation:0, scale:1}, {rotation:24, scale:1.15, ease:'none', immediateRender:false}, 0)
     .fromTo('.tag-leaf', {rotation:0, y:0}, {rotation:200, y:-40, ease:'none', immediateRender:false}, 0)
-    .fromTo('.ab-photo figcaption', {x:0, y:0}, {x:-24, y:-30, ease:'none', immediateRender:false}, 0)
-    .fromTo('.ab-copy', {autoAlpha:1, y:0}, {autoAlpha:0, y:-50, ease:'none', immediateRender:false}, .35);
+    .fromTo('.ab-photo figcaption', {x:0, y:0}, {x:-24, y:-30, ease:'none', immediateRender:false}, 0);
+  // The intro text fades as it leaves. Side by side with the portrait it follows the hero; stacked under the
+  // portrait (tablets and phones) it follows its own position, so it never fades while it is still being read.
+  const copyOut = {autoAlpha:0, y:-50, ease:'none', immediateRender:false};
+  gsap.matchMedia()
+    .add('(min-width: 901px)', () => gsap.fromTo('.ab-copy', {autoAlpha:1, y:0}, {...copyOut,
+      scrollTrigger:{trigger:'.ab-hero', start:() => 'top+=' + Math.round($('.ab-hero').offsetHeight * .41) + ' top', end:'bottom top', scrub:.8, invalidateOnRefresh:true}}))
+    .add('(max-width: 900px)', () => gsap.fromTo('.ab-copy', {autoAlpha:1, y:0}, {...copyOut, y:-36,
+      scrollTrigger:{trigger:'.ab-copy', start:'bottom 40%', end:'bottom 4%', scrub:.6}}));
 
   // ---------- Portrait follows the cursor a little (desktop only) ----------
   const photo = $('.ab-photo');
@@ -616,7 +652,12 @@ main{overflow-x:clip}
   gsap.fromTo('.cta-leaf', {rotation:-25, scale:.8}, {rotation:6, scale:1, ease:'none', scrollTrigger:{trigger:'.ab-cta', start:'top bottom', end:'bottom top', scrub:true}});
   gsap.from('.foot nav a, .foot .end > *', {y:18, autoAlpha:0, stagger:.06, duration:.6, ease:'power3.out', scrollTrigger:{trigger:'.foot', start:'top 98%', once:true}});
 
+  // Reading progress along the top of the phone tab bar
+  const tabbar = $('.tabbar');
+  if (tabbar) ScrollTrigger.create({start:0, end:'max', onUpdate:st => tabbar.style.setProperty('--read', st.progress.toFixed(4))});
+
   addEventListener('load', () => ScrollTrigger.refresh());
+  document.fonts?.ready.then(() => ScrollTrigger.refresh());
 })();
 </script>
 </body>

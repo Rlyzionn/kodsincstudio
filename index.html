@@ -9,7 +9,12 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#073b22">
+<meta name="theme-color" content="#f8f1e6">
+<link rel="manifest" href="site.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kodsinc">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="description" content="Kodsinc Studio publishes, edits, formats and designs books and ebooks, then markets authors with automated blogs and author websites.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,11 +39,17 @@
 [hidden]{display:none!important}
 /* Native smooth scroll only when Lenis is not driving the page; the two fight and make scrolling jump */
 html:not(.lenis){scroll-behavior:smooth}
+/* Phones: no font inflation, and in-page jumps land below the sticky header */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(76px + env(safe-area-inset-top,0px))}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
 .lenis.lenis-stopped{overflow:hidden}
-body{background:var(--cream);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65;overflow-x:hidden}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--cream)}
+/* While a sheet or pop-up is open the page behind it stays put */
+html.locked,html.locked body{overflow:hidden}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+/* Taps act at once (no double-tap zoom wait) and long presses on controls don't select text */
+a,button,label,summary,[role=option],[role=button]{touch-action:manipulation}
+button,.btn,.tabbar,.ring-btn,.sb-cover,.pbook,.check span{-webkit-user-select:none;user-select:none}
 img{max-width:100%;display:block}
 a{color:inherit}
 h1,h2,h3{font-family:var(--display);line-height:1.02;letter-spacing:-.02em;margin:0;text-wrap:balance;color:var(--forest)}
@@ -53,7 +64,15 @@ p{margin:0}
 .section>.wrap,.process .pin{position:relative;z-index:1}
 /* Drifting leaves behind each section, moved by scroll */
 .drifts{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.drift{position:absolute;display:block;opacity:.9}
+.drift{position:absolute;display:block;opacity:.9;left:var(--x);width:var(--w)}
+/* Narrower screens have no side margins to hide in: leaves tuck half off the screen edge, smaller, and sit above
+   the content (they never take taps). Being on top also keeps whole sections from being promoted to GPU layers. */
+@media (max-width:1099px){
+  .drifts{z-index:2}
+  .drift{width:calc(var(--w) * .78)}
+  .drift.dl{left:calc(var(--w) * -.36)}
+  .drift.dr{left:auto;right:calc(var(--w) * -.36)}
+}
 .drift svg{display:block;width:100%;height:auto;transform-origin:50% 100%;animation:sway 5s ease-in-out infinite}
 .idle .drift svg,.hero.idle .leafbg,.hero.idle .sprout-sway{animation-play-state:paused}
 /* Reading progress as a vine that grows down the left edge */
@@ -89,7 +108,7 @@ p{margin:0}
   border:2px solid var(--edge);border-radius:12px;cursor:pointer;
   box-shadow:0 6px 0 var(--edge);transform:translateY(0);
   transition:transform .18s var(--ease-out),box-shadow .18s var(--ease-out),color .3s,background-color .3s}
-.btn:hover{transform:translateY(-3px);box-shadow:0 9px 0 var(--edge)}
+@media (hover:hover){.btn:hover{transform:translateY(-3px);box-shadow:0 9px 0 var(--edge)}}
 .btn:active{transform:translateY(6px);box-shadow:0 0 0 var(--edge);transition-duration:.06s}
 
 /* 1. Page fold: the top-right corner folds down like a dog-eared page */
@@ -98,25 +117,25 @@ p{margin:0}
   background:linear-gradient(225deg,var(--cream) 50%,var(--gold-2) 50%);
   box-shadow:-2px 2px 0 rgba(3,39,26,.35);border-bottom-left-radius:4px;
   transition:width .32s var(--spring),height .32s var(--spring)}
-.btn-fold:hover::after,.btn-fold:focus-visible::after{width:22px;height:22px}
+.btn-fold:focus-visible::after{width:22px;height:22px}@media (hover:hover){.btn-fold:hover::after{width:22px;height:22px}}
 .btn-fold .lbl{transition:transform .32s var(--spring)}
-.btn-fold:hover .lbl{transform:translateX(-4px)}
+@media (hover:hover){.btn-fold:hover .lbl{transform:translateX(-4px)}}
 
 /* 2. Sprout: a leaf grows out of the button and the arrow steps forward */
 .btn-sprout{--bg:var(--leaf);--fg:var(--forest-deep);--edge:var(--forest);overflow:visible}
 .btn-sprout .sprout{position:absolute;right:14px;top:-24px;width:30px;height:30px;transform-origin:20% 100%;
   transform:scale(0) rotate(-50deg);transition:transform .45s var(--spring)}
-.btn-sprout:hover .sprout,.btn-sprout:focus-visible .sprout{transform:scale(1) rotate(0)}
+.btn-sprout:focus-visible .sprout{transform:scale(1) rotate(0)}@media (hover:hover){.btn-sprout:hover .sprout{transform:scale(1) rotate(0)}}
 .btn-sprout .arr{transition:transform .3s var(--spring)}
-.btn-sprout:hover .arr{transform:translateX(5px)}
+@media (hover:hover){.btn-sprout:hover .arr{transform:translateX(5px)}}
 
 /* 3. Ink: a rolling blob of ink floods the button from below */
 .btn-ink{--bg:transparent;--fg:var(--forest);--edge:var(--forest);overflow:hidden;isolation:isolate}
 .btn-ink::before{content:"";position:absolute;left:50%;top:110%;width:260%;aspect-ratio:1;z-index:-1;
   background:var(--forest);border-radius:42%;transform:translateX(-50%) rotate(0);
   transition:top .6s var(--ease-out)}
-.btn-ink:hover,.btn-ink:focus-visible{--fg:var(--cream)}
-.btn-ink:hover::before,.btn-ink:focus-visible::before{top:-60%;animation:ink 3s linear infinite}
+.btn-ink:focus-visible{--fg:var(--cream)}@media (hover:hover){.btn-ink:hover{--fg:var(--cream)}}
+.btn-ink:focus-visible::before{top:-60%;animation:ink 3s linear infinite}@media (hover:hover){.btn-ink:hover::before{top:-60%;animation:ink 3s linear infinite}}
 @keyframes ink{to{transform:translateX(-50%) rotate(360deg)}}
 
 /* 4. Page turn: the label turns over like a page to show the next line */
@@ -124,7 +143,7 @@ p{margin:0}
 .flip{position:relative;display:inline-block;height:1.1em;transform-style:preserve-3d;transition:transform .5s var(--spring);transform-origin:50% 50% -.55em}
 .flip>span{display:block;backface-visibility:hidden}
 .flip>span+span{position:absolute;inset:0;transform-origin:50% 50% -.55em;transform:rotateX(-90deg);white-space:nowrap}
-.btn-flip:hover .flip,.btn-flip:focus-visible .flip{transform:rotateX(90deg)}
+.btn-flip:focus-visible .flip{transform:rotateX(90deg)}@media (hover:hover){.btn-flip:hover .flip{transform:rotateX(90deg)}}
 
 /* small stamp button for copy */
 .btn-stamp{--bg:var(--paper);--fg:var(--forest);--edge:var(--forest);padding:10px 16px;font-size:14px}
@@ -132,14 +151,15 @@ p{margin:0}
 .btn-stamp.done .tick{transform:scale(1) rotate(0)}
 
 /* ---------- Header ---------- */
-.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--cream);border-bottom:2px solid transparent;transition:border-color .3s}
+/* The header reaches up under the status bar / notch when the site runs full screen */
+.site-head{position:sticky;top:0;padding-top:env(safe-area-inset-top,0px);z-index:50;background:var(--cream);border-bottom:2px solid transparent;transition:border-color .3s}
 .site-head.scrolled{border-bottom-color:var(--forest)}
 .head-in{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-block:12px}
 .brand img{height:52px;width:auto;mix-blend-mode:multiply}
 .nav{display:flex;gap:28px}
 .nav a{font:600 15px var(--display);text-decoration:none;color:var(--forest);padding-block:4px;
   background:linear-gradient(var(--leaf),var(--leaf)) 0 100%/0% 3px no-repeat;transition:background-size .35s var(--ease-out)}
-.nav a:hover,.nav a:focus-visible{background-size:100% 3px}
+.nav a:focus-visible{background-size:100% 3px}@media (hover:hover){.nav a:hover{background-size:100% 3px}}
 @media (max-width:860px){.nav{display:none}.brand img{height:40px}.site-head .btn{padding:11px 16px;font-size:14px}}
 
 /* ---------- Hero ---------- */
@@ -163,7 +183,7 @@ p{margin:0}
 .leafbg svg{display:block;width:100%;height:100%;transform-origin:15% 90%}
 @keyframes sway{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(2.5deg)}}
 .floor{position:absolute;left:50%;top:calc(50% + 186px);width:280px;height:22px;margin-left:-135px;border-radius:50%;background:#cfdcac}
-.sprout-sway{position:absolute;left:calc(50% - 215px);bottom:112px;width:165px;transform-origin:70% 100%;animation:sway 6s ease-in-out infinite}
+.sprout-sway{position:absolute;left:calc(50% - 215px);top:calc(50% - 133px);width:165px;transform-origin:70% 100%;animation:sway 6s ease-in-out infinite}
 .sprout-big{display:block;width:100%;height:auto;transform-origin:70% 100%}
 .burst{position:absolute;left:50%;top:50%;width:36px;height:36px;margin:-18px 0 0 -13px;color:var(--leaf);opacity:0;pointer-events:none}
 .burst.b-m{color:var(--moss)}.burst.b-g{color:var(--gold-2)}
@@ -212,15 +232,20 @@ p{margin:0}
   background:var(--forest) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Cpath d='M6 28C6 17 13 9 27 7c0 13-8 21-21 21z' fill='%230f5232'/%3E%3C/svg%3E")}
 .cover .inside span{width:132px;height:132px;border-radius:50%;background:var(--paper);display:grid;place-items:center;border:3px solid var(--gold-2);box-shadow:5px 5px 0 var(--forest-deep)}
 .cover .inside img{width:88px;height:auto}
-@media (max-width:960px){
-  .hero-in{grid-template-columns:1fr}
-  .stage{height:470px;order:2}
-}
-@media (max-width:520px){
-  .stage{height:400px;margin-inline:-10px}
-  .stage-scale{position:absolute;inset:0;transform:scale(.64);transform-origin:50% 50%}
-}
 .stage-scale{position:absolute;inset:0}
+@media (max-width:960px){
+  .hero-in{grid-template-columns:1fr;padding-bottom:28px}
+  /* Phones and tablets: the stage is a fixed-size box the book is scaled into (script fits --s and --stage-h to the screen) */
+  .stage{--s:.64;--stage-h:400px;--vh:100vh;--head-h:62px;--tab-h:0px;--run:2.4;order:2;height:var(--stage-h);margin-inline:-20px;contain:paint}
+  .stage-scale{inset:0 0 auto;height:var(--stage-h);transform:scale(var(--s));transform-origin:50% 50%}
+  /* With motion on, the stage becomes a tall track: the book stays put mid-screen (sticky, so the
+     compositor holds it still) while scrolling opens the cover and turns the pages. The hero can't clip
+     (that would stop sticky working), so the stage contains its own overflow with paint containment. */
+  .motion .hero{overflow:visible}
+  .motion .stage{height:calc(var(--stage-h) + var(--run) * var(--vh))}
+  .motion .stage-scale{position:sticky;top:calc(var(--head-h) + max(0px, (var(--vh) - var(--head-h) - var(--tab-h) - var(--stage-h)) / 2))}
+}
+@supports (height:100svh){.stage{--vh:100svh}}
 
 /* ---------- Two halves ---------- */
 .halves-head{display:grid;gap:18px;max-width:820px}
@@ -252,11 +277,12 @@ p{margin:0}
 .svc{position:relative;z-index:1;min-width:0;display:grid;justify-items:center;transform-style:preserve-3d}
 /* The shelf only shows covers; the page and inside cover are the source for the pop-up */
 .shelf .sb-page,.shelf .sb-back{display:none}
+.shelf .sbook,.shelf .sb-cover{transform-style:flat}
 .svc.lent .sbook{visibility:hidden}
 .sbook{--c:var(--forest);--t:var(--cream);--s:var(--forest-deep);
   position:relative;width:100%;max-width:230px;aspect-ratio:2/3;container-type:inline-size;transform-style:preserve-3d;
   transform:rotateY(-14deg);transform-origin:left center;transition:transform .8s cubic-bezier(.6,.05,.25,1)}
-.sbook:hover,.sbook:focus-within{transform:rotateY(-3deg) translateY(-10px)}
+.sbook:has(.sb-cover:focus-visible){transform:rotateY(-3deg) translateY(-10px)}@media (hover:hover){.sbook:hover{transform:rotateY(-3deg) translateY(-10px)}}
 /* Page block peeking out on the fore-edge, like a closed book */
 .sbook::before{content:"";position:absolute;top:2.5%;bottom:2.5%;right:-3.5cqw;width:4cqw;border:2px solid var(--forest);border-left:none;border-radius:0 4px 4px 0;
   background:repeating-linear-gradient(90deg,var(--paper) 0 2px,var(--line) 2px 3px)}
@@ -268,7 +294,7 @@ p{margin:0}
 .sb-page li::before{content:"";flex:none;width:3.4cqw;height:3.4cqw;border-radius:0 70% 0 70%;background:var(--leaf);transform:translateY(-1px)}
 .sb-add{all:unset;margin-top:auto;align-self:flex-start;cursor:pointer;font:700 max(11px,5.4cqw) var(--display);color:var(--forest-deep);background:var(--gold-2);
   padding:2.6cqw 4cqw;border-radius:8px;border:2px solid var(--forest-deep);box-shadow:0 3px 0 var(--forest-deep);transition:transform .2s var(--spring),box-shadow .2s}
-.sb-add:hover{transform:translateY(-2px);box-shadow:0 5px 0 var(--forest-deep)}
+@media (hover:hover){.sb-add:hover{transform:translateY(-2px);box-shadow:0 5px 0 var(--forest-deep)}}
 .sb-add:active{transform:translateY(3px);box-shadow:0 0 0 var(--forest-deep)}
 .sb-add:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 .sb-cover{all:unset;position:absolute;inset:0;cursor:pointer;transform-style:preserve-3d;transform-origin:left center;
@@ -285,7 +311,7 @@ p{margin:0}
 .sb-hint::before{content:"";width:3.4cqw;height:3.4cqw;border-radius:0 70% 0 70%;background:currentColor}
 .svc-ill{display:block;overflow:hidden;background:var(--paper);border:2px solid var(--s);border-radius:8px;padding:3cqw 2cqw 1cqw;box-shadow:3px 3px 0 var(--s);margin-top:2cqw}
 .svc-ill svg{display:block;width:100%;height:auto;transition:scale .5s var(--spring),rotate .5s var(--spring)}
-.sbook:hover .svc-ill svg{scale:1.07;rotate:-2deg}
+@media (hover:hover){.sbook:hover .svc-ill svg{scale:1.07;rotate:-2deg}}
 .b2,.bd-book.b2{--c:var(--leaf);--t:var(--forest-deep);--s:var(--moss)}
 .b3,.bd-book.b3{--c:var(--cream);--t:var(--forest);--s:var(--forest)}
 .b4,.bd-book.b4{--c:var(--gold-2);--t:var(--forest-deep);--s:var(--gold)}
@@ -332,7 +358,7 @@ p{margin:0}
 .pl:nth-child(4n){border-right:none}
 .pl:nth-last-child(-n+4){border-bottom:none}
 /* Hover moves with translate so it never fights the scroll animation on transform */
-.pl:hover{color:var(--moss);translate:0 -4px}
+@media (hover:hover){.pl:hover{color:var(--moss);translate:0 -4px}}
 /* Downloaded logos are used as masks, so every one is filled with the same green */
 .pl-mark{display:block;width:min(var(--w),88%);aspect-ratio:var(--ar);background:currentColor;
   -webkit-mask:var(--src) center / contain no-repeat;mask:var(--src) center / contain no-repeat}
@@ -360,9 +386,15 @@ p{margin:0}
 .pf-stage{--w:220px;--h:calc(var(--w) / var(--r,.67));position:relative;width:100%;height:calc(var(--h) + 44px);display:grid;place-items:center;perspective:1500px}
 .pf-stage::before{content:"";position:absolute;left:50%;bottom:6px;width:calc(var(--w) * 1.05);height:22px;border-radius:50%;background:var(--leaf-pale);transform:translateX(-50%)}
 .pf-wrap{transform-style:preserve-3d}
-.pbook{all:unset;position:relative;display:block;width:var(--w);height:var(--h);transform-style:preserve-3d;cursor:pointer;
+/* At rest the book is drawn flat (front painted last, so it always shows). Chrome can drop the front face of a
+   resting preserve-3d book after a fast fling and show the back cover mirrored through it; true 3D is only
+   switched on while the book swings in on scroll or turns over. Turned over and at rest, the front is hidden
+   so the flattened back cover reads the right way round. */
+.pbook{all:unset;position:relative;display:block;width:var(--w);height:var(--h);transform-style:flat;cursor:pointer;
   transform:rotateY(-16deg) rotateX(3deg);transition:transform .9s var(--spring)}
-.pbook:hover{transform:rotateY(-5deg) rotateX(1deg) translateY(-8px)}
+.pbook.is-turning,.pbook.is-entering{transform-style:preserve-3d}
+.pbook[aria-pressed="true"]:not(.is-turning):not(.is-entering) .pb-front{visibility:hidden}
+@media (hover:hover){.pbook:hover{transform:rotateY(-5deg) rotateX(1deg) translateY(-8px)}}
 .pbook[aria-pressed="true"]{transform:rotateY(-168deg) rotateX(2deg)}
 .pbook:focus-visible{outline:3px solid var(--gold);outline-offset:8px}
 .pbook>*{position:absolute;display:block}
@@ -386,26 +418,49 @@ p{margin:0}
 /* 5. Turn over: the arrow spins a full turn while the button tips */
 .btn-turn{--bg:var(--paper);--fg:var(--forest);--edge:var(--forest);padding:9px 14px;font-size:14px;border-radius:10px;box-shadow:0 4px 0 var(--edge)}
 .btn-turn svg{width:16px;height:16px;transition:transform .6s var(--spring)}
-.btn-turn:hover svg,.btn-turn:focus-visible svg{transform:rotate(-360deg)}
-.btn-turn:hover{transform:translateY(-2px) rotate(-2deg);box-shadow:0 6px 0 var(--edge)}
+.btn-turn:focus-visible svg{transform:rotate(-360deg)}@media (hover:hover){.btn-turn:hover svg{transform:rotate(-360deg)}}
+@media (hover:hover){.btn-turn:hover{transform:translateY(-2px) rotate(-2deg);box-shadow:0 6px 0 var(--edge)}}
 /* 6. Unfold: two side flaps open out from the label */
 .btn-unfold{--bg:var(--forest);--fg:var(--cream);--edge:var(--forest-deep);padding:9px 14px;font-size:14px;border-radius:10px;box-shadow:0 4px 0 var(--edge);perspective:300px}
+@media (hover:none){.btn-unfold{perspective:none}.btn-unfold::before,.btn-unfold::after{display:none}}
 .btn-unfold::before,.btn-unfold::after{content:"";position:absolute;top:4px;bottom:4px;width:10px;background:var(--gold-2);border-radius:2px;transition:transform .45s var(--spring)}
 .btn-unfold::before{left:-12px;transform-origin:right;transform:rotateY(90deg)}
 .btn-unfold::after{right:-12px;transform-origin:left;transform:rotateY(-90deg)}
-.btn-unfold:hover::before,.btn-unfold:focus-visible::before,.btn-unfold:hover::after,.btn-unfold:focus-visible::after{transform:rotateY(0)}
-.btn-unfold:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--edge)}
+.btn-unfold:focus-visible::before,.btn-unfold:focus-visible::after{transform:rotateY(0)}@media (hover:hover){.btn-unfold:hover::before,.btn-unfold:hover::after{transform:rotateY(0)}}
+@media (hover:hover){.btn-unfold:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--edge)}}
 .wrap-dlg{border:2px solid var(--forest);border-radius:18px;padding:0;max-width:min(1100px,94vw);width:100%;background:var(--paper);color:var(--ink);box-shadow:10px 10px 0 var(--forest)}
 .wrap-dlg::backdrop{background:rgba(3,39,26,.72)}
 .wrap-dlg figure{margin:0;display:grid;gap:14px;padding:clamp(14px,2.5vw,26px)}
-.wrap-dlg img{width:100%;height:auto;max-height:calc(100vh - 170px);object-fit:contain;border-radius:6px;border:1.5px solid var(--line)}
+.wrap-dlg img{width:100%;height:auto;max-height:calc(100vh - 170px);max-height:calc(100dvh - 170px);object-fit:contain;border-radius:6px;border:1.5px solid var(--line)}
 .wrap-dlg figcaption{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
 .wrap-dlg figcaption b{font:800 20px var(--display);color:var(--forest)}
 .wrap-dlg figcaption span{display:block;font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .wrap-dlg[open]{animation:dlg .5s var(--spring)}
 @keyframes dlg{from{transform:perspective(900px) rotateX(-18deg) translateY(30px);opacity:0}}
+/* Closing plays out instead of vanishing */
+.wrap-dlg.closing{animation:dlgout .22s ease-in forwards}
+.wrap-dlg.closing::backdrop{opacity:0;transition:opacity .22s}
+@keyframes dlgout{to{transform:perspective(900px) rotateX(12deg) translateY(24px);opacity:0}}
+.wrap-hint{display:none}
+/* Phones: the wrap opens as a sheet from the bottom, shown tall and panned sideways (it starts on the front cover),
+   so the spine and back cover are a swipe away instead of thumbnail-small */
+@media (max-width:760px){
+  .wrap-dlg{width:100%;max-width:none;margin:auto 0 0;max-height:94vh;max-height:94dvh;border-width:2px 0 0;border-radius:24px 24px 0 0;box-shadow:none}
+  .wrap-dlg[open]{animation:sheetup .4s cubic-bezier(.2,.9,.25,1)}
+  .wrap-dlg.closing{animation:sheetdown .24s ease-in forwards}
+  .wrap-dlg figure{gap:10px;padding:18px 0 calc(16px + env(safe-area-inset-bottom,0px))}
+  .wrap-pan{overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding-inline:16px}
+  .wrap-pan::-webkit-scrollbar{display:none}
+  .wrap-dlg img{width:auto;max-width:none;height:min(60vh,560px);height:min(60dvh,560px);max-height:none}
+  .wrap-hint{display:flex;align-items:center;gap:8px;padding-inline:16px;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
+  .wrap-hint::before{content:"";width:28px;height:2px;background:currentColor;animation:hintl 1.6s ease-in-out 4}
+  @keyframes hintl{50%{translate:-6px 0}}
+  .wrap-dlg figcaption{padding-inline:16px}
+}
+@keyframes sheetup{from{transform:translateY(100%)}}
+@keyframes sheetdown{to{transform:translateY(100%)}}
 @media (max-width:1000px){.pf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pf-head{grid-template-columns:1fr}}
-@media (max-width:560px){.pf-grid{gap:34px 10px}.pf-stage{--w:140px}.pf-meta h3{font-size:17px}.pf-meta p{font-size:13.5px}.pf-actions .btn{padding:8px 10px;font-size:12.5px}}
+@media (max-width:560px){.pf-grid{gap:34px 10px}.pf-stage{--w:140px}.pf-meta h3{font-size:17px}.pf-meta p{font-size:13.5px}.pf-actions{gap:8px}.pf-actions .btn{min-height:40px;padding:8px 11px;gap:6px;font-size:12.5px}}
 
 /* ---------- Process ---------- */
 .process{background:var(--forest);color:var(--cream);overflow:hidden;position:relative}
@@ -449,6 +504,18 @@ p{margin:0}
   .track{width:auto;flex-direction:column;padding-inline:max(20px,env(safe-area-inset-left,0px)) max(20px,env(safe-area-inset-right,0px))}
   .step{width:100%}
   .ribbon{display:none}
+  /* Screens with the height for it (script adds .hz): the section is held under the header while scrolling slides
+     the steps sideways, the same idea as the desktop track. Sizes follow the visible screen height. */
+  .process.hz{overflow:visible;height:calc(var(--pin-h,100vh) + var(--dist,0px))}
+  .process.hz .pin{position:sticky;top:var(--head-h,62px);height:var(--pin-h,100vh);display:flex;flex-direction:column;overflow:hidden;padding-bottom:var(--tab-h,0px)}
+  .process.hz .proc-in{padding-block:clamp(16px,3.5vh,40px) 0;padding-block:clamp(16px,3.5svh,40px) 0}
+  .process.hz .h2{font-size:clamp(30px,8.4vw,52px)}
+  .process.hz .ribbon{display:block;margin-top:14px}
+  .process.hz .track{width:max-content;flex-direction:row;gap:14px;padding:clamp(14px,2.6vh,28px) 20px 0;padding-top:clamp(14px,2.6svh,28px);padding-left:max(20px,env(safe-area-inset-left,0px))}
+  .process.hz .step{width:min(84vw,420px);gap:10px}
+  .process.hz .step-art{height:clamp(120px,26vh,250px);height:clamp(120px,26svh,250px)}
+  .process.hz .step h3{font-size:clamp(22px,6vw,28px)}
+  .process.hz .step p{font-size:15px;line-height:1.5}
 }
 
 /* ---------- Marquee ---------- */
@@ -476,7 +543,7 @@ p{margin:0}
 .mk-visual{position:relative;min-width:0;height:520px;container-type:inline-size}
 .mk-visual .disc2{position:absolute;inset:8% 4%;border-radius:32px;background:var(--leaf-pale)}
 /* Three real author sites on a turning ring; scroll turns it so each site comes to the front in turn */
-.ring-stage{position:absolute;inset:0;perspective:1600px}
+.ring-stage{position:absolute;inset:0;perspective:1600px;touch-action:pan-y}
 .ring{--iw:min(430px,76cqw);position:absolute;left:50%;top:43%;width:0;height:0;transform-style:preserve-3d;transform:rotateX(-6deg)}
 /* Each site travels round the circle but stays face-on, so none is ever seen mirrored */
 .ring-item{position:absolute;width:var(--iw);left:calc(var(--iw) / -2);top:calc(var(--iw) * -.3125);display:block;
@@ -486,12 +553,12 @@ p{margin:0}
 .ring-ctrl{position:absolute;left:0;right:0;bottom:1%;display:flex;align-items:center;justify-content:center;gap:clamp(14px,3vw,28px);z-index:30}
 .ring-cap{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;min-width:0;width:min(240px,52vw)}
 .ring-go{margin-top:3px;font:700 14px var(--display);color:var(--forest);text-decoration:none;padding-bottom:2px;background:linear-gradient(var(--leaf),var(--leaf)) 0 100% / 100% 2px no-repeat;transition:background-size .3s var(--ease-out),color .3s}
-.ring-go:hover,.ring-go:focus-visible{color:var(--moss);background-size:0% 2px;background-position:100% 100%}
+.ring-go:focus-visible{color:var(--moss);background-size:0% 2px;background-position:100% 100%}@media (hover:hover){.ring-go:hover{color:var(--moss);background-size:0% 2px;background-position:100% 100%}}
 /* Round arrow buttons; the arrow glides the way it points on hover (translate, so nothing fights transform) */
 .ring-btn{all:unset;flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;cursor:pointer;background:var(--paper);color:var(--forest);border:2px solid var(--forest);box-shadow:0 4px 0 var(--forest);font:700 20px/1 var(--display);transition:translate .15s,box-shadow .15s,background-color .25s,color .25s}
 .ring-btn span{transition:translate .3s var(--spring)}
-.ring-btn:hover{background:var(--forest);color:var(--cream)}
-.ring-btn[data-dir="1"]:hover span{translate:4px 0}.ring-btn[data-dir="-1"]:hover span{translate:-4px 0}
+@media (hover:hover){.ring-btn:hover{background:var(--forest);color:var(--cream)}}
+@media (hover:hover){.ring-btn[data-dir="1"]:hover span{translate:4px 0}}@media (hover:hover){.ring-btn[data-dir="-1"]:hover span{translate:-4px 0}}
 .ring-btn:active{translate:0 4px;box-shadow:0 0 0 var(--forest)}
 .ring-btn:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 .ring-item{cursor:pointer}
@@ -509,7 +576,7 @@ p{margin:0}
 .mk-tiles{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
 .mk-tile{display:grid;gap:8px;align-content:start;padding:20px;background:var(--paper);border:2px solid var(--forest);border-radius:16px;box-shadow:5px 5px 0 var(--forest);
   transition:translate .3s var(--spring),box-shadow .3s var(--spring)}
-.mk-tile:hover{translate:-2px -4px;box-shadow:8px 9px 0 var(--forest)}
+@media (hover:hover){.mk-tile:hover{translate:-2px -4px;box-shadow:8px 9px 0 var(--forest)}}
 .mk-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--leaf-pale);color:var(--forest);border:2px solid var(--forest)}
 .mk-ic svg{width:22px;height:22px}
 .mk-tile:nth-child(4n+2) .mk-ic{background:#f6e3b8}
@@ -526,9 +593,9 @@ p{margin:0}
 .brief-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(30px,5vw,70px);align-items:start;position:relative;z-index:2}
 .brief-copy{display:grid;gap:20px;min-width:0}
 .form{background:var(--paper);color:var(--ink);border:2px solid var(--forest-deep);border-radius:20px;box-shadow:10px 10px 0 var(--forest-deep);padding:clamp(22px,3vw,34px);display:grid;gap:20px;min-width:0}
-.form-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:2px solid var(--line)}
+.form-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;padding-bottom:14px;border-bottom:2px solid var(--line)}
 .form-title{font:800 22px var(--display);color:var(--forest);letter-spacing:-.01em}
-.form-time{font:500 11.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--moss)}
+.form-time{font:500 11.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--moss);white-space:nowrap}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .field{display:grid;gap:7px;min-width:0;align-content:start}
 .field label,.field-lbl,.legend{font:700 14px var(--display);color:var(--forest)}
@@ -583,8 +650,9 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
 .float-book.f1{left:2%;bottom:-36px;background:var(--leaf);border-left:9px solid var(--moss);box-shadow:6px 6px 0 var(--forest-deep);transform:rotate(-12deg)}
 .float-book.f2{right:4%;top:10%;background:var(--gold-2);border-left:9px solid var(--gold);box-shadow:6px 6px 0 var(--forest-deep);transform:rotate(10deg);width:70px;height:98px}
 .float-book.f3{right:42%;bottom:-30px;background:var(--cream);border-left:9px solid var(--forest-2);box-shadow:6px 6px 0 var(--forest-deep);transform:rotate(6deg);width:64px;height:90px}
-@media (max-width:900px){.brief-grid{grid-template-columns:1fr}.float-book.f3{display:none}}
-@media (max-width:520px){.row2{grid-template-columns:1fr}.float-book{opacity:.35}}
+/* Single column: the gold book (f2) would land on the heading, and f3 on the form */
+@media (max-width:900px){.brief-grid{grid-template-columns:1fr}.float-book.f2,.float-book.f3{display:none}}
+@media (max-width:520px){.row2{grid-template-columns:1fr}.float-book{opacity:.35}.form-title{font-size:20px}}
 
 /* ---------- Footer ---------- */
 .foot{position:relative;padding-block:56px 40px}
@@ -592,12 +660,13 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
 .foot img{height:86px;width:auto;mix-blend-mode:multiply}
 .foot nav{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:center}
 .foot nav a{font:600 15px var(--display);text-decoration:none;color:var(--forest)}
-.foot nav a:hover{color:var(--moss)}
+@media (hover:hover){.foot nav a:hover{color:var(--moss)}}
 .foot-end{display:grid;gap:10px;justify-items:end}
 .mini{display:flex;gap:10px}
 .mini a{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--forest);color:var(--forest);transition:background-color .25s,color .25s}
-.mini a:hover,.mini a:focus-visible{background:var(--forest);color:var(--cream)}
+.mini a:focus-visible{background:var(--forest);color:var(--cream)}@media (hover:hover){.mini a:hover{background:var(--forest);color:var(--cream)}}
 .mini svg{width:17px;height:17px;fill:currentColor}
+@media (pointer:coarse){.mini a{width:44px;height:44px}}
 .foot small{font:500 12px var(--mono);letter-spacing:.08em;color:var(--muted)}
 @media (max-width:760px){.foot-in{grid-template-columns:1fr;justify-items:start}.foot nav{justify-content:flex-start}.foot-end{justify-items:start}}
 
@@ -618,48 +687,64 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
 }
 
-/* ---------- Phone-only, app-style interface ---------- */
+/* ---------- Phone and tablet, app-style interface ---------- */
 .tabbar,.swipe-hint{display:none}
-@media (max-width:760px){
-  /* Floating tab bar with a raised Start button, like a native app */
+/* Floating tab bar with a raised Start button, like a native app. Phones, and tablets held upright (which would
+   otherwise have no navigation at all between 761 and 860px). Not on short landscape phones, where it would cover a
+   quarter of the screen; the header's Start button shows there instead. */
+@media (max-width:760px) and (min-height:441px), (max-width:860px) and (min-height:600px){
   .tabbar{display:grid;grid-template-columns:repeat(5,1fr);align-items:end;position:fixed;z-index:70;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));
-    bottom:calc(10px + env(safe-area-inset-bottom,0px));height:66px;padding:0 4px 8px;background:rgba(255,250,242,.93);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
+    bottom:calc(10px + env(safe-area-inset-bottom,0px));height:66px;max-width:520px;margin-inline:auto;padding:0 4px 8px;background:rgba(255,250,242,.93);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
     border:2px solid var(--forest);border-radius:22px;box-shadow:0 5px 0 var(--forest)}
-  .tabbar a{display:grid;justify-items:center;gap:2px;text-decoration:none;color:var(--muted);font:600 10.5px/1.2 var(--display);-webkit-tap-highlight-color:transparent;transition:color .2s,scale .15s}
+  /* Reading progress runs along the top of the bar, standing in for the desktop vine */
+  .tabbar::before{content:"";position:absolute;left:20px;right:20px;top:4px;height:3px;border-radius:2px;background:var(--leaf);transform-origin:left;transform:scaleX(var(--read,0));pointer-events:none}
+  .tabbar a{display:grid;justify-items:center;gap:2px;text-decoration:none;color:var(--muted);font:600 10.5px/1.2 var(--display);-webkit-touch-callout:none;transition:color .2s,scale .15s}
   .tabbar a .ic{display:grid;place-items:center;width:48px;height:30px;border-radius:15px;transition:background-color .25s,color .25s}
   .tabbar a svg{width:22px;height:22px}
   .tabbar a.on{color:var(--forest)}
   .tabbar a.on .ic{background:var(--leaf-pale)}
   .tabbar a:active{scale:.9}
+  .tabbar a:active .ic{background:var(--leaf-pale)}
   .tabbar .tab-cta{color:var(--forest)}
-  .tabbar .tab-cta .ic{width:54px;height:54px;border-radius:50%;background:var(--forest);color:var(--cream);border:2px solid var(--forest-deep);box-shadow:0 4px 0 var(--forest-deep);translate:0 -14px;margin-bottom:-14px}
+  .tabbar .tab-cta .ic{position:relative;z-index:1;width:54px;height:54px;border-radius:50%;background:var(--forest);color:var(--cream);border:2px solid var(--forest-deep);box-shadow:0 4px 0 var(--forest-deep);translate:0 -14px;margin-bottom:-14px}
+  .tabbar .tab-cta:active .ic{background:var(--forest-2)}
   .tabbar .tab-cta.on .ic{background:var(--leaf);color:var(--forest-deep)}
   body{padding-bottom:calc(98px + env(safe-area-inset-bottom,0px))}
   .site-head .btn{display:none}
   .head-in{padding-block:10px}
+}
+@media (max-width:760px){
   /* Swipeable rows that snap card by card and peek at the next one */
   .swipe{display:flex!important;grid-template-columns:none!important;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;
     margin-inline:calc(-1 * max(20px,env(safe-area-inset-left,0px)));padding-inline:max(20px,env(safe-area-inset-left,0px));scroll-padding-inline:max(20px,env(safe-area-inset-left,0px))}
   .swipe::-webkit-scrollbar{display:none}
   .swipe > *{scroll-snap-align:start;flex:0 0 auto}
-  .swipe-hint{display:flex;align-items:center;gap:8px;margin-top:14px;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
-  .swipe-hint::after{content:"";width:28px;height:2px;background:currentColor;animation:hint 1.6s ease-in-out infinite}
+  /* The hint nudges a few times, then fades once the row has been swiped */
+  .swipe-hint{display:flex;align-items:center;gap:8px;margin-top:14px;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--moss);transition:opacity .5s}
+  .swipe-hint::after{content:"";width:28px;height:2px;background:currentColor;animation:hint 1.6s ease-in-out 5}
+  .swipe-hint.done{opacity:0}
   @keyframes hint{0%,100%{translate:0 0}50%{translate:6px 0}}
-  /* Form controls at 16px so iPhones don't zoom in when typing */
-  input,textarea,select,.dd-btn{font-size:16px!important}
 }
+/* Form controls at 16px on touch screens so iOS doesn't zoom in when typing */
+@media (pointer:coarse){input,textarea,select,.dd-btn{font-size:16px!important}}
 @media (max-width:760px){
   .shelf.swipe{gap:18px;padding-bottom:14px;padding-top:8px}
   .shelf.swipe .svc{width:62%}
   .shelf.swipe .sbook{max-width:none}
-  .pf-grid.swipe{gap:18px}
+  .pf-grid.swipe{gap:18px;position:relative}
   .pf-grid.swipe .pf-item{width:76%}
   .pf-grid.swipe .pf-stage{--w:190px}
+  /* Cover flow: --flow (set by script while the row slides) is each card's distance from the middle, in cards */
+  .shelf.swipe .svc{transform-style:flat}
+  .shelf.swipe .sbook{transform:perspective(1000px) rotateY(calc(-6deg - var(--flow,0) * 26deg));transform-origin:50% 50%;transition:none}
+  .pf-grid.swipe .pbook{transform:rotateY(calc(-16deg - var(--flow,0) * 20deg)) rotateX(3deg)}
+  .pf-grid.swipe .pbook[aria-pressed="true"]{transform:rotateY(calc(-168deg - var(--flow,0) * 20deg)) rotateX(2deg)}
+  .pf-grid.swipe .pbook:not(.is-turning){transition:none}
+  .mk-visual{margin-inline:calc(-1 * max(20px,env(safe-area-inset-left,0px)))}
   /* Site features become a grouped list, like a settings screen */
   .mk-tiles{grid-template-columns:1fr;gap:0;background:var(--paper);border:2px solid var(--forest);border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 var(--forest)}
   .mk-tile{grid-template-columns:42px 1fr;column-gap:14px;row-gap:2px;align-items:center;padding:14px 16px;border:0;border-bottom:1.5px solid var(--line);border-radius:0;box-shadow:none}
   .mk-tile:last-child{border-bottom:0}
-  .mk-tile:hover{translate:none;box-shadow:none}
   .mk-ic{grid-row:1 / 3;width:42px;height:42px}
   .mk-tile b{font-size:16px}
   .mk-tile > span:last-child{font-size:14px}
@@ -668,7 +753,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
 .svc-sheet{position:fixed;inset:auto 0 0 0;width:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;overflow:visible}
 .svc-sheet::backdrop{background:rgba(3,39,26,.6)}
 .svc-sheet[open]::backdrop{animation:bdfade .25s ease-out}
-.sh-panel{--c:var(--forest);--t:var(--cream);--s:var(--forest-deep);max-height:86vh;overflow:auto;overscroll-behavior:contain;background:var(--paper);border:2px solid var(--forest);border-bottom:0;
+.sh-panel{--c:var(--forest);--t:var(--cream);--s:var(--forest-deep);max-height:86vh;max-height:86dvh;overflow:auto;overscroll-behavior:contain;background:var(--paper);border:2px solid var(--forest);border-bottom:0;
   border-radius:26px 26px 0 0;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
 .sh-top{position:sticky;top:0;z-index:1;display:grid;justify-items:center;gap:12px;padding:10px 20px 18px;background:var(--c);color:var(--t);border-bottom:2px solid var(--s);touch-action:none;cursor:grab}
 .sh-grab{width:44px;height:5px;border-radius:3px;background:currentColor;opacity:.45}
@@ -694,7 +779,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
 
 <header class="site-head" id="head">
   <div class="wrap head-in">
-    <a class="brand" href="#top" aria-label="Kodsinc Studio home"><img src="assets/logo.webp" alt="Kodsinc Studio"></a>
+    <a class="brand" href="#top" aria-label="Kodsinc Studio home"><img src="assets/logo-780.webp" alt="Kodsinc Studio" width="780" height="260"></a>
     <nav class="nav" aria-label="Main">
       <a href="#services">Services</a>
       <a href="#covers">Covers</a>
@@ -1024,10 +1109,10 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       <article class="pf-item">
         <div class="pf-stage" style="--r:.6706"><div class="pf-wrap">
           <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over Whiskey Venus Boston" style="--t:calc(var(--h) * .046)">
-            <span class="pb-back"><img src="assets/covers/whiskey-back.webp?v=2" alt="" loading="lazy" width="1075" height="1600"></span>
+            <span class="pb-back"><img src="assets/covers/720/whiskey-back.webp?v=3" srcset="assets/covers/720/whiskey-back.webp?v=3 720w, assets/covers/whiskey-back.webp?v=2 1075w" sizes="(max-width: 760px) 190px, 220px" alt="" loading="lazy" width="720" height="1072"></span>
             <span class="pb-pages"></span><span class="pb-top"></span>
-            <span class="pb-spine"><img src="assets/covers/whiskey-spine.webp?v=2" alt="" loading="lazy" width="71" height="1600"></span>
-            <span class="pb-front"><img src="assets/covers/whiskey-front.webp?v=2" alt="Whiskey Venus Boston cover: a woman running beneath a huge orange moon" loading="lazy" width="1073" height="1600"></span>
+            <span class="pb-spine"><img src="assets/covers/720/whiskey-spine.webp?v=3" alt="" loading="lazy" width="49" height="1100"></span>
+            <span class="pb-front"><img src="assets/covers/720/whiskey-front.webp?v=3" srcset="assets/covers/720/whiskey-front.webp?v=3 720w, assets/covers/whiskey-front.webp?v=2 1073w" sizes="(max-width: 760px) 190px, 220px" alt="Whiskey Venus Boston cover: a woman running beneath a huge orange moon" loading="lazy" width="720" height="1074"></span>
           </button>
         </div></div>
         <div class="pf-meta"><span class="fmt">Hardback case wrap</span><h3>Whiskey Venus Boston</h3></div>
@@ -1037,10 +1122,10 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       <article class="pf-item">
         <div class="pf-stage" style="--r:.6706"><div class="pf-wrap">
           <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over Goodnight Ditties for Curious Kiddies" style="--t:calc(var(--h) * .037)">
-            <span class="pb-back"><img src="assets/covers/terry-back.webp?v=2" alt="" loading="lazy" width="1071" height="1600"></span>
+            <span class="pb-back"><img src="assets/covers/720/terry-back.webp?v=3" srcset="assets/covers/720/terry-back.webp?v=3 720w, assets/covers/terry-back.webp?v=2 1071w" sizes="(max-width: 760px) 190px, 220px" alt="" loading="lazy" width="720" height="1076"></span>
             <span class="pb-pages"></span><span class="pb-top"></span>
-            <span class="pb-spine"><img src="assets/covers/terry-spine.webp?v=2" alt="" loading="lazy" width="60" height="1600"></span>
-            <span class="pb-front"><img src="assets/covers/terry-front.webp?v=2" alt="Goodnight Ditties for Curious Kiddies cover: a watercolour moon and stars" loading="lazy" width="1073" height="1600"></span>
+            <span class="pb-spine"><img src="assets/covers/720/terry-spine.webp?v=3" alt="" loading="lazy" width="41" height="1100"></span>
+            <span class="pb-front"><img src="assets/covers/720/terry-front.webp?v=3" srcset="assets/covers/720/terry-front.webp?v=3 720w, assets/covers/terry-front.webp?v=2 1073w" sizes="(max-width: 760px) 190px, 220px" alt="Goodnight Ditties for Curious Kiddies cover: a watercolour moon and stars" loading="lazy" width="720" height="1074"></span>
           </button>
         </div></div>
         <div class="pf-meta"><span class="fmt">Children's poetry</span><h3>Goodnight Ditties for Curious Kiddies</h3></div>
@@ -1050,10 +1135,10 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       <article class="pf-item">
         <div class="pf-stage" style="--r:.6681"><div class="pf-wrap">
           <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over No Plan B" style="--t:calc(var(--h) * .016)">
-            <span class="pb-back"><img src="assets/covers/bn-back.webp?v=2" alt="" loading="lazy" width="1069" height="1600"></span>
+            <span class="pb-back"><img src="assets/covers/720/bn-back.webp?v=3" srcset="assets/covers/720/bn-back.webp?v=3 720w, assets/covers/bn-back.webp?v=2 1069w" sizes="(max-width: 760px) 190px, 220px" alt="" loading="lazy" width="720" height="1078"></span>
             <span class="pb-pages"></span><span class="pb-top"></span>
-            <span class="pb-spine"><img src="assets/covers/bn-spine.webp?v=2" alt="" loading="lazy" width="14" height="1600"></span>
-            <span class="pb-front"><img src="assets/covers/bn-front.webp?v=2" alt="No Plan B cover: elegant serif title on deep burgundy" loading="lazy" width="1069" height="1600"></span>
+            <span class="pb-spine"><img src="assets/covers/720/bn-spine.webp?v=3" alt="" loading="lazy" width="10" height="1100"></span>
+            <span class="pb-front"><img src="assets/covers/720/bn-front.webp?v=3" srcset="assets/covers/720/bn-front.webp?v=3 720w, assets/covers/bn-front.webp?v=2 1069w" sizes="(max-width: 760px) 190px, 220px" alt="No Plan B cover: elegant serif title on deep burgundy" loading="lazy" width="720" height="1078"></span>
           </button>
         </div></div>
         <div class="pf-meta"><span class="fmt">Paperback, nonfiction</span><h3>No Plan B</h3></div>
@@ -1063,10 +1148,10 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       <article class="pf-item">
         <div class="pf-stage" style="--r:.6694"><div class="pf-wrap">
           <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over Doubting Nikki" style="--t:calc(var(--h) * .118)">
-            <span class="pb-back"><img src="assets/covers/nikki-back.webp?v=2" alt="" loading="lazy" width="1139" height="1600"></span>
+            <span class="pb-back"><img src="assets/covers/720/nikki-back.webp?v=3" srcset="assets/covers/720/nikki-back.webp?v=3 720w, assets/covers/nikki-back.webp?v=2 1139w" sizes="(max-width: 760px) 190px, 220px" alt="" loading="lazy" width="720" height="1011"></span>
             <span class="pb-pages"></span><span class="pb-top"></span>
-            <span class="pb-spine"><img src="assets/covers/nikki-spine.webp?v=2" alt="" loading="lazy" width="190" height="1600"></span>
-            <span class="pb-front"><img src="assets/covers/nikki-front.webp?v=2" alt="Doubting Nikki cover: a white line-art profile with a red tear on black" loading="lazy" width="1071" height="1600"></span>
+            <span class="pb-spine"><img src="assets/covers/720/nikki-spine.webp?v=3" alt="" loading="lazy" width="131" height="1100"></span>
+            <span class="pb-front"><img src="assets/covers/720/nikki-front.webp?v=3" srcset="assets/covers/720/nikki-front.webp?v=3 720w, assets/covers/nikki-front.webp?v=2 1071w" sizes="(max-width: 760px) 190px, 220px" alt="Doubting Nikki cover: a white line-art profile with a red tear on black" loading="lazy" width="720" height="1076"></span>
           </button>
         </div></div>
         <div class="pf-meta"><span class="fmt">Fiction, full wrap</span><h3>Doubting Nikki</h3></div>
@@ -1075,10 +1160,10 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       <article class="pf-item">
         <div class="pf-stage" style="--r:0.6445"><div class="pf-wrap">
           <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over A Cloud in My Heart" style="--t:calc(var(--h) * 0.0536)">
-            <span class="pb-back"><img src="assets/covers/cloud-back.webp?v=2" alt="" loading="lazy" width="709" height="1100"></span>
+            <span class="pb-back"><img src="assets/covers/720/cloud-back.webp?v=3" alt="" loading="lazy" width="709" height="1100"></span>
             <span class="pb-pages"></span><span class="pb-top"></span>
-            <span class="pb-spine"><img src="assets/covers/cloud-spine.webp?v=2" alt="" loading="lazy" width="59" height="1100"></span>
-            <span class="pb-front"><img src="assets/covers/cloud-front.webp?v=2" alt="A Cloud in My Heart cover: a boy hugging a teddy bear on a tree swing" loading="lazy" width="709" height="1100"></span>
+            <span class="pb-spine"><img src="assets/covers/720/cloud-spine.webp?v=3" alt="" loading="lazy" width="59" height="1100"></span>
+            <span class="pb-front"><img src="assets/covers/720/cloud-front.webp?v=3" alt="A Cloud in My Heart cover: a boy hugging a teddy bear on a tree swing" loading="lazy" width="709" height="1100"></span>
           </button>
         </div></div>
         <div class="pf-meta"><span class="fmt">Paperback, picture book</span><h3>A Cloud in My Heart</h3></div>
@@ -1087,10 +1172,10 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       <article class="pf-item">
         <div class="pf-stage" style="--r:0.6663"><div class="pf-wrap">
           <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over Milo the Shy Monster" style="--t:calc(var(--h) * 0.0556)">
-            <span class="pb-back"><img src="assets/covers/milo-back.webp?v=2" alt="" loading="lazy" width="1067" height="1600"></span>
+            <span class="pb-back"><img src="assets/covers/720/milo-back.webp?v=3" srcset="assets/covers/720/milo-back.webp?v=3 720w, assets/covers/milo-back.webp?v=2 1067w" sizes="(max-width: 760px) 190px, 220px" alt="" loading="lazy" width="720" height="1080"></span>
             <span class="pb-pages"></span><span class="pb-top"></span>
-            <span class="pb-spine"><img src="assets/covers/milo-spine.webp?v=2" alt="" loading="lazy" width="89" height="1600"></span>
-            <span class="pb-front"><img src="assets/covers/milo-front.webp?v=2" alt="Milo the Shy Monster cover: a smiling purple furry monster with red horns" loading="lazy" width="1066" height="1600"></span>
+            <span class="pb-spine"><img src="assets/covers/720/milo-spine.webp?v=3" alt="" loading="lazy" width="61" height="1100"></span>
+            <span class="pb-front"><img src="assets/covers/720/milo-front.webp?v=3" srcset="assets/covers/720/milo-front.webp?v=3 720w, assets/covers/milo-front.webp?v=2 1066w" sizes="(max-width: 760px) 190px, 220px" alt="Milo the Shy Monster cover: a smiling purple furry monster with red horns" loading="lazy" width="720" height="1081"></span>
           </button>
         </div></div>
         <div class="pf-meta"><span class="fmt">Paperback, picture book</span><h3>Milo the Shy Monster</h3></div>
@@ -1099,10 +1184,10 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       <article class="pf-item">
         <div class="pf-stage" style="--r:0.6663"><div class="pf-wrap">
           <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over The Silent Alibi" style="--t:calc(var(--h) * 0.0556)">
-            <span class="pb-back"><img src="assets/covers/alibi-back.webp?v=2" alt="" loading="lazy" width="1067" height="1600"></span>
+            <span class="pb-back"><img src="assets/covers/720/alibi-back.webp?v=3" srcset="assets/covers/720/alibi-back.webp?v=3 720w, assets/covers/alibi-back.webp?v=2 1067w" sizes="(max-width: 760px) 190px, 220px" alt="" loading="lazy" width="720" height="1080"></span>
             <span class="pb-pages"></span><span class="pb-top"></span>
-            <span class="pb-spine"><img src="assets/covers/alibi-spine.webp?v=2" alt="" loading="lazy" width="89" height="1600"></span>
-            <span class="pb-front"><img src="assets/covers/alibi-front.webp?v=2" alt="The Silent Alibi cover: a white fingerprint dripping red on black" loading="lazy" width="1066" height="1600"></span>
+            <span class="pb-spine"><img src="assets/covers/720/alibi-spine.webp?v=3" alt="" loading="lazy" width="61" height="1100"></span>
+            <span class="pb-front"><img src="assets/covers/720/alibi-front.webp?v=3" srcset="assets/covers/720/alibi-front.webp?v=3 720w, assets/covers/alibi-front.webp?v=2 1066w" sizes="(max-width: 760px) 190px, 220px" alt="The Silent Alibi cover: a white fingerprint dripping red on black" loading="lazy" width="720" height="1081"></span>
           </button>
         </div></div>
         <div class="pf-meta"><span class="fmt">Paperback, murder mystery</span><h3>The Silent Alibi</h3></div>
@@ -1111,10 +1196,10 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       <article class="pf-item">
         <div class="pf-stage" style="--r:0.6663"><div class="pf-wrap">
           <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over Hollow Echoes" style="--t:calc(var(--h) * 0.0556)">
-            <span class="pb-back"><img src="assets/covers/hollow-back.webp?v=2" alt="" loading="lazy" width="1067" height="1600"></span>
+            <span class="pb-back"><img src="assets/covers/720/hollow-back.webp?v=3" srcset="assets/covers/720/hollow-back.webp?v=3 720w, assets/covers/hollow-back.webp?v=2 1067w" sizes="(max-width: 760px) 190px, 220px" alt="" loading="lazy" width="720" height="1080"></span>
             <span class="pb-pages"></span><span class="pb-top"></span>
-            <span class="pb-spine"><img src="assets/covers/hollow-spine.webp?v=2" alt="" loading="lazy" width="89" height="1600"></span>
-            <span class="pb-front"><img src="assets/covers/hollow-front.webp?v=2" alt="Hollow Echoes cover: a woman looking up through teal haze beneath a moth" loading="lazy" width="1066" height="1600"></span>
+            <span class="pb-spine"><img src="assets/covers/720/hollow-spine.webp?v=3" alt="" loading="lazy" width="61" height="1100"></span>
+            <span class="pb-front"><img src="assets/covers/720/hollow-front.webp?v=3" srcset="assets/covers/720/hollow-front.webp?v=3 720w, assets/covers/hollow-front.webp?v=2 1066w" sizes="(max-width: 760px) 190px, 220px" alt="Hollow Echoes cover: a woman looking up through teal haze beneath a moth" loading="lazy" width="720" height="1081"></span>
           </button>
         </div></div>
         <div class="pf-meta"><span class="fmt">Paperback, psychological mystery</span><h3>Hollow Echoes</h3></div>
@@ -1125,7 +1210,8 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   </div>
   <dialog class="wrap-dlg" id="wrapDlg" aria-labelledby="wrapTitle">
     <figure>
-      <img id="wrapImg" src="" alt="" width="2400" height="1786">
+      <div class="wrap-pan" id="wrapPan"><img id="wrapImg" src="" alt="" width="2400" height="1786"></div>
+      <p class="wrap-hint" aria-hidden="true">Swipe for the spine and back cover</p>
       <figcaption><div><b id="wrapTitle"></b><span>Full print wrap: back cover, spine, front cover</span></div><button class="btn btn-stamp" type="button" id="wrapClose">Close</button></figcaption>
     </figure>
   </dialog>
@@ -1341,7 +1427,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
 
 <footer class="foot">
   <div class="wrap foot-in">
-    <img src="assets/logo.webp" alt="Kodsinc Studio" data-reveal>
+    <img src="assets/logo-780.webp" alt="Kodsinc Studio" width="780" height="260" data-reveal>
     <nav aria-label="Footer">
       <a href="#services">Services</a><a href="#covers">Covers</a><a href="#process">Process</a><a href="#marketing">Author marketing</a><a href="about.html">About</a><a href="#brief">Start your book</a>
     </nav>
@@ -1446,20 +1532,58 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
     cloud:'A Cloud in My Heart', milo:'Milo the Shy Monster', alibi:'The Silent Alibi', hollow:'Hollow Echoes'};
   $$('.pf-item').forEach(item => {
     const book = $('.pbook', item);
-    const turn = () => book.setAttribute('aria-pressed', book.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+    let settle = 0;
+    const done = () => { clearTimeout(settle); book.classList.remove('is-turning'); };
+    // Real 3D only for the length of the turn, then back to the flat resting pose (see the .pbook CSS)
+    const turn = () => {
+      book.classList.add('is-turning');
+      book.setAttribute('aria-pressed', book.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+      clearTimeout(settle); settle = setTimeout(done, 1300);
+    };
+    book.addEventListener('transitionend', e => { if (e.target === book && e.propertyName === 'transform') done(); });
     book.addEventListener('click', turn);
     $('[data-turn]', item).addEventListener('click', turn);
   });
-  const dlg = $('#wrapDlg'), wrapImg = $('#wrapImg');
+  // Finger speed over about the last 100ms of a drag (px per ms), to tell a flick from a slow pull.
+  // Stopping before lifting the finger reads as no flick, as on a native sheet.
+  const flickMeter = () => {
+    const pts = [];
+    return {
+      add(v, t) { pts.push([v, t]); while (pts.length > 2 && t - pts[0][1] > 100) pts.shift(); },
+      speed() { if (pts.length < 2) return 0; const [v0, t0] = pts[0], [v1, t1] = pts[pts.length - 1]; return t1 > t0 ? (v1 - v0) / (t1 - t0) : 0; }
+    };
+  };
+  // Keep the page behind a pop-up still: pause smooth scrolling on desktop, lock the page on touch screens
+  const lock = on => {
+    if (window.kodLenis) on ? window.kodLenis.stop() : window.kodLenis.start();
+    else document.documentElement.classList.toggle('locked', on);
+  };
+  const dlg = $('#wrapDlg'), wrapImg = $('#wrapImg'), wrapPan = $('#wrapPan');
+  // On phones the wrap pans sideways; start on the front cover, the right-hand end of the wrap
+  const showFront = () => { if (wrapPan.scrollWidth > wrapPan.clientWidth + 4) wrapPan.scrollLeft = wrapPan.scrollWidth; };
+  wrapImg.addEventListener('load', showFront);
   $$('[data-wrap]').forEach(b => b.addEventListener('click', () => {
     const k = b.dataset.wrap;
     wrapImg.src = 'assets/covers/' + k + '-wrap.webp?v=2';
     wrapImg.alt = 'Full print wrap for ' + titles[k] + ': back cover, spine and front cover';
     $('#wrapTitle').textContent = titles[k];
-    dlg.showModal();
+    dlg.classList.remove('closing');
+    dlg.showModal(); lock(true);
+    requestAnimationFrame(showFront);
   }));
-  $('#wrapClose').addEventListener('click', () => dlg.close());
-  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  const closeWrap = () => {
+    if (!dlg.open || dlg.classList.contains('closing')) return;
+    const onEnd = e => { if (e.target === dlg) done(); };
+    const done = () => { dlg.removeEventListener('animationend', onEnd); if (!dlg.open) return; dlg.classList.remove('closing'); dlg.close(); };
+    if (reduce) { done(); return; }
+    dlg.classList.add('closing');
+    dlg.addEventListener('animationend', onEnd);
+    setTimeout(done, 450);
+  };
+  dlg.addEventListener('close', () => lock(false));
+  $('#wrapClose').addEventListener('click', closeWrap);
+  dlg.addEventListener('cancel', e => { e.preventDefault(); closeWrap(); });
+  dlg.addEventListener('click', e => { if (e.target === dlg) closeWrap(); });
 
   // ---------- Services: open a book in a pop-up in the middle of the screen ----------
   const dlg2 = $('#bookDlg'), bdBook = $('#bdBook'), bdCover = $('#bdCover');
@@ -1477,7 +1601,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
     $('#bdBack').removeAttribute('aria-hidden'); $('#bdFront').setAttribute('aria-hidden', 'true');
     $('#bdPage .sb-add').addEventListener('click', e => addToBrief(e.currentTarget));
     lent = svc;
-    window.kodLenis?.stop();
+    lock(true);
     dlg2.showModal();
     const W = bdBook.offsetWidth;
     if (!animated()) { bdBook.style.transform = `translateX(${W / 2}px)`; bdCover.style.transform = 'rotateY(-178deg)'; return; }
@@ -1496,7 +1620,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   };
   const closeBook2 = () => {
     if (!dlg2.open) return;
-    const done = () => { dlg2.classList.remove('closing'); dlg2.close(); bdBook.style.transform = bdCover.style.transform = ''; window.kodLenis?.start(); if (lent) { lent.classList.remove('lent'); $('.sb-cover', lent).focus({preventScroll:true}); } lent = null; };
+    const done = () => { dlg2.classList.remove('closing'); dlg2.close(); bdBook.style.transform = bdCover.style.transform = ''; lock(false); if (lent) { lent.classList.remove('lent'); $('.sb-cover', lent).focus({preventScroll:true}); } lent = null; };
     if (!animated() || !shelfPose) { done(); return; }
     // Close in about 0.5s: fold the cover shut while sliding back, then drop onto the shelf
     gsap.killTweensOf([bdBook, bdCover]);
@@ -1526,22 +1650,38 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
     shCheck = $('.sb-page .sb-add', src).dataset.check;
     $('#shAdd').textContent = document.getElementById(shCheck).checked ? 'Added to your brief \u2713' : 'Add to my brief';
     shFrom = svc;
-    sheet.showModal(); shPanel.scrollTop = 0;
-    if (animated()) gsap.fromTo(shPanel, {yPercent:100}, {yPercent:0, duration:.42, ease:'power3.out'});
+    sheet.showModal(); lock(true); shPanel.scrollTop = 0;
+    if (animated()) gsap.fromTo(shPanel, {yPercent:100, y:0}, {yPercent:0, duration:.42, ease:'power3.out'});
   };
+  sheet.addEventListener('close', () => lock(false));
   const closeSheet = () => {
     if (!sheet.open) return;
     const done = () => { sheet.close(); if (window.gsap) gsap.set(shPanel, {clearProps:'transform'}); else shPanel.style.transform = ''; shFrom && $('.sb-cover', shFrom).focus({preventScroll:true}); };
     if (animated()) gsap.to(shPanel, {yPercent:100, duration:.28, ease:'power2.in', onComplete:done}); else done();
   };
-  // Drag the top of the sheet down to dismiss it
-  let dragY = null;
-  $('#shTop').addEventListener('pointerdown', e => { dragY = e.clientY; $('#shTop').setPointerCapture(e.pointerId); });
-  $('#shTop').addEventListener('pointermove', e => { if (dragY === null) return; const dy = Math.max(0, e.clientY - dragY); if (window.gsap) gsap.set(shPanel, {y:dy}); else shPanel.style.transform = `translateY(${dy}px)`; });
-  $('#shTop').addEventListener('pointerup', e => {
-    if (dragY === null) return; const dy = e.clientY - dragY; dragY = null;
-    if (dy > 90) closeSheet(); else if (window.gsap) gsap.to(shPanel, {y:0, duration:.25, ease:'power2.out'}); else shPanel.style.transform = '';
+  // Drag the top of the sheet down to dismiss it: a long pull or a quick flick both close it, like a native sheet
+  const shTop = $('#shTop');
+  let drag = null;
+  const setY = dy => { if (window.gsap) gsap.set(shPanel, {y:dy}); else shPanel.style.transform = `translateY(${dy}px)`; };
+  shTop.addEventListener('pointerdown', e => {
+    drag = {y0:e.clientY, y:e.clientY, m:flickMeter()}; drag.m.add(e.clientY, e.timeStamp);
+    try { shTop.setPointerCapture(e.pointerId); } catch (_) {}
   });
+  shTop.addEventListener('pointermove', e => {
+    if (!drag) return;
+    drag.y = e.clientY; drag.m.add(e.clientY, e.timeStamp);
+    setY(Math.max(0, e.clientY - drag.y0));
+  });
+  const endDrag = e => {
+    if (!drag) return;
+    // A cancelled touch may report no position, so only a real release adds a final sample
+    if (e.type === 'pointerup') { drag.y = e.clientY; drag.m.add(e.clientY, e.timeStamp); }
+    const dy = drag.y - drag.y0, v = drag.m.speed(); drag = null;
+    if (dy > 90 || (dy > 12 && v > .3)) closeSheet();
+    else if (window.gsap) gsap.to(shPanel, {y:0, duration:.3, ease:'back.out(1.6)'}); else shPanel.style.transform = '';
+  };
+  shTop.addEventListener('pointerup', endDrag);
+  shTop.addEventListener('pointercancel', endDrag);
   $('#shClose').addEventListener('click', closeSheet);
   sheet.addEventListener('cancel', e => { e.preventDefault(); closeSheet(); });
   sheet.addEventListener('click', e => { if (e.target === sheet) closeSheet(); });
@@ -1562,6 +1702,18 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
 
   if (!window.gsap || !window.ScrollTrigger || reduce) return;
   gsap.registerPlugin(ScrollTrigger);
+  // Scroll-driven layouts (the held book on phones) only switch on when the animation library is running
+  document.documentElement.classList.add('motion');
+  // Touch screens: the address bar sliding in and out must never re-measure the page mid-scroll
+  ScrollTrigger.config({ignoreMobileResize:true});
+  // Screen height with the browser bars showing (100svh), so held sections fit even before the bars slide away
+  const vhProbe = document.createElement('div');
+  vhProbe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none';
+  document.body.append(vhProbe);
+  const svh = () => vhProbe.offsetHeight || innerHeight;
+  // How much of the bottom of the screen the floating tab bar covers (0 when it isn't shown)
+  const tabbar = $('.tabbar');
+  const tabCover = () => tabbar && getComputedStyle(tabbar).display !== 'none' ? Math.max(0, innerHeight - tabbar.getBoundingClientRect().top) + 6 : 0;
 
   // Smooth scroll on desktop pointers only
   if (window.Lenis && matchMedia('(pointer: fine)').matches) {
@@ -1589,8 +1741,10 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       tl.fromTo(marked, {'--ink-off':100}, {'--ink-off':0, duration:.7, ease:'power2.inOut'}, '-=.2');
     }
   });
+  // Reveals start once an element is a little way onto the screen; 94% (not 90%) so things at the very foot of
+  // the page, like the footer logo on a 900px-tall window, still reach their trigger before the scroll runs out
   $$('[data-reveal]').forEach(el => {
-    gsap.from(el, {y:36, autoAlpha:0, duration:.8, ease:'power3.out', scrollTrigger:{trigger:el, start:'top 90%', once:true}});
+    gsap.from(el, {y:36, autoAlpha:0, duration:.8, ease:'power3.out', scrollTrigger:{trigger:el, start:'top 94%', once:true}});
   });
   // Eyebrow labels: the leaf sprouts, then the label types itself out with a blinking caret.
   // Screen readers get the full label straight away from a hidden copy.
@@ -1621,13 +1775,12 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   // ---------- Hero intro ----------
   const book = $('#book'), cover = $('.cover', book), leaves = $$('.leaf', book);
   gsap.set([cover, ...leaves], {transformOrigin:'0% 50%'});
+  // The headline plays in straight away on every screen; the book stage has its own entrance per layout below.
+  // The entrances never animate the same property as the page-turn timeline, so scrolling back up can't leave stale values.
   gsap.timeline({defaults:{ease:'power4.out'}})
     .from('.hero h1 .line>span', {yPercent:110, duration:1, stagger:.1})
-    .from('.leafbg svg', {scale:0, rotation:-35, duration:1.2, ease:'back.out(1.3)'}, .05)
-    .from('.floor', {scaleX:0, duration:.9}, .5)
     .fromTo('.leaf-i', {'--g':0}, {'--g':1, duration:1, ease:'back.out(2.4)'}, .9)
     .fromTo('.hero h1 em', {'--ink-off':100}, {'--ink-off':0, duration:.8, ease:'power2.inOut'}, 1.2)
-    .from('.scene', {y:-90, rotationX:40, autoAlpha:0, duration:1.3, ease:'back.out(1.3)'}, .25)
     .from('.hero .lede, .hero .actions, .scroll-cue', {y:24, autoAlpha:0, duration:.8, stagger:.08}, .4);
 
   // Book opening, then one page turn per spread so each pair of services gets its moment.
@@ -1659,6 +1812,10 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
 
   const mm = gsap.matchMedia();
   mm.add('(min-width: 961px)', () => {
+    gsap.timeline({defaults:{ease:'power4.out'}})
+      .from('.leafbg svg', {scale:0, rotation:-35, duration:1.2, ease:'back.out(1.3)'}, .05)
+      .from('.floor', {autoAlpha:0, y:12, duration:.9}, .5)
+      .from('.scene', {y:-90, rotationX:40, autoAlpha:0, duration:1.3, ease:'back.out(1.3)'}, .25);
     // Pin just below the sticky header so the top of the hero never slides under it
     const tl = gsap.timeline({defaults:{ease:'sine.inOut'}, scrollTrigger:{trigger:'.hero', start:() => 'top ' + head.offsetHeight,
       end:'+=320%', pin:true, anticipatePin:1, scrub:1.2, invalidateOnRefresh:true, refreshPriority:2}});
@@ -1666,7 +1823,30 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
     tl.to('.scroll-cue', {autoAlpha:0, duration:.3}, 0);
   });
   mm.add('(max-width: 960px)', () => {
-    openBook(gsap.timeline({delay:1.4, defaults:{ease:'sine.inOut'}}), 1.4);
+    // Phones and tablets: the book is held mid-screen by CSS sticky while scrolling turns the pages.
+    // Size it to the screen first: as wide as the width allows, short enough to sit between header and tab bar.
+    const stage = $('.stage'), box = $('.stage-scale');
+    const fit = () => {
+      const headH = head.offsetHeight, tabH = tabCover(), vh = svh();
+      const s = Math.min(1, Math.max(.42, Math.min((innerWidth - 36) / 500, (vh - headH - tabH - 28) / 600)));
+      stage.style.setProperty('--s', s.toFixed(3));
+      stage.style.setProperty('--stage-h', Math.round(600 * s) + 'px');
+      stage.style.setProperty('--head-h', headH + 'px');
+      stage.style.setProperty('--tab-h', tabH + 'px');
+    };
+    fit();
+    ScrollTrigger.addEventListener('refreshInit', fit);
+    const stickTop = () => parseFloat(getComputedStyle(box).top) || 0;
+    // The stage builds itself in as it rises into view...
+    gsap.timeline({scrollTrigger:{trigger:stage, start:'top bottom', end:() => 'top ' + stickTop() + 'px', scrub:.5, invalidateOnRefresh:true}})
+      .fromTo('.leafbg svg', {scale:.2, rotation:-35}, {scale:1, rotation:0, ease:'back.out(1.2)', duration:1}, 0)
+      .fromTo('.scene', {y:120, rotationX:42, autoAlpha:0}, {y:0, rotationX:0, autoAlpha:1, ease:'power2.out', duration:.9}, .05)
+      .fromTo('.floor', {autoAlpha:0}, {autoAlpha:1, duration:.5}, .4);
+    // ...then, while it is held mid-screen, scrolling opens the cover and turns each page
+    const tl = gsap.timeline({defaults:{ease:'sine.inOut'}, scrollTrigger:{trigger:stage, start:() => 'top ' + stickTop() + 'px',
+      end:() => 'bottom ' + (stickTop() + box.offsetHeight) + 'px', scrub:.5, invalidateOnRefresh:true}});
+    openBook(tl, .45);
+    return () => ScrollTrigger.removeEventListener('refreshInit', fit);
   });
 
   // ---------- Two halves swing open like covers ----------
@@ -1678,8 +1858,9 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       scrollTrigger:{trigger:'.halves-grid', start:'top 90%', end:'top 45%', scrub:1}});
   });
   mm.add('(max-width: 760px)', () => {
-    halves.forEach((h, i) => gsap.from(h, {rotationY: i ? -40 : 40, transformOrigin: i ? '0% 50%' : '100% 50%', autoAlpha:0, duration:.9, ease:'power3.out',
-      scrollTrigger:{trigger:h, start:'top 88%', once:true}}));
+    // Each half swings open like a cover as it rises up the screen, following the scroll
+    halves.forEach((h, i) => gsap.from(h, {rotationY: i ? -55 : 55, transformOrigin: i ? '0% 50%' : '100% 50%', autoAlpha:0, y:30, ease:'power2.out',
+      scrollTrigger:{trigger:h, start:'top 96%', end:'top 56%', scrub:.6}}));
   });
 
   // ---------- Services slide out of the shelf ----------
@@ -1698,7 +1879,9 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   // Each book has its own trigger so the second row turns as it arrives; later columns start a touch later
   $$('.pf-item').forEach((item, i) => {
     const lag = (i % 4) * 4;
+    const pbook = $('.pbook', item);
     gsap.from($('.pf-wrap', item), {rotationY:-62, y:70, autoAlpha:0, ease:'power2.out',
+      onUpdate() { pbook.classList.toggle('is-entering', this.progress() < .999); },
       scrollTrigger:{trigger:item, start:`top ${96 - lag}%`, end:`top ${52 - lag}%`, scrub:1}});
     gsap.from($$('.pf-meta, .pf-actions', item), {y:24, autoAlpha:0, stagger:.08, duration:.6, ease:'power3.out',
       scrollTrigger:{trigger:item, start:'top 70%', once:true}});
@@ -1722,10 +1905,47 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
     });
   });
   mm.add('(max-width: 899px)', () => {
+    const sec = $('.process'), pinBox = $('.process .pin');
+    // Short screens (small phones): the steps stack, and each one's sheets drop in as it arrives
+    if (svh() < 600) {
+      $$('.step').forEach(step => {
+        artIn($('.iso', step), {scrollTrigger:{trigger:step, start:'top 80%', once:true}});
+        gsap.from(step, {y:40, autoAlpha:0, duration:.7, scrollTrigger:{trigger:step, start:'top 88%', once:true}});
+      });
+      return;
+    }
+    // Otherwise the section is held under the header (CSS sticky, so it never jitters) while scrolling slides
+    // the steps sideways, like the desktop track; the gold ribbon fills as you go
+    sec.classList.add('hz');
+    const dist = () => Math.max(0, track.scrollWidth - innerWidth);
+    // A short hold before the first card moves and after the last one lands, and a slightly slower slide
+    // (1.25px of scroll per px of travel) so each step can be read
+    const hold = () => Math.round(svh() * .16);
+    const size = () => {
+      const headH = head.offsetHeight;
+      sec.style.setProperty('--head-h', headH + 'px');
+      sec.style.setProperty('--tab-h', tabCover() + 'px');
+      sec.style.setProperty('--pin-h', (svh() - headH) + 'px');
+      sec.style.setProperty('--dist', Math.round(dist() * 1.25 + hold() * 2) + 'px');
+    };
+    size();
+    ScrollTrigger.addEventListener('refreshInit', size);
+    const move = gsap.to(track, {x:() => -dist(), ease:'none',
+      scrollTrigger:{trigger:sec, start:() => 'top ' + (head.offsetHeight - hold()) + 'px', end:() => 'bottom ' + (head.offsetHeight + pinBox.offsetHeight + hold()) + 'px',
+        scrub:.4, invalidateOnRefresh:true, onUpdate:st => gsap.set('#ribbon', {scaleX:st.progress})}});
     $$('.step').forEach(step => {
-      artIn($('.iso', step), {scrollTrigger:{trigger:step, start:'top 80%', once:true}});
-      gsap.from(step, {y:40, autoAlpha:0, duration:.7, scrollTrigger:{trigger:step, start:'top 88%', once:true}});
+      // Cards already on screen when the section arrives (the first on phones, the first two on tablets) build on
+      // the way in; the rest build as the track slides them into view. offsetLeft ignores the track's transform.
+      const onScreen = step.offsetLeft < innerWidth * .88;
+      const st = onScreen ? {trigger:step, start:'top 82%', toggleActions:'play none none reverse'} : {trigger:step, containerAnimation:move, start:'left 90%', toggleActions:'play none none reverse'};
+      artIn($('.iso', step), {scrollTrigger:st});
+      gsap.from($$('h3, p, .step-n', step), {y:24, autoAlpha:0, stagger:.07, duration:.5, scrollTrigger:{...st, start: onScreen ? 'top 78%' : 'left 86%'}});
     });
+    return () => {
+      ScrollTrigger.removeEventListener('refreshInit', size);
+      sec.classList.remove('hz');
+      ['--head-h', '--tab-h', '--pin-h', '--dist'].forEach(p => sec.style.removeProperty(p));
+    };
   });
 
   // ---------- Marquee speeds up and leans with scroll velocity ----------
@@ -1753,9 +1973,10 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   // auto-advance add to the offset, so both work together.
   const ring = $('#siteRing'), ringItems = $$('.ring-item', ring), ringK = $('#ringK'), ringN = $('#ringN'), ringGo = $('#ringGo');
   const spin = {scroll:0, off:0};
-  let frontIdx = -1;
+  let frontIdx = -1, ringR = ringItems[0].offsetWidth * .62;
+  ScrollTrigger.addEventListener('refreshInit', () => { ringR = ringItems[0].offsetWidth * .62; });
   const drawRing = () => {
-    const a = spin.scroll + spin.off, R = ringItems[0].offsetWidth * .62;
+    const a = spin.scroll + spin.off, R = ringR;
     ringItems.forEach((it, i) => {
       const d = ((i * 120 - a) % 360 + 540) % 360 - 180;   // angle from the front, -180..180
       const rad = d * Math.PI / 180, c = Math.cos(rad);
@@ -1785,7 +2006,9 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
     gsap.to(spin, {off:spin.off + (target - a), duration:.7, ease:'power2.inOut', onUpdate:drawRing, overwrite:'auto'});
   };
   // Clicking a side site turns it to the front; clicking the front one opens the live site
+  let ringSwiped = false;
   ringItems.forEach((it, i) => it.addEventListener('click', e => {
+    if (ringSwiped) { e.preventDefault(); return; }
     if (i === frontIdx) return;
     e.preventDefault();
     const a = spin.scroll + spin.off, d = ((i * 120 - a) % 360 + 540) % 360 - 180;
@@ -1803,12 +2026,47 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   vis.addEventListener('focusout', () => held = false);
   new IntersectionObserver(es => es.forEach(e => onScreen = e.isIntersecting)).observe(vis);
   restartAuto();
+  const rStage = $('.ring-stage');
+  let rDrag = null;
+  rStage.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse') return;
+    rDrag = {x0:e.clientX, y0:e.clientY, x:e.clientX, off:spin.off, a0:spin.scroll + spin.off, moved:false, m:flickMeter()};
+    rDrag.m.add(e.clientX, e.timeStamp);
+  });
+  rStage.addEventListener('pointermove', e => {
+    if (!rDrag) return;
+    const dx = e.clientX - rDrag.x0, dy = e.clientY - rDrag.y0;
+    if (!rDrag.moved) {
+      if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+      if (Math.abs(dy) > Math.abs(dx)) { rDrag = null; return; }   // an up/down drag scrolls the page as normal
+      rDrag.moved = true; held = true; auto?.kill(); gsap.killTweensOf(spin, 'off');
+      try { rStage.setPointerCapture(e.pointerId); } catch (_) {}
+    }
+    rDrag.x = e.clientX; rDrag.m.add(e.clientX, e.timeStamp);
+    spin.off = rDrag.off - dx * 120 / Math.max(120, ringR * 1.7);
+    drawRing();
+  });
+  const rEnd = e => {
+    const d = rDrag; rDrag = null;
+    if (!d || !d.moved) return;
+    if (e.type === 'pointerup') { d.x = e.clientX; d.m.add(e.clientX, e.timeStamp); }
+    ringSwiped = true; setTimeout(() => { ringSwiped = false; }, 80);
+    // Like a native carousel, judged from the site that was in front when the drag began: dragging past about
+    // a quarter of the width, or a quick flick, moves one site that way; anything less settles back
+    const dx = d.x - d.x0, v = d.m.speed(), far = Math.abs(dx) > rStage.offsetWidth * .22;
+    const dir = far ? -Math.sign(dx) : Math.abs(v) > .3 ? -Math.sign(v) : 0;
+    const target = (Math.round(d.a0 / 120) + dir) * 120;
+    gsap.to(spin, {off:target - spin.scroll, duration:.6, ease:'power3.out', onUpdate:drawRing});
+    held = false; restartAuto();
+  };
+  rStage.addEventListener('pointerup', rEnd);
+  rStage.addEventListener('pointercancel', rEnd);
   gsap.from('.ring-stage', {scale:.85, autoAlpha:0, duration:.9, ease:'power3.out', scrollTrigger:{trigger:'.mk-visual', start:'top 85%', once:true}});
 
   gsap.from('.next li', {x:-24, autoAlpha:0, stagger:.12, duration:.6, ease:'power3.out', scrollTrigger:{trigger:'.next', start:'top 85%', once:true}});
 
   // ---------- Brief: books drift past the form ----------
-  gsap.utils.toArray('.float-book').forEach((b, i) => gsap.to(b, {y:-(80 + i * 60), rotation:(i % 2 ? -1 : 1) * 24, ease:'none',
+  gsap.utils.toArray('.float-book').forEach((b, i) => gsap.to(b, {y:-(80 + i * 60), rotation:(i % 2 ? -1 : 1) * 24, ease:'none', force3D:isPhone() ? false : 'auto',
     scrollTrigger:{trigger:'.brief', start:'top bottom', end:'bottom top', scrub:true}}));
 
   // ---------- Leaves drifting behind sections ----------
@@ -1827,7 +2085,8 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
     const sec = $(sel); if (!sec) return;
     const box = document.createElement('div'); box.className = 'drifts'; box.setAttribute('aria-hidden', 'true');
     list.forEach(([x, y, k, c, r], i) => {
-      box.insertAdjacentHTML('beforeend', `<span class="drift" style="left:${x}%;top:${y}%;width:${Math.round(38 * k)}px;color:${COL[c]}"><svg viewBox="0 0 24 24" style="animation-delay:${-i * 1.3}s"><use href="#leaf"/></svg></span>`);
+      // dl / dr say which screen edge the leaf tucks against on narrower screens
+      box.insertAdjacentHTML('beforeend', `<span class="drift ${x < 50 ? 'dl' : 'dr'}" style="--x:${x}%;--w:${Math.round(38 * k)}px;top:${y}%;color:${COL[c]}"><svg viewBox="0 0 24 24" style="animation-delay:${-i * 1.3}s"><use href="#leaf"/></svg></span>`);
       gsap.fromTo(box.lastElementChild, {y:90 * k, rotation:r}, {y:-180 * k, rotation:r + (i % 2 ? -80 : 80), ease:'none',
         scrollTrigger:{trigger:sec, start:'top bottom', end:'bottom top', scrub:true}});
     });
@@ -1848,11 +2107,35 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   let lit = -1;
   ScrollTrigger.create({start:0, end:'max', onUpdate:st => {
     setStem(st.progress);
+    if (tabbar) tabbar.style.setProperty('--read', st.progress.toFixed(4));
     const n = Math.floor(st.progress * 12 + 1e-6);
     if (n === lit) return;
     lit = n;
     vineLeaves.forEach(([el], i) => el.classList.toggle('on', i < n));
   }});
+
+  // ---------- Swipe rows (phones): books turn toward the middle as they slide, like a cover flow ----------
+  mm.add('(max-width: 760px)', () => {
+    const offs = [];
+    $$('.shelf.swipe, .pf-grid.swipe').forEach(row => {
+      const items = [...row.children], hint = row.nextElementSibling?.classList.contains('swipe-hint') ? row.nextElementSibling : null;
+      let geo = [], raf = 0;
+      const measure = () => { geo = items.map(it => ({c:it.offsetLeft + it.offsetWidth / 2, w:it.offsetWidth})); };
+      const flow = () => {
+        raf = 0;
+        const mid = row.scrollLeft + row.clientWidth / 2;
+        items.forEach((it, i) => it.style.setProperty('--flow', Math.max(-1.3, Math.min(1.3, (geo[i].c - mid) / geo[i].w)).toFixed(3)));
+        if (hint && row.scrollLeft > 40) hint.classList.add('done');
+      };
+      const onScroll = () => { if (!raf) raf = requestAnimationFrame(flow); };
+      const remeasure = () => { measure(); flow(); };
+      remeasure();
+      row.addEventListener('scroll', onScroll, {passive:true});
+      ScrollTrigger.addEventListener('refresh', remeasure);
+      offs.push(() => { row.removeEventListener('scroll', onScroll); ScrollTrigger.removeEventListener('refresh', remeasure); items.forEach(it => it.style.removeProperty('--flow')); });
+    });
+    return () => offs.forEach(f => f());
+  });
 
   // ---------- Extra section reveals ----------
   gsap.from('.half li', {scale:.5, autoAlpha:0, stagger:.06, duration:.55, ease:'back.out(2.2)', scrollTrigger:{trigger:'.halves-grid', start:'top 60%', once:true}});
@@ -1863,6 +2146,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   // Pins (hero, process) refresh first so every later trigger measures the page with their scroll space included
   ScrollTrigger.sort();
   addEventListener('load', () => ScrollTrigger.refresh());
+  document.fonts?.ready.then(() => ScrollTrigger.refresh());
 })();
 </script>
 </body>

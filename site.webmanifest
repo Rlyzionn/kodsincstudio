@@ -1,0 +1,14 @@
+{
+  "name": "Kodsinc Studio",
+  "short_name": "Kodsinc",
+  "description": "Book publishing, editing, formatting, cover design and author marketing.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f8f1e6",
+  "theme_color": "#f8f1e6",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}
