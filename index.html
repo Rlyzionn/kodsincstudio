@@ -459,6 +459,8 @@ p{margin:0}
 .marquee-track li::after{content:"";width:14px;height:14px;margin-inline:26px;background:var(--forest);border-radius:0 70% 0 70%}
 
 /* ---------- Author marketing ---------- */
+/* The side sites on the ring can reach past the window edge; clip sideways so the page never scrolls horizontally */
+#marketing{overflow-x:clip}
 .mk-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(30px,5vw,70px);align-items:center}
 .mk-copy{display:grid;gap:22px;min-width:0}
 .feature{display:grid;grid-template-columns:52px 1fr;gap:16px;padding:22px 0;border-top:2px solid var(--forest)}
@@ -482,30 +484,6 @@ p{margin:0}
 .ring-n{font:800 20px var(--display);color:var(--forest)}
 @media (max-width:900px){.mk-grid{grid-template-columns:1fr}.mk-visual{height:460px;overflow:clip}}
 @media (max-width:520px){.mk-visual{height:420px}.browser-wrap{inset:4% 0 10%}.ly-hero{gap:12px;padding:12px}.mini-cover{width:54px;height:80px}}
-
-/* ---------- Author site showcase ---------- */
-.sc{margin-top:clamp(64px,8vw,104px)}
-.sc-head{display:grid;gap:14px;max-width:720px}
-.sc-title{font:800 clamp(26px,3vw,38px)/1.05 var(--display);letter-spacing:-.02em;color:var(--forest);text-wrap:balance}
-.sc-grid{margin-top:40px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(22px,3vw,36px)}
-.sc-card{min-width:0;display:grid;gap:22px;align-content:start}
-.sc-shot{position:relative;display:block;padding:0 22px 34px 0}
-/* Flat browser frame; hover tilts with the separate rotate/translate properties so scroll animation keeps transform */
-.sc-browser{display:block;border:2px solid var(--forest);border-radius:12px;overflow:hidden;background:var(--paper);box-shadow:7px 7px 0 var(--forest);
-  transition:rotate .45s var(--spring),translate .45s var(--spring),box-shadow .45s var(--spring)}
-.sc-browser img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top}
-.sc-phone{position:absolute;right:0;bottom:0;width:26%;height:auto;aspect-ratio:390/844;object-fit:cover;object-position:top;border:5px solid var(--forest-deep);border-radius:16px;
-  background:var(--forest-deep);box-shadow:5px 5px 0 var(--forest);transition:translate .45s var(--spring),rotate .45s var(--spring)}
-.sc-card:hover .sc-browser{rotate:-1.2deg;translate:0 -4px;box-shadow:10px 10px 0 var(--forest)}
-.sc-card:hover .sc-phone{translate:4px -10px;rotate:3deg}
-.sc-meta{display:grid;gap:6px;justify-items:start}
-.sc-k{font:500 11.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
-.sc-meta h4{margin:0;font:800 23px/1.1 var(--display);color:var(--forest)}
-.sc-meta p{font-size:15.5px;color:var(--muted);max-width:42ch}
-.sc-link{margin-top:6px;font:700 15px var(--display);color:var(--forest);text-decoration:none;padding-bottom:3px;
-  background:linear-gradient(var(--leaf),var(--leaf)) 0 100% / 100% 2px no-repeat;transition:background-size .3s var(--ease-out),color .3s}
-.sc-link:hover,.sc-link:focus-visible{color:var(--moss);background-size:0% 2px;background-position:100% 100%}
-@media (max-width:900px){.sc-grid{grid-template-columns:1fr;max-width:560px}}
 
 /* ---------- Brief / CTA ---------- */
 .brief{background:var(--forest);color:var(--cream);position:relative;overflow:hidden}
@@ -1094,53 +1072,6 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     </div>
   </div>
 
-  <div class="wrap sc">
-    <div class="sc-head">
-      <p class="eyebrow" data-reveal>Recent author sites</p>
-      <h3 class="sc-title" data-reveal>Three authors, three very different homes on the web.</h3>
-    </div>
-    <div class="sc-grid">
-      <article class="sc-card">
-        <a class="sc-shot" href="https://author-website1-eight.vercel.app" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-          <span class="sc-browser">
-            <img src="assets/showcase/broadmeadow-desktop.webp?v=2" alt="" width="1200" height="750" loading="lazy"></span>
-          <img class="sc-phone" src="assets/showcase/broadmeadow-phone.webp?v=2" alt="" width="390" height="844" loading="lazy">
-        </a>
-        <div class="sc-meta">
-          <span class="sc-k">Crime fiction &amp; true crime</span>
-          <h4>Joe Broadmeadow</h4>
-          <p>A dark, cinematic site for a retired police captain turned crime writer.</p>
-          <a class="sc-link" href="https://author-website1-eight.vercel.app" target="_blank" rel="noopener">Visit the live site <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
-        </div>
-      </article>
-      <article class="sc-card">
-        <a class="sc-shot" href="https://author-website2.vercel.app" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-          <span class="sc-browser">
-            <img src="assets/showcase/manogue-desktop.webp?v=2" alt="" width="1200" height="750" loading="lazy"></span>
-          <img class="sc-phone" src="assets/showcase/manogue-phone.webp?v=2" alt="" width="390" height="844" loading="lazy">
-        </a>
-        <div class="sc-meta">
-          <span class="sc-k">Poetry &amp; art</span>
-          <h4>H.T. Manogue</h4>
-          <p>Bright, hand-drawn and playful, made for a poet and artist.</p>
-          <a class="sc-link" href="https://author-website2.vercel.app" target="_blank" rel="noopener">Visit the live site <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
-        </div>
-      </article>
-      <article class="sc-card">
-        <a class="sc-shot" href="https://author-website3.vercel.app" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-          <span class="sc-browser">
-            <img src="assets/showcase/pollard-desktop.webp?v=2" alt="" width="1200" height="750" loading="lazy"></span>
-          <img class="sc-phone" src="assets/showcase/pollard-phone.webp?v=2" alt="" width="390" height="844" loading="lazy">
-        </a>
-        <div class="sc-meta">
-          <span class="sc-k">Faith &amp; nonfiction</span>
-          <h4>Gabriel Pollard</h4>
-          <p>Golden light and deep blue for a book about faith and prophecy, with a free chapter to read.</p>
-          <a class="sc-link" href="https://author-website3.vercel.app" target="_blank" rel="noopener">Visit the live site <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>
-        </div>
-      </article>
-    </div>
-  </div>
 </section>
 
 <!-- BRIEF -->
@@ -1538,14 +1469,6 @@ fieldset{border:none;padding:0;margin:0;display:grid;gap:10px}
     .to(spin, {a:240, duration:1, ease:'sine.inOut'})
     .to(spin, {a:240, duration:.35});
   gsap.from('.ring-stage', {scale:.85, autoAlpha:0, duration:.9, ease:'power3.out', scrollTrigger:{trigger:'.mk-visual', start:'top 85%', once:true}});
-
-  // ---------- Author site showcase ----------
-  $$('.sc-card').forEach((card, i) => {
-    gsap.timeline({scrollTrigger:{trigger:card, start:'top 85%', once:true}, delay:(i % 3) * .1})
-      .from(card, {y:50, autoAlpha:0, duration:.8, ease:'power3.out'})
-      .from($('.sc-phone', card), {y:60, rotation:8, autoAlpha:0, duration:.7, ease:'back.out(1.6)'}, '-=.45')
-      .from($$('.sc-meta > *', card), {y:14, autoAlpha:0, stagger:.06, duration:.45, ease:'power2.out'}, '-=.5');
-  });
 
   // ---------- Brief: books drift past the form ----------
   gsap.utils.toArray('.float-book').forEach((b, i) => gsap.to(b, {y:-(80 + i * 60), rotation:(i % 2 ? -1 : 1) * 24, ease:'none',
