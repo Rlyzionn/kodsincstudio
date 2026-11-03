@@ -501,6 +501,23 @@ p{margin:0}
 @media (max-width:900px){.mk-grid{grid-template-columns:1fr}.mk-visual{height:460px;overflow:clip}}
 @media (max-width:520px){.mk-visual{height:420px}.browser-wrap{inset:4% 0 10%}.ly-hero{gap:12px;padding:12px}.mini-cover{width:54px;height:80px}}
 
+/* ---------- Author site features ---------- */
+.mk-more{margin-top:clamp(56px,7vw,90px);position:relative;z-index:1}
+.mk-more-head{display:grid;gap:8px;max-width:640px}
+.mk-more-head h3{font:800 clamp(24px,2.6vw,32px)/1.1 var(--display);color:var(--forest)}
+.mk-more-head p{color:var(--muted)}
+.mk-tiles{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.mk-tile{display:grid;gap:8px;align-content:start;padding:20px;background:var(--paper);border:2px solid var(--forest);border-radius:16px;box-shadow:5px 5px 0 var(--forest);
+  transition:translate .3s var(--spring),box-shadow .3s var(--spring)}
+.mk-tile:hover{translate:-2px -4px;box-shadow:8px 9px 0 var(--forest)}
+.mk-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--leaf-pale);color:var(--forest);border:2px solid var(--forest)}
+.mk-ic svg{width:22px;height:22px}
+.mk-tile:nth-child(4n+2) .mk-ic{background:#f6e3b8}
+.mk-tile:nth-child(4n+3) .mk-ic{background:var(--leaf);}
+.mk-tile b{font:700 17px/1.2 var(--display);color:var(--forest)}
+.mk-tile > span:last-child{font-size:14.5px;line-height:1.5;color:var(--muted)}
+@media (max-width:1000px){.mk-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 /* ---------- Brief / CTA ---------- */
 .brief{background:var(--forest);color:var(--cream);position:relative;overflow:hidden}
 .brief .h2{color:var(--cream)}
@@ -600,6 +617,77 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
 }
+
+/* ---------- Phone-only, app-style interface ---------- */
+.tabbar,.swipe-hint{display:none}
+@media (max-width:760px){
+  /* Floating tab bar with a raised Start button, like a native app */
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);align-items:end;position:fixed;z-index:70;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));
+    bottom:calc(10px + env(safe-area-inset-bottom,0px));height:66px;padding:0 4px 8px;background:rgba(255,250,242,.93);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
+    border:2px solid var(--forest);border-radius:22px;box-shadow:0 5px 0 var(--forest)}
+  .tabbar a{display:grid;justify-items:center;gap:2px;text-decoration:none;color:var(--muted);font:600 10.5px/1.2 var(--display);-webkit-tap-highlight-color:transparent;transition:color .2s,scale .15s}
+  .tabbar a .ic{display:grid;place-items:center;width:48px;height:30px;border-radius:15px;transition:background-color .25s,color .25s}
+  .tabbar a svg{width:22px;height:22px}
+  .tabbar a.on{color:var(--forest)}
+  .tabbar a.on .ic{background:var(--leaf-pale)}
+  .tabbar a:active{scale:.9}
+  .tabbar .tab-cta{color:var(--forest)}
+  .tabbar .tab-cta .ic{width:54px;height:54px;border-radius:50%;background:var(--forest);color:var(--cream);border:2px solid var(--forest-deep);box-shadow:0 4px 0 var(--forest-deep);translate:0 -14px;margin-bottom:-14px}
+  .tabbar .tab-cta.on .ic{background:var(--leaf);color:var(--forest-deep)}
+  body{padding-bottom:calc(98px + env(safe-area-inset-bottom,0px))}
+  .site-head .btn{display:none}
+  .head-in{padding-block:10px}
+  /* Swipeable rows that snap card by card and peek at the next one */
+  .swipe{display:flex!important;grid-template-columns:none!important;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+    margin-inline:calc(-1 * max(20px,env(safe-area-inset-left,0px)));padding-inline:max(20px,env(safe-area-inset-left,0px));scroll-padding-inline:max(20px,env(safe-area-inset-left,0px))}
+  .swipe::-webkit-scrollbar{display:none}
+  .swipe > *{scroll-snap-align:start;flex:0 0 auto}
+  .swipe-hint{display:flex;align-items:center;gap:8px;margin-top:14px;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
+  .swipe-hint::after{content:"";width:28px;height:2px;background:currentColor;animation:hint 1.6s ease-in-out infinite}
+  @keyframes hint{0%,100%{translate:0 0}50%{translate:6px 0}}
+  /* Form controls at 16px so iPhones don't zoom in when typing */
+  input,textarea,select,.dd-btn{font-size:16px!important}
+}
+@media (max-width:760px){
+  .shelf.swipe{gap:18px;padding-bottom:14px;padding-top:8px}
+  .shelf.swipe .svc{width:62%}
+  .shelf.swipe .sbook{max-width:none}
+  .pf-grid.swipe{gap:18px}
+  .pf-grid.swipe .pf-item{width:76%}
+  .pf-grid.swipe .pf-stage{--w:190px}
+  /* Site features become a grouped list, like a settings screen */
+  .mk-tiles{grid-template-columns:1fr;gap:0;background:var(--paper);border:2px solid var(--forest);border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 var(--forest)}
+  .mk-tile{grid-template-columns:42px 1fr;column-gap:14px;row-gap:2px;align-items:center;padding:14px 16px;border:0;border-bottom:1.5px solid var(--line);border-radius:0;box-shadow:none}
+  .mk-tile:last-child{border-bottom:0}
+  .mk-tile:hover{translate:none;box-shadow:none}
+  .mk-ic{grid-row:1 / 3;width:42px;height:42px}
+  .mk-tile b{font-size:16px}
+  .mk-tile > span:last-child{font-size:14px}
+}
+/* Service details on phones: a bottom sheet with a drag handle */
+.svc-sheet{position:fixed;inset:auto 0 0 0;width:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;overflow:visible}
+.svc-sheet::backdrop{background:rgba(3,39,26,.6)}
+.svc-sheet[open]::backdrop{animation:bdfade .25s ease-out}
+.sh-panel{--c:var(--forest);--t:var(--cream);--s:var(--forest-deep);max-height:86vh;overflow:auto;overscroll-behavior:contain;background:var(--paper);border:2px solid var(--forest);border-bottom:0;
+  border-radius:26px 26px 0 0;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
+.sh-top{position:sticky;top:0;z-index:1;display:grid;justify-items:center;gap:12px;padding:10px 20px 18px;background:var(--c);color:var(--t);border-bottom:2px solid var(--s);touch-action:none;cursor:grab}
+.sh-grab{width:44px;height:5px;border-radius:3px;background:currentColor;opacity:.45}
+.sh-top .svc-ill{width:min(220px,62%);margin:0}
+.sh-body{display:grid;gap:12px;padding:20px}
+.sh-body .num{color:var(--moss)}
+.sh-body h3{font:800 26px/1.1 var(--display);color:var(--forest)}
+.sh-body .sh-desc{color:var(--muted);font-size:16px}
+.sh-body .sb-k{font-size:11px}
+.sh-body ul{list-style:none;margin:0;padding:0;display:grid;gap:9px;font:600 15.5px/1.3 var(--display);color:var(--forest)}
+.sh-body li{display:flex;gap:10px;align-items:baseline}
+.sh-body li::before{content:"";flex:none;width:9px;height:9px;border-radius:0 70% 0 70%;background:var(--leaf)}
+.sh-body .sb-out{font-size:15px;border-top-color:var(--line)}
+.sh-actions{display:flex;flex-wrap:wrap;gap:12px;padding-top:6px}
+.sh-actions .btn{flex:1;justify-content:center}
+.sh-panel.b2{--c:var(--leaf);--t:var(--forest-deep);--s:var(--moss)}
+.sh-panel.b3{--c:var(--cream);--t:var(--forest);--s:var(--forest)}
+.sh-panel.b4{--c:var(--gold-2);--t:var(--forest-deep);--s:var(--gold)}
+.sh-panel.b5{--c:var(--leaf-pale);--t:var(--forest);--s:var(--moss)}
 </style>
 </head>
 <body>
@@ -805,7 +893,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       <p class="lede" data-reveal>Pick one service or take the whole set. Open a book to see what's inside, and add it to your brief in one tap.</p>
     </div>
 
-    <div class="shelf">
+    <div class="shelf swipe">
       <div class="svc"><article class="sbook b1">
         <div class="sb-page" inert>
           <h3 class="sr-only">Book &amp; ebook publishing</h3><p class="sr-only">We prepare and release your book in print and as an ebook, set up and ready to sell.</p>
@@ -872,6 +960,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
         </button>
       </article></div>
     </div>
+    <p class="swipe-hint" aria-hidden="true">Swipe the shelf</p>
     <dialog class="book-dlg" id="bookDlg" aria-labelledby="bdTitle">
       <div class="bd-stage"><div class="bd-book" id="bdBook">
         <div class="sb-page" id="bdPage"></div>
@@ -879,6 +968,20 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       </div></div>
       <button class="btn bd-close" type="button" id="bdClose">Close</button>
       <p class="bd-tip" aria-hidden="true">Tap outside the book or press Esc to close</p>
+    </dialog>
+    <dialog class="svc-sheet" id="svcSheet" aria-labelledby="shTitle">
+      <div class="sh-panel" id="shPanel">
+        <div class="sh-top" id="shTop"><span class="sh-grab" aria-hidden="true"></span><span id="shArt"></span></div>
+        <div class="sh-body">
+          <span class="num" id="shNum"></span>
+          <h3 id="shTitle"></h3>
+          <p class="sh-desc" id="shDesc"></p>
+          <span class="sb-k">What's included</span>
+          <ul id="shList"></ul>
+          <p class="sb-out" id="shOut"></p>
+          <div class="sh-actions"><button class="btn btn-sprout" type="button" id="shAdd">Add to my brief</button><button class="btn btn-ink" type="button" id="shClose">Close</button></div>
+        </div>
+      </div>
     </dialog>
   </div>
 </section>
@@ -917,7 +1020,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       <p class="pf-note" data-reveal>Client work and concept mockups. Whatever style you picture, we can design it.</p></div>
     </div>
 
-    <div class="pf-grid">
+    <div class="pf-grid swipe">
       <article class="pf-item">
         <div class="pf-stage" style="--r:.6706"><div class="pf-wrap">
           <button class="pbook" type="button" aria-pressed="false" aria-label="Turn over Whiskey Venus Boston" style="--t:calc(var(--h) * .046)">
@@ -927,7 +1030,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
             <span class="pb-front"><img src="assets/covers/whiskey-front.webp?v=2" alt="Whiskey Venus Boston cover: a woman running beneath a huge orange moon" loading="lazy" width="1073" height="1600"></span>
           </button>
         </div></div>
-        <div class="pf-meta"><span class="fmt">Hardback case wrap</span><h3>Whiskey Venus Boston</h3><p>Anna Bonnacord</p></div>
+        <div class="pf-meta"><span class="fmt">Hardback case wrap</span><h3>Whiskey Venus Boston</h3></div>
         <div class="pf-actions"><button class="btn btn-turn" type="button" data-turn><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3"/></svg>Turn over</button><button class="btn btn-unfold" type="button" data-wrap="whiskey">Full wrap</button></div>
       </article>
 
@@ -940,7 +1043,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
             <span class="pb-front"><img src="assets/covers/terry-front.webp?v=2" alt="Goodnight Ditties for Curious Kiddies cover: a watercolour moon and stars" loading="lazy" width="1073" height="1600"></span>
           </button>
         </div></div>
-        <div class="pf-meta"><span class="fmt">Children's poetry</span><h3>Goodnight Ditties for Curious Kiddies</h3><p>Terry Bulger</p></div>
+        <div class="pf-meta"><span class="fmt">Children's poetry</span><h3>Goodnight Ditties for Curious Kiddies</h3></div>
         <div class="pf-actions"><button class="btn btn-turn" type="button" data-turn><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3"/></svg>Turn over</button><button class="btn btn-unfold" type="button" data-wrap="terry">Full wrap</button></div>
       </article>
 
@@ -953,7 +1056,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
             <span class="pb-front"><img src="assets/covers/bn-front.webp?v=2" alt="No Plan B cover: elegant serif title on deep burgundy" loading="lazy" width="1069" height="1600"></span>
           </button>
         </div></div>
-        <div class="pf-meta"><span class="fmt">Paperback, nonfiction</span><h3>No Plan B</h3><p>Christina &amp; Akinyele Lovelace</p></div>
+        <div class="pf-meta"><span class="fmt">Paperback, nonfiction</span><h3>No Plan B</h3></div>
         <div class="pf-actions"><button class="btn btn-turn" type="button" data-turn><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3"/></svg>Turn over</button><button class="btn btn-unfold" type="button" data-wrap="bn">Full wrap</button></div>
       </article>
 
@@ -966,7 +1069,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
             <span class="pb-front"><img src="assets/covers/nikki-front.webp?v=2" alt="Doubting Nikki cover: a white line-art profile with a red tear on black" loading="lazy" width="1071" height="1600"></span>
           </button>
         </div></div>
-        <div class="pf-meta"><span class="fmt">Fiction, full wrap</span><h3>Doubting Nikki</h3><p>Matthew Galgani</p></div>
+        <div class="pf-meta"><span class="fmt">Fiction, full wrap</span><h3>Doubting Nikki</h3></div>
         <div class="pf-actions"><button class="btn btn-turn" type="button" data-turn><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3"/></svg>Turn over</button><button class="btn btn-unfold" type="button" data-wrap="nikki">Full wrap</button></div>
       </article>
       <article class="pf-item">
@@ -978,7 +1081,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
             <span class="pb-front"><img src="assets/covers/cloud-front.webp?v=2" alt="A Cloud in My Heart cover: a boy hugging a teddy bear on a tree swing" loading="lazy" width="709" height="1100"></span>
           </button>
         </div></div>
-        <div class="pf-meta"><span class="fmt">Paperback, picture book</span><h3>A Cloud in My Heart</h3><p>Sehirsh K</p></div>
+        <div class="pf-meta"><span class="fmt">Paperback, picture book</span><h3>A Cloud in My Heart</h3></div>
         <div class="pf-actions"><button class="btn btn-turn" type="button" data-turn><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3"/></svg>Turn over</button><button class="btn btn-unfold" type="button" data-wrap="cloud">Full wrap</button></div>
       </article>
       <article class="pf-item">
@@ -990,7 +1093,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
             <span class="pb-front"><img src="assets/covers/milo-front.webp?v=2" alt="Milo the Shy Monster cover: a smiling purple furry monster with red horns" loading="lazy" width="1066" height="1600"></span>
           </button>
         </div></div>
-        <div class="pf-meta"><span class="fmt">Paperback, picture book</span><h3>Milo the Shy Monster</h3><p>Sehirsh K</p></div>
+        <div class="pf-meta"><span class="fmt">Paperback, picture book</span><h3>Milo the Shy Monster</h3></div>
         <div class="pf-actions"><button class="btn btn-turn" type="button" data-turn><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3"/></svg>Turn over</button><button class="btn btn-unfold" type="button" data-wrap="milo">Full wrap</button></div>
       </article>
       <article class="pf-item">
@@ -1002,7 +1105,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
             <span class="pb-front"><img src="assets/covers/alibi-front.webp?v=2" alt="The Silent Alibi cover: a white fingerprint dripping red on black" loading="lazy" width="1066" height="1600"></span>
           </button>
         </div></div>
-        <div class="pf-meta"><span class="fmt">Paperback, murder mystery</span><h3>The Silent Alibi</h3><p>Sehirsh K</p></div>
+        <div class="pf-meta"><span class="fmt">Paperback, murder mystery</span><h3>The Silent Alibi</h3></div>
         <div class="pf-actions"><button class="btn btn-turn" type="button" data-turn><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3"/></svg>Turn over</button><button class="btn btn-unfold" type="button" data-wrap="alibi">Full wrap</button></div>
       </article>
       <article class="pf-item">
@@ -1014,10 +1117,11 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
             <span class="pb-front"><img src="assets/covers/hollow-front.webp?v=2" alt="Hollow Echoes cover: a woman looking up through teal haze beneath a moth" loading="lazy" width="1066" height="1600"></span>
           </button>
         </div></div>
-        <div class="pf-meta"><span class="fmt">Paperback, psychological mystery</span><h3>Hollow Echoes</h3><p>Sehirsh K</p></div>
+        <div class="pf-meta"><span class="fmt">Paperback, psychological mystery</span><h3>Hollow Echoes</h3></div>
         <div class="pf-actions"><button class="btn btn-turn" type="button" data-turn><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2v3h-3"/></svg>Turn over</button><button class="btn btn-unfold" type="button" data-wrap="hollow">Full wrap</button></div>
       </article>
     </div>
+    <p class="swipe-hint" aria-hidden="true">Swipe the covers</p>
   </div>
   <dialog class="wrap-dlg" id="wrapDlg" aria-labelledby="wrapTitle">
     <figure>
@@ -1142,6 +1246,22 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       </div>
     </div>
   </div>
+  <div class="wrap mk-more">
+    <div class="mk-more-head">
+      <h3>Everything authors want on their site</h3>
+      <p>Kept simple: we set it up, and you choose how hands-on you want to be.</p>
+    </div>
+    <ul class="mk-tiles">
+      <li class="mk-tile"><span class="mk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span><b>Connect what you have</b><span>Already have a blog, website or domain? We connect it, or move your posts across.</span></li>
+      <li class="mk-tile"><span class="mk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 7l3 3"/></svg></span><b>Run it yourself</b><span>Simple editing, so you can post updates and add new books without touching code.</span></li>
+      <li class="mk-tile"><span class="mk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg></span><b>Or let us handle it</b><span>Prefer hands-off? We keep your posts, pages and links up to date for you.</span></li>
+      <li class="mk-tile"><span class="mk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5c3-1.5 6-1.5 9 0v15c-3-1.5-6-1.5-9 0zM21 5c-3-1.5-6-1.5-9 0v15c3-1.5 6-1.5 9 0z"/></svg></span><b>Book pages that sell</b><span>A page for every title, with buy links to every store your book is on.</span></li>
+      <li class="mk-tile"><span class="mk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><b>Newsletter sign-ups</b><span>Grow your reader list with sign-up forms linked to your email tool.</span></li>
+      <li class="mk-tile"><span class="mk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5"/><path d="M5 20h14"/></svg></span><b>Free chapter downloads</b><span>Offer a sample chapter and turn curious visitors into readers.</span></li>
+      <li class="mk-tile"><span class="mk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><b>Events &amp; media kit</b><span>Readings, launches, interviews and a press kit, all in one place.</span></li>
+      <li class="mk-tile"><span class="mk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M15.5 15.5L20 20"/></svg></span><b>Found on Google</b><span>Search-friendly pages and posts, so new readers can find you.</span></li>
+    </ul>
+  </div>
 
 </section>
 
@@ -1210,6 +1330,14 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   </div>
 </section>
 </main>
+<nav class="tabbar" aria-label="Quick navigation">
+  <a href="#top" data-sec="top"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/></svg></span><span>Home</span></a>
+  <a href="#services" data-sec="services"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5c3-1.5 6-1.5 9 0v15c-3-1.5-6-1.5-9 0zM21 5c-3-1.5-6-1.5-9 0v15c3-1.5 6-1.5 9 0z"/></svg></span><span>Services</span></a>
+  <a href="#brief" class="tab-cta" data-sec="brief"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-width="2.6"/></svg></span><span>Start</span></a>
+  <a href="#covers" data-sec="covers"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1.5"/><circle cx="12" cy="10" r="3"/><path d="M8 17h8"/></svg></span><span>Covers</span></a>
+  <a href="about.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></span><span>About</span></a>
+</nav>
+
 
 <footer class="foot">
   <div class="wrap foot-in">
@@ -1383,7 +1511,51 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
     b.textContent = 'Added to your brief \u2713';
     setTimeout(() => { closeBook2(); setTimeout(() => $('#brief').scrollIntoView({behavior: reduce ? 'auto' : 'smooth'}), 500); }, 350);
   };
-  $$('.svc').forEach(svc => $('.sb-cover', svc).addEventListener('click', () => openBook2(svc)));
+  const isPhone = () => matchMedia('(max-width: 760px)').matches;
+  const sheet = $('#svcSheet'), shPanel = $('#shPanel');
+  let shCheck = null, shFrom = null;
+  const openSheet = svc => {
+    const src = $('.sbook', svc);
+    shPanel.className = 'sh-panel ' + [...src.classList].filter(c => /^b\d$/.test(c)).join(' ');
+    $('#shArt').innerHTML = $('.svc-ill', src).outerHTML;
+    $('#shNum').textContent = $('.sb-back .num', src).textContent;
+    $('#shTitle').innerHTML = $('.sb-back .sb-title', src).innerHTML;
+    $('#shDesc').textContent = $('.sb-back .sb-desc', src).textContent;
+    $('#shList').innerHTML = $('.sb-page ul', src).innerHTML;
+    $('#shOut').innerHTML = $('.sb-page .sb-out', src).innerHTML;
+    shCheck = $('.sb-page .sb-add', src).dataset.check;
+    $('#shAdd').textContent = document.getElementById(shCheck).checked ? 'Added to your brief \u2713' : 'Add to my brief';
+    shFrom = svc;
+    sheet.showModal(); shPanel.scrollTop = 0;
+    if (animated()) gsap.fromTo(shPanel, {yPercent:100}, {yPercent:0, duration:.42, ease:'power3.out'});
+  };
+  const closeSheet = () => {
+    if (!sheet.open) return;
+    const done = () => { sheet.close(); if (window.gsap) gsap.set(shPanel, {clearProps:'transform'}); else shPanel.style.transform = ''; shFrom && $('.sb-cover', shFrom).focus({preventScroll:true}); };
+    if (animated()) gsap.to(shPanel, {yPercent:100, duration:.28, ease:'power2.in', onComplete:done}); else done();
+  };
+  // Drag the top of the sheet down to dismiss it
+  let dragY = null;
+  $('#shTop').addEventListener('pointerdown', e => { dragY = e.clientY; $('#shTop').setPointerCapture(e.pointerId); });
+  $('#shTop').addEventListener('pointermove', e => { if (dragY === null) return; const dy = Math.max(0, e.clientY - dragY); if (window.gsap) gsap.set(shPanel, {y:dy}); else shPanel.style.transform = `translateY(${dy}px)`; });
+  $('#shTop').addEventListener('pointerup', e => {
+    if (dragY === null) return; const dy = e.clientY - dragY; dragY = null;
+    if (dy > 90) closeSheet(); else if (window.gsap) gsap.to(shPanel, {y:0, duration:.25, ease:'power2.out'}); else shPanel.style.transform = '';
+  });
+  $('#shClose').addEventListener('click', closeSheet);
+  sheet.addEventListener('cancel', e => { e.preventDefault(); closeSheet(); });
+  sheet.addEventListener('click', e => { if (e.target === sheet) closeSheet(); });
+  $('#shAdd').addEventListener('click', () => {
+    document.getElementById(shCheck).checked = true;
+    $('#shAdd').textContent = 'Added to your brief \u2713';
+    setTimeout(() => { closeSheet(); setTimeout(() => $('#brief').scrollIntoView({behavior: reduce ? 'auto' : 'smooth'}), 350); }, 300);
+  });
+  $$('.svc').forEach(svc => $('.sb-cover', svc).addEventListener('click', () => isPhone() ? openSheet(svc) : openBook2(svc)));
+
+  // Tab bar: highlight the section in view
+  const tabs = $$('.tabbar a[data-sec]');
+  const tabIO = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) tabs.forEach(t => t.classList.toggle('on', t.dataset.sec === e.target.id)); }), {rootMargin:'-45% 0px -50% 0px'});
+  ['top', 'services', 'covers', 'brief'].forEach(id => { const el = document.getElementById(id); if (el) tabIO.observe(el); });
   $('#bdClose').addEventListener('click', closeBook2);
   dlg2.addEventListener('cancel', e => { e.preventDefault(); closeBook2(); });
   dlg2.addEventListener('click', e => { if (!e.target.closest('.bd-book, .bd-close')) closeBook2(); });
@@ -1569,6 +1741,12 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       skew(gsap.utils.clamp(-14, 14, -v / 120));
     },
     onLeave:() => skew(0), onLeaveBack:() => skew(0)});
+
+  // ---------- Author site features: rise in, fade back out as they leave ----------
+  gsap.fromTo('.mk-tile', {y:36, autoAlpha:0}, {y:0, autoAlpha:1, duration:.7, stagger:.06, ease:'power3.out',
+    scrollTrigger:{trigger:'.mk-tiles', start:'top 86%', end:'bottom 6%', toggleActions:'play reverse play reverse'}});
+  gsap.fromTo('.mk-ic', {scale:0, rotation:-90}, {scale:1, rotation:0, duration:.6, stagger:.06, delay:.2, ease:'back.out(2)',
+    scrollTrigger:{trigger:'.mk-tiles', start:'top 86%', end:'bottom 6%', toggleActions:'play reverse play reverse'}});
 
   // ---------- Author sites ring ----------
   // The angle is scroll + offset: scrolling still turns the ring as before, while the arrows and the
