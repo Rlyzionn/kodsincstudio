@@ -284,8 +284,8 @@ p{margin:0}
 .sb-hint{margin-top:auto;display:inline-flex;align-items:center;gap:2cqw;font:500 max(9px,4.2cqw) var(--mono);letter-spacing:.12em;text-transform:uppercase;opacity:.75}
 .sb-hint::before{content:"";width:3.4cqw;height:3.4cqw;border-radius:0 70% 0 70%;background:currentColor}
 .svc-ill{display:block;overflow:hidden;background:var(--paper);border:2px solid var(--s);border-radius:8px;padding:3cqw 2cqw 1cqw;box-shadow:3px 3px 0 var(--s);margin-top:2cqw}
-.svc-ill svg{display:block;width:100%;height:auto;transition:transform .5s var(--spring)}
-.sbook:hover .svc-ill svg{transform:scale(1.07) rotate(-2deg)}
+.svc-ill svg{display:block;width:100%;height:auto;transition:scale .5s var(--spring),rotate .5s var(--spring)}
+.sbook:hover .svc-ill svg{scale:1.07;rotate:-2deg}
 .b2,.bd-book.b2{--c:var(--leaf);--t:var(--forest-deep);--s:var(--moss)}
 .b3,.bd-book.b3{--c:var(--cream);--t:var(--forest);--s:var(--forest)}
 .b4,.bd-book.b4{--c:var(--gold-2);--t:var(--forest-deep);--s:var(--gold)}
@@ -327,8 +327,9 @@ p{margin:0}
 .pl-head{display:grid;gap:18px;max-width:780px}
 .pl-grid{list-style:none;margin:48px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;perspective:1400px}
 .pl{display:flex;flex-direction:column;gap:4px;min-width:0;background:var(--paper);border:2px solid var(--forest);border-radius:14px;padding:12px 12px 14px;
-  box-shadow:5px 5px 0 var(--forest);transition:transform .3s var(--spring),box-shadow .3s var(--spring)}
-.pl:hover{transform:translate(-2px,-4px);box-shadow:8px 9px 0 var(--forest)}
+  box-shadow:5px 5px 0 var(--forest);transition:translate .3s var(--spring),box-shadow .3s var(--spring)}
+/* Hover uses the separate translate property so it never fights the scroll animation, which drives transform */
+.pl:hover{translate:-2px -4px;box-shadow:8px 9px 0 var(--forest)}
 /* Logos sit on a plain white plate in their own colours, as the platforms show them */
 .pl-logo{height:68px;margin-bottom:8px;border-radius:9px;background:#fff;border:1.5px solid var(--line);display:grid;place-items:center;padding:10px 16px;overflow:hidden}
 .pl-logo img{display:block;width:auto;height:auto;max-width:100%;max-height:34px}
