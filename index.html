@@ -1316,11 +1316,20 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
           <a class="ring-item" href="https://author-website1-eight.vercel.app" target="_blank" rel="noopener" tabindex="-1" aria-label="Joe Broadmeadow&#8217;s author website (opens in a new tab)" style="--i:0" data-k="Crime fiction &amp; true crime" data-name="Joe Broadmeadow">
             <img src="assets/showcase/broadmeadow-desktop.webp?v=2" alt="" width="1200" height="750" loading="lazy">
           </a>
-          <a class="ring-item" href="https://author-website2.vercel.app" target="_blank" rel="noopener" tabindex="-1" aria-label="H.T. Manogue&#8217;s author website (opens in a new tab)" style="--i:1" data-k="Poetry &amp; art" data-name="H.T. Manogue">
+          <a class="ring-item" href="https://jennifermatwawana.com/" target="_blank" rel="noopener" tabindex="-1" aria-label="Jennifer Adrienne Matwawana&#8217;s author website (opens in a new tab)" style="--i:1" data-k="Self-help &amp; personal growth" data-name="Jennifer Adrienne Matwawana">
+            <img src="assets/showcase/matwawana-desktop.webp?v=1" alt="" width="1200" height="750" loading="lazy">
+          </a>
+          <a class="ring-item" href="https://author-website2.vercel.app" target="_blank" rel="noopener" tabindex="-1" aria-label="H.T. Manogue&#8217;s author website (opens in a new tab)" style="--i:2" data-k="Poetry &amp; art" data-name="H.T. Manogue">
             <img src="assets/showcase/manogue-desktop.webp?v=2" alt="" width="1200" height="750" loading="lazy">
           </a>
-          <a class="ring-item" href="https://author-website3.vercel.app" target="_blank" rel="noopener" tabindex="-1" aria-label="Gabriel Pollard&#8217;s author website (opens in a new tab)" style="--i:2" data-k="Faith &amp; nonfiction" data-name="Gabriel Pollard">
+          <a class="ring-item" href="https://katewwrites.com/" target="_blank" rel="noopener" tabindex="-1" aria-label="Kate Woodcock&#8217;s author website (opens in a new tab)" style="--i:3" data-k="Romance, mystery &amp; horror" data-name="Kate Woodcock">
+            <img src="assets/showcase/woodcock-desktop.webp?v=1" alt="" width="1200" height="750" loading="lazy">
+          </a>
+          <a class="ring-item" href="https://author-website3.vercel.app" target="_blank" rel="noopener" tabindex="-1" aria-label="Gabriel Pollard&#8217;s author website (opens in a new tab)" style="--i:4" data-k="Faith &amp; nonfiction" data-name="Gabriel Pollard">
             <img src="assets/showcase/pollard-desktop.webp?v=2" alt="" width="1200" height="750" loading="lazy">
+          </a>
+          <a class="ring-item" href="https://poetryandartbymeikle.com/" target="_blank" rel="noopener" tabindex="-1" aria-label="Dr. Paulette Meikle&#8217;s author website (opens in a new tab)" style="--i:5" data-k="Poetry &amp; paintings" data-name="Dr. Paulette Meikle">
+            <img src="assets/showcase/meikle-desktop.webp?v=1" alt="" width="1200" height="750" loading="lazy">
           </a>
         </div>
       </div>
@@ -1973,17 +1982,23 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   // auto-advance add to the offset, so both work together.
   const ring = $('#siteRing'), ringItems = $$('.ring-item', ring), ringK = $('#ringK'), ringN = $('#ringN'), ringGo = $('#ringGo');
   const spin = {scroll:0, off:0};
-  let frontIdx = -1, ringR = ringItems[0].offsetWidth * .62;
-  ScrollTrigger.addEventListener('refreshInit', () => { ringR = ringItems[0].offsetWidth * .62; });
+  // Sites sit STEP degrees apart. With more than three the circle widens so the two neighbours peek out
+  // at the sides while the ones behind fade away completely.
+  const N = ringItems.length, STEP = 360 / N, SPREAD = N > 3 ? .95 : .62;
+  let frontIdx = -1, ringW = ringItems[0].offsetWidth, ringR = ringW * SPREAD;
+  ScrollTrigger.addEventListener('refreshInit', () => { ringW = ringItems[0].offsetWidth; ringR = ringW * SPREAD; });
   const drawRing = () => {
     const a = spin.scroll + spin.off, R = ringR;
     ringItems.forEach((it, i) => {
-      const d = ((i * 120 - a) % 360 + 540) % 360 - 180;   // angle from the front, -180..180
+      const d = ((i * STEP - a) % 360 + 540) % 360 - 180;   // angle from the front, -180..180
       const rad = d * Math.PI / 180, c = Math.cos(rad);
       gsap.set(it, {x:R * Math.sin(rad), z:R * (c - 1), rotationY:-d * .3, zIndex:Math.round(c * 10) + 10});
-      it.style.opacity = (.3 + .7 * Math.max(0, c)).toFixed(3);
+      // Front site full strength, neighbours faded, anything further round hidden
+      const o = N > 3 ? (c >= .5 ? .35 + .65 * (c - .5) / .5 : Math.max(0, (c - .2) / .3) * .35) : .3 + .7 * Math.max(0, c);
+      it.style.opacity = o.toFixed(3);
+      it.style.visibility = o < .01 ? 'hidden' : 'visible';
     });
-    const n = ((Math.round(a / 120) % 3) + 3) % 3;
+    const n = ((Math.round(a / STEP) % N) + N) % N;
     if (n !== frontIdx) {
       const first = frontIdx < 0;
       frontIdx = n;
@@ -1993,16 +2008,14 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
     }
   };
   drawRing();
-  gsap.timeline({onUpdate:drawRing, scrollTrigger:{trigger:'.mk-grid', start:'top 75%', end:'bottom 20%', scrub:1}})
-    .to(spin, {scroll:0, duration:.35})
-    .to(spin, {scroll:120, duration:1, ease:'sine.inOut'})
-    .to(spin, {scroll:120, duration:.35})
-    .to(spin, {scroll:240, duration:1, ease:'sine.inOut'})
-    .to(spin, {scroll:240, duration:.35});
+  // Scrolling through the section turns the ring through every site, holding each at the front for a moment
+  const ringScroll = gsap.timeline({onUpdate:drawRing, scrollTrigger:{trigger:'.mk-grid', start:'top 75%', end:'bottom 20%', scrub:1}})
+    .to(spin, {scroll:0, duration:.35});
+  for (let k = 1; k < N; k++) ringScroll.to(spin, {scroll:k * STEP, duration:1, ease:'sine.inOut'}).to(spin, {scroll:k * STEP, duration:.35});
 
   // Arrows step one site; the target snaps to the nearest site so repeated clicks never land between two
   const step = dir => {
-    const a = spin.scroll + spin.off, target = Math.round((a + dir * 120) / 120) * 120;
+    const a = spin.scroll + spin.off, target = Math.round((a + dir * STEP) / STEP) * STEP;
     gsap.to(spin, {off:spin.off + (target - a), duration:.7, ease:'power2.inOut', onUpdate:drawRing, overwrite:'auto'});
   };
   // Clicking a side site turns it to the front; clicking the front one opens the live site
@@ -2011,7 +2024,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
     if (ringSwiped) { e.preventDefault(); return; }
     if (i === frontIdx) return;
     e.preventDefault();
-    const a = spin.scroll + spin.off, d = ((i * 120 - a) % 360 + 540) % 360 - 180;
+    const a = spin.scroll + spin.off, d = ((i * STEP - a) % 360 + 540) % 360 - 180;
     step(Math.sign(d)); restartAuto();
   }));
   $$('.ring-btn').forEach(b => b.addEventListener('click', () => { step(+b.dataset.dir); restartAuto(); }));
@@ -2043,7 +2056,8 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
       try { rStage.setPointerCapture(e.pointerId); } catch (_) {}
     }
     rDrag.x = e.clientX; rDrag.m.add(e.clientX, e.timeStamp);
-    spin.off = rDrag.off - dx * 120 / Math.max(120, ringR * 1.7);
+    // Dragging about one site-width moves the ring one site, whatever the spacing
+    spin.off = rDrag.off - dx * STEP / Math.max(120, ringW * 1.05);
     drawRing();
   });
   const rEnd = e => {
@@ -2055,7 +2069,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
     // a quarter of the width, or a quick flick, moves one site that way; anything less settles back
     const dx = d.x - d.x0, v = d.m.speed(), far = Math.abs(dx) > rStage.offsetWidth * .22;
     const dir = far ? -Math.sign(dx) : Math.abs(v) > .3 ? -Math.sign(v) : 0;
-    const target = (Math.round(d.a0 / 120) + dir) * 120;
+    const target = (Math.round(d.a0 / STEP) + dir) * STEP;
     gsap.to(spin, {off:target - spin.scroll, duration:.6, ease:'power3.out', onUpdate:drawRing});
     held = false; restartAuto();
   };
