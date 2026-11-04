@@ -543,7 +543,9 @@ p{margin:0}
 .mk-visual{position:relative;min-width:0;height:520px;container-type:inline-size}
 .mk-visual .disc2{position:absolute;inset:8% 4%;border-radius:32px;background:var(--leaf-pale)}
 /* Three real author sites on a turning ring; scroll turns it so each site comes to the front in turn */
-.ring-stage{position:absolute;inset:0;perspective:1600px;touch-action:pan-y}
+/* The ring is clipped to the pale green panel, so neighbouring sites peek out from behind the front one
+   without ever spilling over the text column or past the screen edge */
+.ring-stage{position:absolute;inset:0;perspective:1600px;touch-action:pan-y;clip-path:inset(8% 4% round 32px)}
 .ring{--iw:min(430px,76cqw);position:absolute;left:50%;top:43%;width:0;height:0;transform-style:preserve-3d;transform:rotateX(-6deg)}
 /* Each site travels round the circle but stays face-on, so none is ever seen mirrored */
 .ring-item{position:absolute;width:var(--iw);left:calc(var(--iw) / -2);top:calc(var(--iw) * -.3125);display:block;
@@ -1984,7 +1986,7 @@ fieldset{border:none;padding:0;margin:0;min-width:0}
   const spin = {scroll:0, off:0};
   // Sites sit STEP degrees apart. With more than three the circle widens so the two neighbours peek out
   // at the sides while the ones behind fade away completely.
-  const N = ringItems.length, STEP = 360 / N, SPREAD = N > 3 ? .95 : .62;
+  const N = ringItems.length, STEP = 360 / N, SPREAD = N > 3 ? .8 : .62;
   let frontIdx = -1, ringW = ringItems[0].offsetWidth, ringR = ringW * SPREAD;
   ScrollTrigger.addEventListener('refreshInit', () => { ringW = ringItems[0].offsetWidth; ringR = ringW * SPREAD; });
   const drawRing = () => {
